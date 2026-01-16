@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Image extends Model
 {
     protected $guarded = ['id'];
-    protected $fillable = [
-        'name',
-        'path',
-        'second_path',
-    ];
 
     /**
      * Загружает новое фото и сохраняет в БД.

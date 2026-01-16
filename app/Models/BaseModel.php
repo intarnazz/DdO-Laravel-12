@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
  * @method static Builder where(string $column, mixed $operator = null, mixed $value = null, string $boolean = 'and')
  * @mixin Builder
  */
-class BaseModel extends Model
+abstract class BaseModel extends Model
 {
     protected $guarded = ['id'];
 

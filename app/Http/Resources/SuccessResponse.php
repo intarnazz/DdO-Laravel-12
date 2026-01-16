@@ -20,4 +20,9 @@ class SuccessResponse extends JsonResource
             'data' => $this->resource ? $this->resource : '',
         ];
     }
+
+    public static function new($value): JsonResource
+    {
+        return new SuccessResponse($value);
+    }
 }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Image;
 use App\Models\User;
+use App\Models\Vacancy;
 use Faker\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -26,6 +27,14 @@ class DatabaseSeeder extends Seeder
             Image::create([
                 'name' => pathinfo($file, PATHINFO_FILENAME),
                 'path' => $file,
+            ]);
+        }
+
+        foreach (range(1, 5) as $i) {
+            Vacancy::create([
+                'name' => $faker->word(),
+                'description' => $faker->text(255),
+                'price' => $faker->biasedNumberBetween(10000, 50000),
             ]);
         }
     }
