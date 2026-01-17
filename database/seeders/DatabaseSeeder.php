@@ -4,8 +4,10 @@ namespace Database\Seeders;
 
 use App\Models\Brand;
 use App\Models\Contact;
+use App\Models\Documentation;
 use App\Models\Filter;
 use App\Models\Image;
+use App\Models\Text;
 use App\Models\User;
 use App\Models\Vacancy;
 use Faker\Factory;
@@ -44,8 +46,12 @@ class DatabaseSeeder extends Seeder
                 'description' => $faker->text(255),
                 'link' => $faker->text(20),
             ]);
+            Text::create([
+                'text' => $faker->text(2000),
+            ]);
             Brand::create([
                 'image_id' => $i,
+                'text_id' => $i,
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
                 'type' => $faker->word(),
@@ -63,6 +69,11 @@ class DatabaseSeeder extends Seeder
                 'group' => $faker->word(),
                 'value' => $faker->word(),
                 'value_type' => 'original',
+            ]);
+            Documentation::create([
+                'text_id' => $i,
+                'name' => $faker->word(),
+                'description' => $faker->text(255),
             ]);
         }
     }

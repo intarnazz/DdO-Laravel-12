@@ -26,7 +26,7 @@ abstract class Controller
      */
     public function get($item)
     {
-        return $this->model::findOrFail($item) |> SuccessResponse::new(...);
+        return $this->model::with((new $this->model)->with_one_only)->findOrFail($item) |> SuccessResponse::new(...);
     }
 
     /**.

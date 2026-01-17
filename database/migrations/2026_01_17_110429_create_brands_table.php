@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Image::class)->nullable()->constrained()->onDelete('set null');
+            $table->foreignIdFor(\App\Models\Text::class)->nullable()->constrained()->onDelete('set null');
             $table->string('name');
             $table->string('description');
             $table->string('type');

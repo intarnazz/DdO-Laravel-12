@@ -16,7 +16,7 @@ class SuccessResponse extends JsonResource
     {
         return [
             'success' => true,
-            'message' => 'Success',
+            'message' => 'success',
             'data' => $this->resource ? $this->resource : '',
         ];
     }

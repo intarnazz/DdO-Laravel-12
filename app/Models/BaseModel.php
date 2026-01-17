@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 abstract class BaseModel extends Model
 {
     protected $guarded = ['id'];
+    public $with_one_only = [];
 
     /**
      * Базовая пагинация по заданному условию.

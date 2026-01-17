@@ -6,6 +6,7 @@ use App\Http\Controllers\VacancyController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\FilterController;
+use App\Http\Controllers\DocumentationController;
 use App\Route\GetRoute;
 
 
@@ -16,4 +17,5 @@ new GetRoute('vacancy', VacancyController::class);
 new GetRoute('contact', ContactController::class);
 new GetRoute('brand', BrandController::class);
 new GetRoute('filter', FilterController::class);
+new GetRoute('documentation', DocumentationController::class);
 
