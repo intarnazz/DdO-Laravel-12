@@ -8,6 +8,7 @@ use App\Models\Documentation;
 use App\Models\Filter;
 use App\Models\Image;
 use App\Models\Text;
+use App\Models\Type;
 use App\Models\User;
 use App\Models\Vacancy;
 use Faker\Factory;
@@ -72,6 +73,10 @@ class DatabaseSeeder extends Seeder
             ]);
             Documentation::create([
                 'text_id' => $i,
+                'name' => $faker->word(),
+                'description' => $faker->text(255),
+            ]);
+            Type::create([
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
             ]);
