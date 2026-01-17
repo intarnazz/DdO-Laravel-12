@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Contact;
 use App\Models\Image;
 use App\Models\User;
 use App\Models\Vacancy;
@@ -35,6 +36,11 @@ class DatabaseSeeder extends Seeder
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
                 'price' => $faker->biasedNumberBetween(10000, 50000),
+            ]);
+            Contact::create([
+                'name' => $faker->word(),
+                'description' => $faker->text(255),
+                'link' => $faker->text(20),
             ]);
         }
     }
