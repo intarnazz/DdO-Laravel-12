@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Brand;
 use App\Models\Contact;
+use App\Models\Filter;
 use App\Models\Image;
 use App\Models\User;
 use App\Models\Vacancy;
@@ -48,6 +49,20 @@ class DatabaseSeeder extends Seeder
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
                 'type' => $faker->word(),
+            ]);
+            Filter::create([
+                'name' => $faker->word(),
+                'description' => $faker->text(255),
+                'group' => $faker->word(),
+                'value' => $faker->biasedNumberBetween(1, 10),
+                'value_type' => 'id',
+            ]);
+            Filter::create([
+                'name' => $faker->word(),
+                'description' => $faker->text(255),
+                'group' => $faker->word(),
+                'value' => $faker->word(),
+                'value_type' => 'original',
             ]);
         }
     }
