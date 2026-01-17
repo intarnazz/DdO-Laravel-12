@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Brand;
 use App\Models\Contact;
 use App\Models\Image;
 use App\Models\User;
@@ -41,6 +42,12 @@ class DatabaseSeeder extends Seeder
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
                 'link' => $faker->text(20),
+            ]);
+            Brand::create([
+                'image_id' => $i,
+                'name' => $faker->word(),
+                'description' => $faker->text(255),
+                'type' => $faker->word(),
             ]);
         }
     }
