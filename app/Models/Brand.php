@@ -13,7 +13,7 @@ class Brand extends BaseModel
     ];
     protected $with = ['image'];
 
-    public $with_one_only = ['text'];
+    public array $with_one_only = ['text'];
 
     protected static function booted()
     {

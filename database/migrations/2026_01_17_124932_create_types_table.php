@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('types', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('type_id')->nullable()->constrained('types')->cascadeOnDelete();
+            $table->foreignId('self_id')->nullable()->constrained('types')->cascadeOnDelete();
             $table->string('name');
             $table->string('description');
             $table->timestamps();

@@ -76,9 +76,20 @@ class DatabaseSeeder extends Seeder
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
             ]);
+            Documentation::create([
+                'text_id' => $i,
+                'name' => $faker->word(),
+                'description' => $faker->text(255),
+                'self_id' => $i,
+            ]);
             Type::create([
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
+            ]);
+            Type::create([
+                'name' => $faker->word(),
+                'description' => $faker->text(255),
+                'self_id' => $i
             ]);
         }
     }

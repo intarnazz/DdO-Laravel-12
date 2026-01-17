@@ -4,7 +4,8 @@ namespace App\Models;
 
 class Documentation extends BaseModel
 {
-    public $with_one_only = ['text'];
+    public array $with_one_only = ['text'];
+    public static bool $isTree = true;
 
     protected static function booted()
     {

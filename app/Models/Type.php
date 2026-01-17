@@ -8,4 +8,5 @@ class Type extends BaseModel
         'name',
         'description',
     ];
+    public static bool $isTree = true;
 }

@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('documentations', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Text::class)->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('documentation_id')->nullable()->constrained('documentations')->cascadeOnDelete();
+            $table->foreignId('self_id')->nullable()->constrained('documentations')->cascadeOnDelete();
             $table->string('name');
             $table->string('description');
             $table->string('file_url')->nullable();

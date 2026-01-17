@@ -25,6 +25,35 @@ abstract class BaseModel extends Model
     public array $with_one_only = [];
 
     /**
+     * Флаг, указывающий, является ли модель древовидной (tree).
+     * Если true, при получении одной записи через getOne
+     * будет создан атрибут `tree` с дочерними элементами, у которых
+     * self_id = id текущего объекта.
+     *
+     */
+    public static bool $isTree = false;
+
+    /**
+     * Получение одного объекта модели по его ID.
+     * Подгружает связи, указанные в $with_one_only.
+     * Если модель древовидная ($isTree = true), добавляет поле `tree`
+     * с дочерними объектами (где self_id = id текущей записи).
+     *
+     * @param int $item ID объекта
+     * @return Model Загруженный объект с подгруженными связями и, при необходимости, дочерними элементами в поле tree
+     */
+    public static function getOne(int $item): Model
+    {
+        $data = static::with((new static)->with_one_only)->findOrFail($item);
+
+        if (static::$isTree) {
+            $data->tree = static::where('self_id', $data->id)->get();
+        }
+
+        return $data;
+    }
+
+    /**
      * Базовая пагинация по заданному условию.
      *
      * @param Request $request HTTP-запрос, из которого берутся limit и offset
@@ -56,6 +85,10 @@ abstract class BaseModel extends Model
                 continue;
             }
             $query->where($key, $value);
+        }
+
+        if (static::$isTree) {
+            $query->where('self_id', null);
         }
 
         $totalCount = $query->count();
