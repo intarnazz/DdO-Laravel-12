@@ -14,7 +14,15 @@ use Illuminate\Http\Request;
 abstract class BaseModel extends Model
 {
     protected $guarded = ['id'];
-    public $with_one_only = [];
+
+    /**
+     * Список связей для "одиночного" eager loading.
+     * Используется только при get-запросе конкретного элемента по id.
+     *
+     * Пример использования:
+     * $model::with($model->with_one_only)->findOrFail($id);
+     */
+    public array $with_one_only = [];
 
     /**
      * Базовая пагинация по заданному условию.
