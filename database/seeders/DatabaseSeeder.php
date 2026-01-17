@@ -9,6 +9,7 @@ use App\Models\Filter;
 use App\Models\Image;
 use App\Models\Text;
 use App\Models\Type;
+use App\Models\TypeFilter;
 use App\Models\User;
 use App\Models\Vacancy;
 use Faker\Factory;
@@ -89,7 +90,11 @@ class DatabaseSeeder extends Seeder
             Type::create([
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
-                'self_id' => $i
+                'self_id' => $i,
+            ]);
+            TypeFilter::create([
+                'type_id' => $i,
+                'filter_id' => $i,
             ]);
         }
     }

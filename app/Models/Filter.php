@@ -12,4 +12,12 @@ class Filter extends BaseModel
         'value_type',
         'is_visible',
     ];
+
+    public array $with_one_only = ['types'];
+
+    public function types()
+    {
+        return $this->belongsToMany(Type::class, 'type_filters', 'filter_id', 'type_id');
+    }
+
 }

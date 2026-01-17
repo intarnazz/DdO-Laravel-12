@@ -8,5 +8,12 @@ class Type extends BaseModel
         'name',
         'description',
     ];
+
+    public array $with_one_only = ['filters'];
     public static bool $isTree = true;
+
+    public function filters()
+    {
+        return $this->belongsToMany(Filter::class, 'type_filters', 'type_id', 'filter_id');
+    }
 }
