@@ -7,6 +7,7 @@ use App\Models\Characteristic;
 use App\Models\Contact;
 use App\Models\Documentation;
 use App\Models\Filter;
+use App\Models\Gallery;
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\ProductFilter;
@@ -132,6 +133,10 @@ class DatabaseSeeder extends Seeder
                 'product_id' => $i,
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
+            ]);
+            Gallery::create([
+                'image_id' => $i,
+                'product_id' => $i,
             ]);
         }
     }

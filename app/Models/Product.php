@@ -26,7 +26,13 @@ class Product extends BaseModel
         'variant',
         'brand',
         'filters',
+        'images',
     ];
+
+    public function images(): BelongsToMany
+    {
+        return $this->belongsToMany(Image::class, 'galleries', 'product_id', 'image_id');
+    }
 
     public function filters(): BelongsToMany
     {

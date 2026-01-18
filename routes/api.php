@@ -26,5 +26,6 @@ new GetRoute('documentation', DocumentationController::class);
 new GetRoute('type', TypeController::class);
 new GetRoute('tag', TagController::class);
 new GetRoute('variant', VariantController::class);
+new GetRoute('product', ProductController::class);
 new GetRoute('characteristic', CharacteristicController::class);
 
