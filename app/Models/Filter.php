@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 class Filter extends BaseModel
 {
     protected $fillable = [
@@ -13,7 +15,12 @@ class Filter extends BaseModel
         'is_visible',
     ];
 
-    protected array $with_one_only = ['types'];
+    protected array $with_one_only = ['types', 'products'];
+
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'product_filters', 'filter_id', 'product_id');
+    }
 
     public function types()
     {

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends BaseModel
 {
@@ -24,7 +25,13 @@ class Product extends BaseModel
         'tag',
         'variant',
         'brand',
+        'filters',
     ];
+
+    public function filters(): BelongsToMany
+    {
+        return $this->belongsToMany(Filter::class, 'product_filters', 'product_id', 'filter_id');
+    }
 
     public function type(): BelongsTo
     {

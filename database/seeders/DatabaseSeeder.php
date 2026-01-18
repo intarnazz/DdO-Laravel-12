@@ -8,6 +8,7 @@ use App\Models\Documentation;
 use App\Models\Filter;
 use App\Models\Image;
 use App\Models\Product;
+use App\Models\ProductFilter;
 use App\Models\Tag;
 use App\Models\Text;
 use App\Models\Type;
@@ -120,6 +121,10 @@ class DatabaseSeeder extends Seeder
                 'video_url' => $faker->url(),
                 'price' => $faker->biasedNumberBetween(10000, 50000),
                 'article' => $faker->word() . '-' . $faker->word(),
+            ]);
+            ProductFilter::create([
+                'product_id' => $i,
+                'filter_id' => $i,
             ]);
         }
     }
