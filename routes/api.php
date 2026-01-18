@@ -16,9 +16,6 @@ use App\Http\Controllers\OptionController;
 use App\Route\GetRoute;
 
 
-Route::get('/image/{image}', [ImageController::class, 'get']);
-Route::post('/image', [ImageController::class, 'add']);
-
 new GetRoute('vacancy', VacancyController::class);
 new GetRoute('contact', ContactController::class);
 new GetRoute('brand', BrandController::class);
@@ -31,3 +28,7 @@ new GetRoute('product', ProductController::class);
 new GetRoute('characteristic', CharacteristicController::class);
 new GetRoute('option', OptionController::class);
 
+Route::prefix('image')->group(function () {
+    Route::get('/{image}', [ImageController::class, 'get']);
+    Route::post('/', [ImageController::class, 'add']);
+});
