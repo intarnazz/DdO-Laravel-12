@@ -22,7 +22,7 @@ abstract class BaseModel extends Model
      * Пример использования:
      * $model::with($model->with_one_only)->findOrFail($id);
      */
-    public array $with_one_only = [];
+    protected array $with_one_only = [];
 
     /**
      * Флаг, указывающий, является ли модель древовидной (tree).
@@ -31,7 +31,7 @@ abstract class BaseModel extends Model
      * self_id = id текущего объекта.
      *
      */
-    public static bool $isTree = false;
+    protected static bool $isTree = false;
 
     /**
      * Получение одного объекта модели по его ID.

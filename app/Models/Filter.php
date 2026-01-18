@@ -13,7 +13,7 @@ class Filter extends BaseModel
         'is_visible',
     ];
 
-    public array $with_one_only = ['types'];
+    protected array $with_one_only = ['types'];
 
     public function types()
     {

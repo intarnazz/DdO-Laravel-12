@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\Documentation;
 use App\Models\Filter;
 use App\Models\Image;
+use App\Models\Tag;
 use App\Models\Text;
 use App\Models\Type;
 use App\Models\TypeFilter;
@@ -95,6 +96,11 @@ class DatabaseSeeder extends Seeder
             TypeFilter::create([
                 'type_id' => $i,
                 'filter_id' => $i,
+            ]);
+            Tag::create([
+                'type_id' => $i,
+                'name' => $faker->word(),
+                'description' => $faker->text(255),
             ]);
         }
     }

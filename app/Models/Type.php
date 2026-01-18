@@ -9,8 +9,8 @@ class Type extends BaseModel
         'description',
     ];
 
-    public array $with_one_only = ['filters'];
-    public static bool $isTree = true;
+    protected array $with_one_only = ['filters'];
+    protected static bool $isTree = true;
 
     public function filters()
     {

@@ -8,6 +8,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\TypeController;
+use App\Http\Controllers\TagController;
 use App\Route\GetRoute;
 
 
@@ -20,4 +21,5 @@ new GetRoute('brand', BrandController::class);
 new GetRoute('filter', FilterController::class);
 new GetRoute('documentation', DocumentationController::class);
 new GetRoute('type', TypeController::class);
+new GetRoute('tag', TagController::class);
 
