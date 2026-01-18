@@ -9,6 +9,7 @@ use App\Models\Documentation;
 use App\Models\Filter;
 use App\Models\Gallery;
 use App\Models\Image;
+use App\Models\Option;
 use App\Models\Product;
 use App\Models\ProductFilter;
 use App\Models\Tag;
@@ -137,6 +138,13 @@ class DatabaseSeeder extends Seeder
             Gallery::create([
                 'image_id' => $i,
                 'product_id' => $i,
+            ]);
+            Option::create([
+                'image_id' => $i,
+                'product_id' => $i,
+                'price' => $faker->biasedNumberBetween(1000, 20000),
+                'name' => $faker->word(),
+                'description' => $faker->text(255),
             ]);
         }
     }

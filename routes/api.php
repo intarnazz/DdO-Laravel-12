@@ -12,6 +12,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\VariantController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CharacteristicController;
+use App\Http\Controllers\OptionController;
 use App\Route\GetRoute;
 
 
@@ -28,4 +29,5 @@ new GetRoute('tag', TagController::class);
 new GetRoute('variant', VariantController::class);
 new GetRoute('product', ProductController::class);
 new GetRoute('characteristic', CharacteristicController::class);
+new GetRoute('option', OptionController::class);
 
