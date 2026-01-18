@@ -13,6 +13,7 @@ use App\Models\Type;
 use App\Models\TypeFilter;
 use App\Models\User;
 use App\Models\Vacancy;
+use App\Models\Variant;
 use Faker\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -98,6 +99,11 @@ class DatabaseSeeder extends Seeder
                 'filter_id' => $i,
             ]);
             Tag::create([
+                'type_id' => $i,
+                'name' => $faker->word(),
+                'description' => $faker->text(255),
+            ]);
+            Variant::create([
                 'type_id' => $i,
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
