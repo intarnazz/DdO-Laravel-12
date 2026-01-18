@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('characteristics', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\Product::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Image::class)->nullable()->constrained()->onDelete('set null');
-//            $table->foreignIdFor(\App\Models\Product::class)->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('description');
             $table->boolean('is_chosen')->default(false);

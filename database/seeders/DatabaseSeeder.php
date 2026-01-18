@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Brand;
+use App\Models\Characteristic;
 use App\Models\Contact;
 use App\Models\Documentation;
 use App\Models\Filter;
@@ -125,6 +126,12 @@ class DatabaseSeeder extends Seeder
             ProductFilter::create([
                 'product_id' => $i,
                 'filter_id' => $i,
+            ]);
+            Characteristic::create([
+                'image_id' => $i,
+                'product_id' => $i,
+                'name' => $faker->word(),
+                'description' => $faker->text(255),
             ]);
         }
     }

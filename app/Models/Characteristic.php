@@ -2,26 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Characteristic extends Model
+class Characteristic extends BaseModel
 {
     protected $fillable = [
         'name',
         'description',
-        'is_chosen'
     ];
 
-    protected static function booted()
+    protected $with = ['image'];
+
+    protected array $with_one_only = ['product'];
+
+    public function product(): BelongsTo
     {
-        static::deleting(function ($brand) {
-            $brand->image()->delete();
-        });
+        return $this->belongsTo(Product::class);
     }
 
-    public function image()
+    public function image(): BelongsTo
     {
         return $this->belongsTo(Image::class);
-
     }
 }
