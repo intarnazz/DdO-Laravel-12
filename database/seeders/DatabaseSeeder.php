@@ -16,7 +16,6 @@ use App\Models\Tag;
 use App\Models\Text;
 use App\Models\Type;
 use App\Models\TypeFilter;
-use App\Models\User;
 use App\Models\Vacancy;
 use App\Models\Variant;
 use Faker\Factory;
