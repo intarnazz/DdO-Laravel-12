@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\Documentation;
 use App\Models\Filter;
 use App\Models\Image;
+use App\Models\Product;
 use App\Models\Tag;
 use App\Models\Text;
 use App\Models\Type;
@@ -107,6 +108,18 @@ class DatabaseSeeder extends Seeder
                 'type_id' => $i,
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
+            ]);
+            Product::create([
+                'image_id' => $i,
+                'type_id' => $i,
+                'tag_id' => $i,
+                'variant_id' => $i,
+                'brand_id' => $i,
+                'name' => $faker->word(),
+                'description' => $faker->text(255),
+                'video_url' => $faker->url(),
+                'price' => $faker->biasedNumberBetween(10000, 50000),
+                'article' => $faker->word() . '-' . $faker->word(),
             ]);
         }
     }

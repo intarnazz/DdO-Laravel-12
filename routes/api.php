@@ -10,6 +10,7 @@ use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\TypeController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\VariantController;
+use App\Http\Controllers\ProductController;
 use App\Route\GetRoute;
 
 
@@ -24,4 +25,5 @@ new GetRoute('documentation', DocumentationController::class);
 new GetRoute('type', TypeController::class);
 new GetRoute('tag', TagController::class);
 new GetRoute('variant', VariantController::class);
+new GetRoute('product', ProductController::class);
 
