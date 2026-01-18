@@ -8,24 +8,24 @@ services:
         container_name: DdO
         working_dir: /var/www
         volumes:
-            - ./:/var/www
-            - type: bind
-              source: ./composer.json
-              target: /var/www/composer.json
-            - type: bind
-              source: ./composer.lock
-              target: /var/www/composer.lock
-            - type: bind
-              source: ./.env
-              target: /var/www/.env
+            - app-data:/var/www
+#            - type: bind
+#              source: ./composer.json
+#              target: /var/www/composer.json
+#            - type: bind
+#              source: ./composer.lock
+#              target: /var/www/composer.lock
+#            - type: bind
+#              source: ./.env
+#              target: /var/www/.env
             - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
-            - ./storage:/var/www/storage
-            - ./config:/var/www/config
-            - ./app:/var/www/app
-            - ./resources:/var/www/resources
-            - ./routes:/var/www/routes
-            - ./database:/var/www/database
-            - ./lang:/var/www/lang
+            - app-storage:/var/www/storage
+            - app-config:/var/www/config
+            - app-app:/var/www/app
+            - app-resources:/var/www/resources
+            - app-routes:/var/www/routes
+            - app-database:/var/www/database
+            - app-lang:/var/www/lang
             - app-vendor:/var/www/vendor
         ports:
             - "6001:6001"

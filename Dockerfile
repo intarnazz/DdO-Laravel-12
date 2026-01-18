@@ -1,7 +1,6 @@
 FROM php:8.5-fpm
 
 RUN apt-get update && apt-get install -y \
-    git unzip curl libpng-dev libjpeg-dev libfreetype6-dev supervisor \
     && docker-php-ext-configure gd \
         --with-freetype=/usr/include/ \
         --with-jpeg=/usr/include/ \
