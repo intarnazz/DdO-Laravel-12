@@ -99,7 +99,8 @@ abstract class BaseModel extends Model
             $query->orderBy('id');
         }
 
-        $query
+        if ($request->header('names') ?? false) $query->whereIn('name', array_filter(array_map('trim', explode(',', $request->header('names')))));
+        else $query
             ->offset($offset)
             ->limit($limit);
 
