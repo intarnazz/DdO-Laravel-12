@@ -156,7 +156,7 @@ class DatabaseSeeder extends Seeder
                     'tag_id' => $i,
                     'variant_id' => $i,
                     'brand_id' => $i,
-                    'name' => $faker->word(),
+                    'name' => $faker->unique()->text(16) . ' / ' . $faker->unique()->text(16),
                     'description' => $faker->text(255),
                     'video_url' => $faker->url(),
                     'price' => $faker->biasedNumberBetween(10000, 50000),

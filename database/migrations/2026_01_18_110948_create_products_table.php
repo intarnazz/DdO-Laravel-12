@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->foreignIdFor(\App\Models\Variant::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Brand::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Image::class)->nullable()->constrained()->onDelete('set null');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('description');
             $table->string('video_url')->nullable();
             $table->integer('views')->default(0);
