@@ -43,6 +43,43 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        Contact::create([
+            'name' => 'phone',
+            'description' => '+79004807844',
+            'link' => '+79004807844',
+            'type' => 'phone',
+        ]);
+
+        Contact::create([
+            'name' => 'address',
+            'description' => 'Ул. Терешковой, 12, Александров',
+            'link' => $faker->url,
+        ]);
+
+        Contact::create([
+            'name' => 'whatsapp',
+            'description' => $faker->text(255),
+            'link' => $faker->url,
+        ]);
+
+        Contact::create([
+            'name' => 'whatsapp',
+            'description' => $faker->text(255),
+            'link' => $faker->url,
+        ]);
+
+        Contact::create([
+            'name' => 'odnoklassniki',
+            'description' => $faker->text(255),
+            'link' => $faker->url,
+        ]);
+
+        Contact::create([
+            'name' => 'vk',
+            'description' => $faker->text(255),
+            'link' => $faker->url,
+        ]);
+
         foreach (range(1, 5) as $i) {
             Vacancy::create([
                 'name' => $faker->word(),

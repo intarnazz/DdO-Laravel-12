@@ -9,5 +9,6 @@ class Contact extends BaseModel
         'name',
         'description',
         'link',
+        'type',
     ];
 }
