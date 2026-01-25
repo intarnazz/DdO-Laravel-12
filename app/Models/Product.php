@@ -29,6 +29,17 @@ class Product extends BaseModel
         'images',
     ];
 
+    #[\NoDiscard("The name must not be discarded")]
+    protected static function filter($query, $filters)
+    {
+        if (isset($filters->type)) $query->where('type_id', $filters->type);
+        if (isset($filters->tag)) $query->where('tag_id', $filters->tag);
+        if (isset($filters->variant)) $query->where('variant_id', $filters->variant);
+        if (isset($filters->brand)) $query->where('brand_id', $filters->brand);
+
+        return $query;
+    }
+
     public function images(): BelongsToMany
     {
         return $this->belongsToMany(Image::class, 'galleries', 'product_id', 'image_id');

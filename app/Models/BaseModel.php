@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Psy\Util\Json;
 
 /**
  * @method static Builder where(string $column, mixed $operator = null, mixed $value = null, string $boolean = 'and')
@@ -53,6 +54,12 @@ abstract class BaseModel extends Model
         return $data;
     }
 
+    #[\NoDiscard("The name must not be discarded")]
+    protected static function filter($query, $filters)
+    {
+        return $query;
+    }
+
     /**
      * Базовая пагинация по заданному условию.
      *
@@ -76,6 +83,11 @@ abstract class BaseModel extends Model
         $offset = (int)($request->header('offset') ?? 0);
 
         $query = static::query();
+
+        if ($request->header('filters')) {
+            $filters = json_decode($request->header('filters'));
+            $query = static::filter($query, $filters);
+        }
 
         /** @var User|null $user */
         $user = auth()->user();
