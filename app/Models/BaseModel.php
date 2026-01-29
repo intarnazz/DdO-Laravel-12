@@ -34,6 +34,9 @@ abstract class BaseModel extends Model
      */
     protected static bool $isTree = false;
 
+
+    protected static bool $loading_content = false;
+
     /**
      * Получение одного объекта модели по его ID.
      * Подгружает связи, указанные в $with_one_only.
@@ -47,6 +50,10 @@ abstract class BaseModel extends Model
     {
         $data = static::with((new static)->with_one_only)->findOrFail($item);
 
+        if (static::$loading_content) {
+            $data->append('content');
+        }
+
         if (static::$isTree) {
             $data->tree = static::where('self_id', $data->id)->get();
         }
@@ -55,7 +62,7 @@ abstract class BaseModel extends Model
     }
 
     #[\NoDiscard("The name must not be discarded")]
-    protected static function filter($query, $filters)
+    protected static function _filter($query, $filters)
     {
         return $query;
     }
@@ -86,7 +93,7 @@ abstract class BaseModel extends Model
 
         if ($request->header('filters')) {
             $filters = json_decode($request->header('filters'));
-            $query = static::filter($query, $filters);
+            $query = static::_filter($query, $filters);
         }
 
         /** @var User|null $user */

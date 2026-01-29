@@ -7,6 +7,8 @@ use App\Models\Characteristic;
 use App\Models\Contact;
 use App\Models\Documentation;
 use App\Models\Filter;
+use App\Models\FilterBrand;
+use App\Models\FilterCharacteristic;
 use App\Models\Gallery;
 use App\Models\Image;
 use App\Models\Option;
@@ -80,6 +82,12 @@ class DatabaseSeeder extends Seeder
             'link' => $faker->url,
         ]);
 
+        $filter_brand = Filter::create([
+            'name' => 'brand',
+            'description' => $faker->text(255),
+            'type' => 'brand',
+        ]);
+
         foreach (range(1, 17) as $i) {
             Vacancy::create([
                 'name' => $faker->word(),
@@ -101,19 +109,14 @@ class DatabaseSeeder extends Seeder
                 'description' => $faker->text(255),
                 'type' => $faker->word(),
             ]);
-            Filter::create([
-                'name' => $faker->word(),
-                'description' => $faker->text(255),
-                'group' => $faker->word(),
-                'value' => $faker->biasedNumberBetween(1, 10),
-                'value_type' => 'id',
+            FilterBrand::create([
+                'filter_id' => $filter_brand->id,
+                'brand_id' => $i,
             ]);
             Filter::create([
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
-                'group' => $faker->word(),
-                'value' => $faker->word(),
-                'value_type' => 'original',
+                'type' => $faker->word(),
             ]);
             Documentation::create([
                 'text_id' => $i,
@@ -149,7 +152,7 @@ class DatabaseSeeder extends Seeder
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
             ]);
-            foreach (range(1, 10) as $j) {
+            foreach (range(1, 10) as $p) {
                 Product::create([
                     'image_id' => $i,
                     'type_id' => $i,
@@ -163,22 +166,23 @@ class DatabaseSeeder extends Seeder
                     'article' => $faker->unique()->word() . '-' . $faker->word(),
                 ]);
                 ProductFilter::create([
-                    'product_id' => $i,
+                    'product_id' => $i * $p,
                     'filter_id' => $i,
                 ]);
                 Characteristic::create([
                     'image_id' => $i,
-                    'product_id' => $i,
+                    'filter_id' => $i,
+                    'product_id' => $i * $p,
                     'name' => $faker->word(),
                     'description' => $faker->text(255),
                 ]);
                 Gallery::create([
                     'image_id' => $i,
-                    'product_id' => $i,
+                    'product_id' => $i * $p,
                 ]);
                 Option::create([
                     'image_id' => $i,
-                    'product_id' => $i,
+                    'product_id' => $i * $p,
                     'price' => $faker->biasedNumberBetween(1000, 20000),
                     'name' => $faker->word(),
                     'description' => $faker->text(255),

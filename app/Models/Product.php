@@ -30,7 +30,7 @@ class Product extends BaseModel
     ];
 
     #[\NoDiscard("The name must not be discarded")]
-    protected static function filter($query, $filters)
+    protected static function _filter($query, $filters)
     {
         if (isset($filters->type)) $query->where('type_id', $filters->type);
         if (isset($filters->tag)) $query->where('tag_id', $filters->tag);

@@ -13,7 +13,12 @@ class Characteristic extends BaseModel
 
     protected $with = ['image'];
 
-    protected array $with_one_only = ['product'];
+    protected array $with_one_only = ['product', 'filter'];
+
+    public function filter(): BelongsTo
+    {
+        return $this->belongsTo(Filter::class);
+    }
 
     public function product(): BelongsTo
     {

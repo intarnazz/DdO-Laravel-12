@@ -14,10 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->string('group');
-            $table->string('value');
-            $table->string('value_type');
-            $table->boolean('is_visible')->default(false);
+            $table->string('type');
             $table->timestamps();
         });
     }
