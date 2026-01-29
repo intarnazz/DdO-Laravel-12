@@ -103,18 +103,25 @@ abstract class BaseModel extends Model
             $query->where('self_id', null);
         }
 
-        $totalCount = $query->count();
-
         if ($orderByDesc !== '') {
             $query->orderByDesc($orderByDesc);
         } else {
             $query->orderBy('id');
         }
 
+        if ($request->header('ignore')) {
+            $ignore = json_decode($request->header('ignore'));
+            $query->whereIn('id', $ignore, not: true);
+
+            $offset = 0;
+        }
+
         if ($request->header('names') ?? false) $query->whereIn('name', array_filter(array_map('trim', explode(',', $request->header('names')))));
         else $query
             ->offset($offset)
             ->limit($limit);
+
+        $totalCount = $query->count();
 
         $data = $query->get();
 
