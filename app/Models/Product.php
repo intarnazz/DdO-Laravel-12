@@ -35,7 +35,7 @@ class Product extends BaseModel
         if (isset($filters->type)) $query->where('type_id', $filters->type);
         if (isset($filters->tag)) $query->where('tag_id', $filters->tag);
         if (isset($filters->variant)) $query->where('variant_id', $filters->variant);
-        if (isset($filters->brand)) $query->where('brand_id', $filters->brand);
+        if (isset($filters->brand)) $query->whereIn('brand_id', array_filter(array_map('trim', explode(',', $filters->brand))));
 
         return $query;
     }
