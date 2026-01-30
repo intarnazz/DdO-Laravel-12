@@ -8,7 +8,6 @@ use App\Models\Contact;
 use App\Models\Documentation;
 use App\Models\Filter;
 use App\Models\FilterBrand;
-use App\Models\FilterCharacteristic;
 use App\Models\Gallery;
 use App\Models\Image;
 use App\Models\Option;
@@ -82,6 +81,12 @@ class DatabaseSeeder extends Seeder
             'link' => $faker->url,
         ]);
 
+        $entrance_doors_type = Type::create([
+            'name' => 'entrance-doors',
+            'visible_name' => 'Входные Двери',
+            'description' => $faker->text(255),
+        ]);
+
         $filter_brand = Filter::create([
             'name' => 'brand',
             'description' => $faker->text(255),
@@ -139,23 +144,23 @@ class DatabaseSeeder extends Seeder
                 'self_id' => $i,
             ]);
             TypeFilter::create([
-                'type_id' => $i,
+                'type_id' => $entrance_doors_type->id,
                 'filter_id' => $i,
             ]);
             Tag::create([
-                'type_id' => $i,
+                'type_id' => $entrance_doors_type->id,
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
             ]);
             Variant::create([
-                'type_id' => $i,
+                'type_id' => $entrance_doors_type->id,
                 'name' => $faker->word(),
                 'description' => $faker->text(255),
             ]);
             foreach (range(1, 10) as $p) {
                 Product::create([
                     'image_id' => $i,
-                    'type_id' => $i,
+                    'type_id' => $entrance_doors_type->id,
                     'tag_id' => $i,
                     'variant_id' => $i,
                     'brand_id' => $i,

@@ -6,6 +6,7 @@ class Type extends BaseModel
 {
     protected $fillable = [
         'name',
+        'visible_name',
         'description',
     ];
 

@@ -52,6 +52,7 @@ abstract class BaseModel extends Model
 
         if (static::$loading_content) {
             $data->append('content');
+            $data->hidden[] = 'default_content';
         }
 
         if (static::$isTree) {
