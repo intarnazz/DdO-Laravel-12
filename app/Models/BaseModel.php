@@ -35,8 +35,6 @@ abstract class BaseModel extends Model
     protected static bool $isTree = false;
 
 
-    protected static bool $loading_content = false;
-
     /**
      * Получение одного объекта модели по его ID.
      * Подгружает связи, указанные в $with_one_only.
@@ -49,11 +47,6 @@ abstract class BaseModel extends Model
     public static function getOne(int $item): Model
     {
         $data = static::with((new static)->with_one_only)->findOrFail($item);
-
-        if (static::$loading_content) {
-            $data->append('content');
-            $data->hidden[] = 'default_content';
-        }
 
         if (static::$isTree) {
             $data->tree = static::where('self_id', $data->id)->get();

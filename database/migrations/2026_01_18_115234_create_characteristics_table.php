@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->foreignIdFor(\App\Models\Image::class)->nullable()->constrained()->onDelete('set null');
             $table->string('name');
             $table->string('description');
-//            $table->boolean('is_chosen')->default(false);
+            $table->boolean('is_visible')->default(false);
             $table->timestamps();
         });
     }

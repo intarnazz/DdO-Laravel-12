@@ -21,9 +21,7 @@ class Filter extends BaseModel
 
 //    protected array $with_one_only = ['types', 'products'];
 
-    protected static bool $loading_content = true;
-
-    protected $appends = ['default_content'];
+    protected $appends = ['content'];
 
     protected function content(): Attribute
     {
@@ -32,24 +30,6 @@ class Filter extends BaseModel
                 return match ($this->type) {
                     'brand' => $this->brands()->get(),
                     default => $this->characteristics()->get(),
-                };
-            }
-        );
-    }
-
-    protected function defaultContent(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                return match ($this->type) {
-                    'brand' => $this->brands()
-                        ->offset(0)
-                        ->limit(4)
-                        ->get(),
-                    default => $this->characteristics()
-                        ->offset(0)
-                        ->limit(4)
-                        ->get(),
                 };
             }
         );
