@@ -14,10 +14,16 @@ class Filter extends BaseModel
         'type',
     ];
 
-    protected $hidden = [
-        'brands',
-        'characteristics',
-    ];
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->hidden = array_merge($this->hidden, [
+            'brands',
+            'characteristics',
+        ]);
+
+    }
 
 //    protected array $with_one_only = ['types', 'products'];
 

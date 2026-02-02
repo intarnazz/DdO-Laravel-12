@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use App\Http\Requests\ImageRequest;
-use Illuminate\Database\Eloquent\Model;
 
-class Image extends Model
+class Image extends BaseModel
 {
     protected $guarded = ['id'];
 

@@ -16,6 +16,8 @@ abstract class BaseModel extends Model
 {
     protected $guarded = ['id'];
 
+    protected $hidden = ['created_at', 'updated_at', 'pivot'];
+
     /**
      * Список связей для "одиночного" eager loading.
      * Используется только при get-запросе конкретного элемента по id.
