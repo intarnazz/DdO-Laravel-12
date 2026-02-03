@@ -90,7 +90,7 @@ class DatabaseSeeder extends Seeder
         $filter_brand = Filter::create([
             'name' => 'brand',
             'description' => $faker->text(255),
-            'type' => 'brand',
+            'type' => 'brand'
         ]);
 
         foreach (range(1, 17) as $i) {
@@ -118,10 +118,13 @@ class DatabaseSeeder extends Seeder
                 'filter_id' => $filter_brand->id,
                 'brand_id' => $i,
             ]);
+
+            $name = $faker->unique()->word();
+
             Filter::create([
-                'name' => $faker->word(),
+                'name' => $name,
                 'description' => $faker->text(255),
-                'type' => $faker->word(),
+                'type' => $name,
             ]);
             Documentation::create([
                 'text_id' => $i,
@@ -164,11 +167,11 @@ class DatabaseSeeder extends Seeder
                     'tag_id' => $i,
                     'variant_id' => $i,
                     'brand_id' => $i,
-                    'name' => $faker->unique()->text(16) . ' / ' . $faker->unique()->text(16),
+                    'name' => $faker->text(16) . ' / ' . $faker->text(16),
                     'description' => $faker->text(255),
                     'video_url' => $faker->url(),
                     'price' => $faker->biasedNumberBetween(10000, 50000),
-                    'article' => $faker->unique()->word() . '-' . $faker->word(),
+                    'article' => $faker->word() . '-' . $faker->word(),
                 ]);
                 ProductFilter::create([
                     'product_id' => $i * $p,

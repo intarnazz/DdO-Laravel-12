@@ -17,13 +17,13 @@ return new class extends Migration {
             $table->foreignIdFor(\App\Models\Variant::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Brand::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Image::class)->nullable()->constrained()->onDelete('set null');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('description');
             $table->string('video_url')->nullable();
             $table->integer('views')->default(0);
             $table->integer('price');
             $table->float('discount')->default(1);
-            $table->string('article')->unique();
+            $table->string('article');
             $table->boolean('is_stock')->default(false);
             $table->boolean('is_in_store')->default(false);
             $table->timestamps();

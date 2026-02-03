@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends BaseModel
 {
@@ -18,6 +18,7 @@ class Product extends BaseModel
 
     protected $with = [
         'image',
+        'characteristics',
     ];
 
     protected array $with_one_only = [
@@ -32,12 +33,31 @@ class Product extends BaseModel
     #[\NoDiscard("The name must not be discarded")]
     protected static function _filter($query, $filters)
     {
-        if (isset($filters->type)) $query->where('type_id', $filters->type);
-        if (isset($filters->tag)) $query->where('tag_id', $filters->tag);
-        if (isset($filters->variant)) $query->where('variant_id', $filters->variant);
-        if (isset($filters->brand)) $query->whereIn('brand_id', array_filter(array_map('trim', explode(',', $filters->brand))));
+        foreach ($filters as $key => $filter) {
+            if ($filter === null || $filter === '') {
+                continue;
+            }
 
+            if ($key === 'type') $query->where('type_id', $filter);
+            elseif ($key === 'tag') $query->where('tag_id', $filter);
+            elseif ($key === 'variant') $query->where('variant_id', $filter);
+            elseif ($key === 'brand') $query->whereIn('brand_id', array_filter(array_map('trim', explode(',', $filter))));
+            else {
+
+                $f = Filter::where('type', $key)->first();
+
+                $query->whereHas('characteristics', function ($q) use ($f, $filter) {
+                    $q->where('filter_id', $f->id)
+                        ->whereIn('id', array_filter(array_map('trim', explode(',', $filter))));
+                });
+            }
+        }
         return $query;
+    }
+
+    public function characteristics(): HasMany
+    {
+        return $this->hasMany(Characteristic::class);
     }
 
     public function images(): BelongsToMany
