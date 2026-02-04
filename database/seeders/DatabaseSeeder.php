@@ -12,7 +12,7 @@ use App\Models\Gallery;
 use App\Models\Image;
 use App\Models\Option;
 use App\Models\Product;
-use App\Models\ProductFilter;
+use App\Models\ProductCharacteristic;
 use App\Models\Tag;
 use App\Models\Text;
 use App\Models\Type;
@@ -161,7 +161,7 @@ class DatabaseSeeder extends Seeder
                 'description' => $faker->text(255),
             ]);
             foreach (range(1, 10) as $p) {
-                Product::create([
+                $product = Product::create([
                     'image_id' => $i,
                     'type_id' => $entrance_doors_type->id,
                     'tag_id' => $i,
@@ -173,29 +173,49 @@ class DatabaseSeeder extends Seeder
                     'price' => $faker->biasedNumberBetween(10000, 50000),
                     'article' => $faker->word() . '-' . $faker->word(),
                 ]);
-                ProductFilter::create([
-                    'product_id' => $i * $p,
-                    'filter_id' => $i,
-                ]);
                 Characteristic::create([
                     'image_id' => $i,
                     'filter_id' => $i,
-                    'product_id' => $i * $p,
                     'name' => $faker->word(),
                     'description' => $faker->text(255),
                 ]);
                 Gallery::create([
                     'image_id' => $i,
-                    'product_id' => $i * $p,
+                    'product_id' => $product->id,
                 ]);
                 Option::create([
                     'image_id' => $i,
-                    'product_id' => $i * $p,
+                    'product_id' => $product->id,
                     'price' => $faker->biasedNumberBetween(1000, 20000),
                     'name' => $faker->word(),
                     'description' => $faker->text(255),
                 ]);
             }
         }
+        $productsCount = 170;
+        $filtersCount = 17;
+        $characteristicsPerFilter = 10;
+
+        for ($productId = 1; $productId <= $productsCount; $productId++) {
+
+            for ($filterIndex = 0; $filterIndex < $filtersCount; $filterIndex++) {
+
+                // начало диапазона characteristic_id для фильтра
+                $filterStartCharacteristicId =
+                    $filterIndex * $characteristicsPerFilter + 1;
+
+                // индекс характеристики (0–9), каждая на 17 продуктов
+                $characteristicOffset = intdiv($productId - 1, 17);
+
+                $characteristicId =
+                    $filterStartCharacteristicId + $characteristicOffset;
+
+                ProductCharacteristic::create([
+                    'product_id' => $productId,
+                    'characteristic_id' => $characteristicId,
+                ]);
+            }
+        }
+
     }
 }

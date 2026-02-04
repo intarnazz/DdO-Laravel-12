@@ -18,7 +18,6 @@ class Product extends BaseModel
 
     protected $with = [
         'image',
-        'characteristics',
     ];
 
     protected array $with_one_only = [
@@ -26,8 +25,8 @@ class Product extends BaseModel
         'tag',
         'variant',
         'brand',
-        'filters',
         'images',
+        'characteristics',
     ];
 
     #[\NoDiscard("The name must not be discarded")]
@@ -43,31 +42,22 @@ class Product extends BaseModel
             elseif ($key === 'variant') $query->where('variant_id', $filter);
             elseif ($key === 'brand') $query->whereIn('brand_id', array_filter(array_map('trim', explode(',', $filter))));
             else {
-
-                $f = Filter::where('type', $key)->first();
-
-                $query->whereHas('characteristics', function ($q) use ($f, $filter) {
-                    $q->where('filter_id', $f->id)
-                        ->whereIn('id', array_filter(array_map('trim', explode(',', $filter))));
+                $query->whereHas('characteristics', function ($q) use ($filter) {
+                    $q->whereIn('characteristics.id', array_filter(array_map('trim', explode(',', $filter))));
                 });
             }
         }
         return $query;
     }
 
-    public function characteristics(): HasMany
+    public function characteristics(): BelongsToMany
     {
-        return $this->hasMany(Characteristic::class);
+        return $this->belongsToMany(Characteristic::class, 'product_characteristics', 'product_id', 'characteristic_id');
     }
 
     public function images(): BelongsToMany
     {
         return $this->belongsToMany(Image::class, 'galleries', 'product_id', 'image_id');
-    }
-
-    public function filters(): BelongsToMany
-    {
-        return $this->belongsToMany(Filter::class, 'product_filters', 'product_id', 'filter_id');
     }
 
     public function type(): BelongsTo

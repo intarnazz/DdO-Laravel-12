@@ -12,7 +12,6 @@ return new class extends Migration {
     {
         Schema::create('characteristics', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Product::class)->constrained()->cascadeOnDelete();  // delete
             $table->foreignIdFor(\App\Models\Filter::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Image::class)->nullable()->constrained()->onDelete('set null');
             $table->string('name');

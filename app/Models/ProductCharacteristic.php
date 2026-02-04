@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductFilter extends Model
+class ProductCharacteristic extends Model
 {
     //
 }

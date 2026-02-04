@@ -25,7 +25,7 @@ class Filter extends BaseModel
 
     }
 
-//    protected array $with_one_only = ['types', 'products'];
+//    protected array $with_one_only = ['types'];
 
     protected $appends = ['content'];
 
@@ -49,11 +49,6 @@ class Filter extends BaseModel
     public function characteristics(): HasMany
     {
         return $this->hasMany(Characteristic::class);
-    }
-
-    public function products(): BelongsToMany
-    {
-        return $this->belongsToMany(Product::class, 'product_filters', 'filter_id', 'product_id');
     }
 
     public function types(): BelongsToMany
