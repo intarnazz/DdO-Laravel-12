@@ -106,10 +106,16 @@ abstract class BaseModel extends Model
             $query->where('self_id', null);
         }
 
-        if ($orderByDesc !== '') {
-            $query->orderByDesc($orderByDesc);
+        $order = ($request->header('order') ?? '');
+        $desc = ($request->header('desc') ?? '');
+        if ($order != '') {
+            $desc == 'desc' ? $query->orderByDesc($order) : $query->orderBy($order);
         } else {
-            $query->orderBy('id');
+            if ($orderByDesc !== '') {
+                $query->orderByDesc($orderByDesc);
+            } else {
+                $query->orderBy('id');
+            }
         }
 
         if ($request->header('ignore')) {
