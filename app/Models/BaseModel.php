@@ -18,6 +18,8 @@ abstract class BaseModel extends Model
 
     protected $hidden = ['created_at', 'updated_at', 'pivot'];
 
+    protected static array $sortable = [];
+
     /**
      * Список связей для "одиночного" eager loading.
      * Используется только при get-запросе конкретного элемента по id.
@@ -106,10 +108,15 @@ abstract class BaseModel extends Model
             $query->where('self_id', null);
         }
 
+
         $order = ($request->header('order') ?? '');
         $desc = ($request->header('desc') ?? '');
         if ($order != '') {
-            $desc == 'desc' ? $query->orderByDesc($order) : $query->orderBy($order);
+            if (
+                static::$sortable && in_array($order, static::$sortable)
+            ) {
+                $desc == 'desc' ? $query->orderByDesc($order) : $query->orderBy($order);
+            }
         } else {
             if ($orderByDesc !== '') {
                 $query->orderByDesc($orderByDesc);

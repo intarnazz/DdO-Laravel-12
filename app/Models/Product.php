@@ -29,6 +29,11 @@ class Product extends BaseModel
         'characteristics',
     ];
 
+    protected static array $sortable = [
+        'variant_id'
+    ];
+
+
     #[\NoDiscard("The name must not be discarded")]
     protected static function _filter($query, $filters)
     {
