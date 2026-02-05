@@ -30,7 +30,11 @@ class Product extends BaseModel
     ];
 
     protected static array $sortable = [
-        'variant_id'
+        'variant_id',
+        'updated_at',
+        'price',
+        'views',
+        'discount',
     ];
 
 
