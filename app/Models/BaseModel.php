@@ -109,14 +109,13 @@ abstract class BaseModel extends Model
         }
 
 
-        if ($request->header('order')) {
-            $orders = json_decode($request->header('order'));
-            foreach ($orders as $order => $desc) {
-                if (
-                    static::$sortable && in_array($order, static::$sortable)
-                ) {
-                    $desc == 'desc' ? $query->orderByDesc($order) : $query->orderBy($order);
-                }
+        $order = ($request->header('order') ?? '');
+        $desc = ($request->header('desc') ?? '');
+        if ($order != '') {
+            if (
+                static::$sortable && in_array($order, static::$sortable)
+            ) {
+                $desc == 'desc' ? $query->orderByDesc($order) : $query->orderBy($order);
             }
         } else {
             if ($orderByDesc !== '') {
