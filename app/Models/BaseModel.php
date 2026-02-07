@@ -65,6 +65,12 @@ abstract class BaseModel extends Model
         return $query;
     }
 
+
+    protected static function _meta()
+    {
+        return null;
+    }
+
     /**
      * Базовая пагинация по заданному условию.
      *
@@ -140,9 +146,11 @@ abstract class BaseModel extends Model
         $totalCount = $query->count();
 
         $data = $query->get();
+        $meta = static::_meta();
 
         return [
             'data' => $data,
+            'meta' => $meta,
             'pagingInfo' => [
                 'limit' => $data->count(),
                 'offset' => $offset,

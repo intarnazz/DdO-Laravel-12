@@ -14,7 +14,7 @@ class PaginResponse extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $res = [
             'success' => true,
             'message' => 'success',
             'data' => $this->resource ? $this->resource['data'] : '',
@@ -22,7 +22,13 @@ class PaginResponse extends JsonResource
                 'limit' => $this->resource['pagingInfo']['limit'],
                 'offset' => $this->resource['pagingInfo']['offset'],
                 'totalCount' => $this->resource['pagingInfo']['totalCount'],
-            ],
+            ]
         ];
+
+        if ($this->resource['meta']) {
+            $res['meta'] = $this->resource['meta'];
+        }
+
+        return $res;
     }
 }
