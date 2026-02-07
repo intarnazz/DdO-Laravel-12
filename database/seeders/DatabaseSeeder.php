@@ -87,6 +87,34 @@ class DatabaseSeeder extends Seeder
             'description' => $faker->text(255),
         ]);
 
+        $filter_color = Filter::create([
+            'name' => 'color',
+            'description' => $faker->text(255),
+            'type' => 'color'
+        ]);
+
+        $colors = [
+            'F5F5F5',
+            'FFFCD6',
+            'D59057',
+            '94471E',
+            '75300B',
+            '929492',
+            '35170C',
+            '000000',
+            '000000',
+            '000000',
+        ];
+
+        foreach (range(1, 10) as $i) {
+            Characteristic::create([
+                'image_id' => $i,
+                'filter_id' => $filter_color->id,
+                'name' => $colors[$i - 1],
+                'description' => $faker->text(255),
+            ]);
+        }
+
         $filter_brand = Filter::create([
             'name' => 'brand',
             'description' => $faker->text(255),
@@ -173,12 +201,14 @@ class DatabaseSeeder extends Seeder
                     'price' => $faker->biasedNumberBetween(10000, 50000),
                     'article' => $faker->word() . '-' . $faker->word(),
                 ]);
-                Characteristic::create([
-                    'image_id' => $i,
-                    'filter_id' => $i,
-                    'name' => $faker->word(),
-                    'description' => $faker->text(255),
-                ]);
+                if ($i > 1) {
+                    Characteristic::create([
+                        'image_id' => $i,
+                        'filter_id' => $i,
+                        'name' => $faker->word(),
+                        'description' => $faker->text(255),
+                    ]);
+                }
                 Gallery::create([
                     'image_id' => $i,
                     'product_id' => $product->id,
