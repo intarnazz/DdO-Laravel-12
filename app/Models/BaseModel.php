@@ -92,7 +92,6 @@ abstract class BaseModel extends Model
     {
         $limit = (int)($request->header('limit') ?? 3);
         $offset = (int)($request->header('offset') ?? 0);
-
         $query = static::query();
 
         if ($request->header('filters')) {
@@ -138,12 +137,12 @@ abstract class BaseModel extends Model
             $offset = 0;
         }
 
+        $totalCount = $query->count();
+
         if ($request->header('names') ?? false) $query->whereIn('name', array_filter(array_map('trim', explode(',', $request->header('names')))));
         else $query
             ->offset($offset)
             ->limit($limit);
-
-        $totalCount = $query->count();
 
         $data = $query->get();
         $meta = static::_meta();
