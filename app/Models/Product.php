@@ -2,21 +2,23 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Laravel\Scout\Searchable;
 
 /**
- * Product model representing a product entity in the database.
+ * Модель Product, представляющая сущность продукта в базе данных.
  *
- * This model extends BaseModel and defines relationships, fillable attributes,
- * and custom filtering logic for products.
+ * Эта модель расширяет BaseModel и определяет отношения, заполняемые атрибуты,
+ * а также логику кастомной фильтрации для продуктов.
  *
- * @property string $name The name of the product.
- * @property string $description The description of the product.
- * @property string|null $video_url The URL to a video related to the product.
- * @property float $price The price of the product.
- * @property string $article The article or SKU of the product.
+ * @property string $name Название продукта.
+ * @property string $description Описание продукта.
+ * @property string|null $video_url URL видео, связанного с продуктом.
+ * @property float $price Цена продукта.
+ * @property string $article Артикул или SKU продукта.
  * @property-read Collection|Characteristic[] $characteristics
  * @property-read Collection|Image[] $images
  * @property-read Type|null $type
@@ -27,8 +29,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Product extends BaseModel
 {
+    use Searchable;
+
     /**
-     * The attributes that are mass assignable.
+     * Атрибуты, которые могут быть массово присвоены.
      *
      * @var array<int, string>
      */
@@ -41,7 +45,7 @@ class Product extends BaseModel
     ];
 
     /**
-     * The relations to eager load on every query.
+     * Отношения, которые загружаются жадно при каждом запросе.
      *
      * @var array<int, string>
      */
@@ -50,7 +54,7 @@ class Product extends BaseModel
     ];
 
     /**
-     * Relations to load only once.
+     * Отношения, которые загружаются только один раз.
      *
      * @var array<int, string>
      */
@@ -64,7 +68,7 @@ class Product extends BaseModel
     ];
 
     /**
-     * Sortable attributes for the model.
+     * Сортируемые атрибуты модели.
      *
      * @var array<int, string>
      */
@@ -77,7 +81,7 @@ class Product extends BaseModel
     ];
 
     /**
-     * Retrieves metadata about the minimum and maximum price values.
+     * Получает метаданные о минимальном и максимальном значениях цены.
      *
      * @return array<string, array<string, float|null>>
      */
@@ -114,7 +118,41 @@ class Product extends BaseModel
     }
 
     /**
-     * Defines the many-to-many relationship with characteristics.
+     * Применяет фильтрацию поиска и сортировку по релевантности с использованием Laravel Scout.
+     *
+     * Этот метод принимает конструктор запроса Eloquent и строку поиска,
+     * использует Scout для поиска соответствующих ID, отсортированных по релевантности,
+     * и модифицирует запрос для фильтрации и сортировки соответственно.
+     *
+     * @param Builder $query Конструктор запроса Eloquent для модификации.
+     * @param string $search Строка поискового запроса.
+     * @return Builder Модифицированный конструктор запроса.
+     */
+    #[\NoDiscard("The name must not be discarded")]
+    protected static function _search(Builder $query, string $search): Builder
+    {
+        $ids = self::search($search)->keys();
+
+        if (empty($ids)) return $query;
+
+        return $query->whereIn('id', $ids);
+    }
+
+    /**
+     * Получает индексируемый массив данных для модели.
+     *
+     * @return array
+     */
+    public function toSearchableArray(): array
+    {
+        return $this->only([
+            'name',
+            'article',
+        ]);
+    }
+
+    /**
+     * Определяет отношение многие-ко-многим с характеристиками.
      *
      * @return BelongsToMany
      */
@@ -124,7 +162,7 @@ class Product extends BaseModel
     }
 
     /**
-     * Defines the many-to-many relationship with images.
+     * Определяет отношение многие-ко-многим с изображениями.
      *
      * @return BelongsToMany
      */
@@ -134,7 +172,7 @@ class Product extends BaseModel
     }
 
     /**
-     * Defines the belongs-to relationship with type.
+     * Определяет отношение принадлежит-к с типом.
      *
      * @return BelongsTo
      */
@@ -144,7 +182,7 @@ class Product extends BaseModel
     }
 
     /**
-     * Defines the belongs-to relationship with tag.
+     * Определяет отношение принадлежит-к с тегом.
      *
      * @return BelongsTo
      */
@@ -154,7 +192,7 @@ class Product extends BaseModel
     }
 
     /**
-     * Defines the belongs-to relationship with variant.
+     * Определяет отношение принадлежит-к с вариантом.
      *
      * @return BelongsTo
      */
@@ -164,7 +202,7 @@ class Product extends BaseModel
     }
 
     /**
-     * Defines the belongs-to relationship with brand.
+     * Определяет отношение принадлежит-к с брендом.
      *
      * @return BelongsTo
      */
@@ -174,7 +212,7 @@ class Product extends BaseModel
     }
 
     /**
-     * Defines the belongs-to relationship with image.
+     * Определяет отношение принадлежит-к с изображением.
      *
      * @return BelongsTo
      */
