@@ -152,6 +152,7 @@ abstract class BaseModel extends Model
 
         $search = $request->header('search');
         if ($search) {
+            $search = base64_decode($search);
             $query = static::_search($query, $search);
         }
 
