@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             Image::create([
                 'name' => pathinfo($file, PATHINFO_FILENAME),
                 'path' => $file,
+                'second_path' => $file,
             ]);
         }
 
