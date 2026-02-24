@@ -51,6 +51,7 @@ class Product extends BaseModel
      */
     protected $with = [
         'image',
+        'variant',
     ];
 
     /**
@@ -61,7 +62,6 @@ class Product extends BaseModel
     protected array $with_one_only = [
         'type',
         'tag',
-        'variant',
         'brand',
         'images',
         'characteristics',
