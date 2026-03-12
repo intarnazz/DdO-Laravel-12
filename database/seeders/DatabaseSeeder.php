@@ -201,6 +201,8 @@ class DatabaseSeeder extends Seeder
                     'video_url' => $faker->url(),
                     'price' => $faker->biasedNumberBetween(10000, 50000),
                     'article' => $faker->word() . '-' . $faker->word(),
+                    'is_stock' => true,
+                    'is_in_store' => $faker->boolean(),
                 ]);
                 if ($i > 1) {
                     Characteristic::create([
