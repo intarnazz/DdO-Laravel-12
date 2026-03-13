@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 class Filter extends BaseModel
 {
@@ -14,31 +15,25 @@ class Filter extends BaseModel
         'type',
     ];
 
-    public function __construct(array $attributes = [])
+    public function __construct()
     {
-        parent::__construct($attributes);
+        parent::__construct();
 
         $this->hidden = array_merge($this->hidden, [
             'brands',
             'characteristics',
         ]);
-
     }
 
 //    protected array $with_one_only = ['types'];
 
-    protected $appends = ['content'];
-
-    protected function content(): Attribute
+    public function content()
     {
-        return Attribute::make(
-            get: function () {
-                return match ($this->type) {
-                    'brand' => $this->brands()->get(),
-                    default => $this->characteristics()->get(),
-                };
-            }
-        );
+        return $this->content = match ($this->type) {
+            'brand' => $this->brands()->get(),
+            default => $this->characteristics()->get(),
+        };
+
     }
 
     public function brands(): BelongsToMany

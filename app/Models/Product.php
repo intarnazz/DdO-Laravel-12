@@ -64,7 +64,7 @@ class Product extends BaseModel
         'tag',
         'brand',
         'images',
-        'characteristics',
+        'characteristics.filter',
     ];
 
     /**

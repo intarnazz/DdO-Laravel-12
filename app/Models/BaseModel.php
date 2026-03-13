@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Psy\Util\Json;
 
 /**
  * Базовая абстрактная модель, расширяющая Eloquent Model.
@@ -62,6 +61,53 @@ abstract class BaseModel extends Model
      */
     protected static bool $isTree = false;
 
+
+    /**
+     * Возвращает коллекцию данных ответа.
+     *
+     * @param Model | Collection $data Коллекция данных для обработки
+     * @return Model | Collection Исходная коллекция данных
+     */
+    #[\NoDiscard("The name must not be discarded")]
+    protected static function _response_data(Model|Collection $data): Model|Collection
+    {
+        return $data;
+    }
+
+
+    /**
+     * Формирует стандартизированный ответ API с данными и информацией о пагинации.
+     *
+     * @param Model | Collection $data Коллекция элементов текущей страницы
+     * @param mixed $meta Дополнительные метаданные ответа
+     * @param int $offset Смещение от начала набора данных
+     * @param int $totalCount Общее количество записей
+     *
+     * @return array{
+     *     data: Model | Collection,
+     *     meta: mixed,
+     *     pagingInfo: array{
+     *         limit: int,
+     *         offset: int,
+     *         totalCount: int
+     *     }
+     * }
+     */
+    #[\NoDiscard("The name must not be discarded")]
+    private static function _response(Model|Collection $data, mixed $meta, int $offset, int $totalCount): array
+    {
+        $data = static::_response_data($data);
+        return [
+            'data' => $data,
+            'meta' => $meta,
+            'pagingInfo' => [
+                'limit' => $data->count(),
+                'offset' => $offset,
+                'totalCount' => $totalCount,
+            ]
+        ];
+    }
+
     /**
      * Получение одного объекта модели по его ID.
      * Подгружает связи, указанные в $with_one_only.
@@ -79,7 +125,7 @@ abstract class BaseModel extends Model
             $data->tree = static::where('self_id', $data->id)->get();
         }
 
-        return $data;
+        return static::_response_data($data);
     }
 
     /**
@@ -208,14 +254,11 @@ abstract class BaseModel extends Model
         $data = $query->get();
         $meta = static::_meta();
 
-        return [
-            'data' => $data,
-            'meta' => $meta,
-            'pagingInfo' => [
-                'limit' => $data->count(),
-                'offset' => $offset,
-                'totalCount' => $totalCount,
-            ]
-        ];
+        return static::_response(
+            data: $data,
+            meta: $meta,
+            offset: $offset,
+            totalCount: $totalCount,
+        );
     }
 }
