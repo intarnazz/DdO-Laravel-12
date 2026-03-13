@@ -107,6 +107,8 @@ class DatabaseSeeder extends Seeder
             '000000',
         ];
 
+        $products = [];
+
         foreach (range(1, 10) as $i) {
             Characteristic::create([
                 'image_id' => $i,
@@ -204,6 +206,7 @@ class DatabaseSeeder extends Seeder
                     'is_stock' => true,
                     'is_in_store' => $faker->boolean(),
                 ]);
+                $products[] = $product;
                 if ($i > 1) {
                     Characteristic::create([
                         'image_id' => $i,
@@ -246,6 +249,51 @@ class DatabaseSeeder extends Seeder
                 ProductCharacteristic::create([
                     'product_id' => $productId,
                     'characteristic_id' => $characteristicId,
+                ]);
+            }
+        }
+
+        $filter_size = Filter::create([
+            'name' => 'size',
+            'description' => $faker->text(255),
+            'type' => 'size'
+        ]);
+
+        TypeFilter::create([
+            'type_id' => $entrance_doors_type->id,
+            'filter_id' => $filter_size->id,
+        ]);
+
+        $sizes = [
+            '960×2050',
+            '960×2050',
+            '960×2050',
+            '960×2050',
+            '960×2050',
+            '960×2050',
+            '960×2050',
+            '960×2050',
+            '960×2050',
+            '960×2050',
+        ];
+
+        $characteristic_sizes = [];
+
+        foreach (range(1, 10) as $i) {
+            $characteristic_size = Characteristic::create([
+                'image_id' => $i,
+                'filter_id' => $filter_size->id,
+                'name' => $sizes[$i - 1],
+                'description' => $faker->text(255),
+            ]);
+            $characteristic_sizes[] = $characteristic_size;
+        }
+
+        foreach ($products as $product) {
+            foreach ($characteristic_sizes as $characteristic_size) {
+                ProductCharacteristic::create([
+                    'product_id' => $product->id,
+                    'characteristic_id' => $characteristic_size->id,
                 ]);
             }
         }

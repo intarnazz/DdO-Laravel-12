@@ -33,7 +33,6 @@ class Filter extends BaseModel
             'brand' => $this->brands()->get(),
             default => $this->characteristics()->get(),
         };
-
     }
 
     public function brands(): BelongsToMany
