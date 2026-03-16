@@ -203,6 +203,7 @@ class DatabaseSeeder extends Seeder
                     'video_url' => $faker->url(),
                     'price' => $faker->biasedNumberBetween(10000, 50000),
                     'article' => $faker->word() . '-' . $faker->word(),
+                    'products.discount' => $faker->boolean(33) ? $faker->biasedNumberBetween(0, 100) : 0,
                     'is_stock' => true,
                     'is_in_store' => $faker->boolean(),
                 ]);

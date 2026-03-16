@@ -42,6 +42,7 @@ class Product extends BaseModel
         'video_url',
         'price',
         'article',
+        'discount',
     ];
 
     /**

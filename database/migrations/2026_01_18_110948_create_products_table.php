@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->string('video_url')->nullable();
             $table->integer('views')->default(0);
             $table->integer('price');
-            $table->float('discount')->default(1);
+            $table->tinyInteger('discount')->unsigned()->default(0);
             $table->string('article');
             $table->boolean('is_stock')->default(false);
             $table->boolean('is_in_store')->default(false);
