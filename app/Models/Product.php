@@ -109,7 +109,7 @@ class Product extends BaseModel
             elseif ($key === 'variant') $query->where('variant_id', $filter);
             elseif ($key === 'brand') $query->whereIn('brand_id', array_filter(array_map('trim', explode(',', $filter))));
             elseif ($key === 'price-max') $query->where('price', '<=', $filter);
-            else {
+            elseif (Filter::where('name', $key)->exists()) {
                 $query->whereHas('characteristics', function ($q) use ($filter) {
                     $q->whereIn('characteristics.id', array_filter(array_map('trim', explode(',', $filter))));
                 });
