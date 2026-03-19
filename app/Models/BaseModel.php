@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Requests\PaginationRequest;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -133,11 +134,11 @@ abstract class BaseModel extends Model
      * Может быть переопределен в дочерних классах для реализации специфической фильтрации.
      *
      * @param Builder $query Конструктор запроса Eloquent.
-     * @param mixed $filters Фильтры, полученные из запроса (обычно JSON-декодированные).
+     * @param Request $request Фильтры, полученные из запроса (обычно JSON-декодированные).
      * @return Builder Модифицированный конструктор запроса.
      */
     #[\NoDiscard("The name must not be discarded")]
-    protected static function _filter($query, $filters)
+    protected static function _filter($query, $request)
     {
         return $query;
     }
@@ -171,14 +172,58 @@ abstract class BaseModel extends Model
     }
 
     /**
+     * Преобразует строку с разделителями-запятыми в очищенный массив.
+     *
+     * Разбивает строку по запятым, удаляет пробелы по краям каждого элемента
+     * и отфильтровывает пустые значения. Результат не должен быть проигнорирован:
+     * возвращаемый массив содержит значимые данные.
+     *
+     * @param string $string Входная строка вида "foo, bar, baz"
+     *
+     * @return array Массив непустых, обрезанных строк
+     *
+     * @example
+     * self::stringToArray('apple, , banana, cherry')
+     * // => ['apple', 'banana', 'cherry']
+     */
+    #[\NoDiscard("The name must not be discarded")]
+    protected static function stringToArray(string $string): array
+    {
+        return explode(',', $string)
+                |> (fn($x) => array_map('trim', $x))
+                |> (fn($x) => array_filter($x));
+    }
+
+    /**
+     * Применяет сортировку к запросу на основе указанного поля и направления.
+     *
+     * Если переданное поле присутствует в списке разрешённых для сортировки полей
+     * {@see static::$sortable}, выполняется сортировка по нему в указанном направлении.
+     * В противном случае применяется сортировка по убыванию поля `updated_at`.
+     *
+     * @param Builder $query Экземпляр построителя запросов Eloquent.
+     * @param string $order Название поля, по которому выполняется сортировка.
+     * @param bool $desc Направление сортировки: {@see true} — по убыванию, {@see false} — по возрастанию.
+     *
+     * @return Builder Построитель запросов с применённой сортировкой.
+     *
+     * @see static::$sortable Список допустимых полей для сортировки.
+     */
+    #[\NoDiscard("The name must not be discarded")]
+    protected static function _orderBy(Builder $query, string $order, bool $desc): Builder
+    {
+        if (in_array($order, static::$sortable)) return $query->orderBy($order, $desc ? 'desc' : 'asc');
+        else return $query->orderByDesc('updated_at');
+
+    }
+
+    /**
      * Базовая пагинация по заданному условию.
      *
      * Метод обрабатывает пагинацию, фильтрацию, поиск и сортировку на основе параметров HTTP-запроса.
      * Поддерживает фильтры, поиск, игнорирование ID, сортировку и метаданные.
      *
-     * @param Request $request HTTP-запрос, из которого берутся limit, offset, search, filters и другие параметры.
-     * @param array<string, mixed> $where Условия фильтрации (может быть пустым).
-     * @param string $orderByDesc Название поля, по которому будет происходить сортировка по убыванию (если указано).
+     * @param PaginationRequest $request HTTP-запрос, из которого берутся limit, offset, search, filters и другие параметры.
      *
      * @return array{
      *     data: Collection,
@@ -190,66 +235,27 @@ abstract class BaseModel extends Model
      *     }
      * } Массив с данными, метаданными и информацией о пагинации.
      */
-    protected static function basePagination(Request $request, array $where = [], string $orderByDesc = ''): array
+    protected static function basePagination(PaginationRequest $request): array
     {
-        $limit = (int)($request->header('limit') ?? 3);
-        $offset = (int)($request->header('offset') ?? 0);
-        $query = static::query();
+        [
+            'limit' => $limit,
+            'offset' => $offset,
+            'search' => $search,
+            'order' => $order,
+            'desc' => $desc,
+            'names' => $names
+        ] = $request->validated();
 
-        $search = $request->header('search');
-        if ($search) {
-            $search = base64_decode($search);
-            $query = static::_search($query, $search);
-        }
-
-        if ($request->header('filters')) {
-            $filters = json_decode($request->header('filters'));
-            $query = static::_filter($query, $filters);
-        }
-
-        /** @var User|null $user */
-        $user = auth()->user();
-
-        foreach ($where as $key => $value) {
-            if ($key === 'user_id' && $user?->role === 'admin') {
-                continue;
-            }
-            $query->where($key, $value);
-        }
-
-        if (static::$isTree) {
-            $query->where('self_id', null);
-        }
-
-        $order = ($request->header('order') ?? '');
-        $desc = ($request->header('desc') ?? '');
-        if ($order != '') {
-            if (
-                static::$sortable && in_array($order, static::$sortable)
-            ) {
-                $desc == 'desc' ? $query->orderByDesc($order) : $query->orderBy($order);
-            }
-        } else {
-            if ($orderByDesc !== '') {
-                $query->orderByDesc($orderByDesc);
-            } else {
-                $query->orderBy('id');
-            }
-        }
-
-        if ($request->header('ignore')) {
-            $ignore = json_decode($request->header('ignore'));
-            $query->whereIn('id', $ignore, not: true);
-
-            $offset = 0;
-        }
+        $query = static::query()
+                |> (fn($x) => static::_search($x, $search))
+                |> (fn($x) => static::_filter($x, $request))
+                |> (fn($x) => static::$isTree ? $x->where('self_id', null) : $x)
+                |> (fn($x) => static::_orderBy($x, $order, $desc));
 
         $totalCount = $query->count();
 
-        if ($request->header('names') ?? false) $query->whereIn('name', array_filter(array_map('trim', explode(',', $request->header('names')))));
-        else $query
-            ->offset($offset)
-            ->limit($limit);
+        if ($names) $query->whereIn('trim', static::stringToArray($names));
+        else $query->offset($offset)->limit($limit);
 
         $data = $query->get();
         $meta = static::_meta();

@@ -97,23 +97,21 @@ class Product extends BaseModel
     }
 
     #[\NoDiscard("The name must not be discarded")]
-    protected static function _filter($query, $filters)
+    protected static function _filter($query, $request)
     {
-        foreach ($filters as $key => $filter) {
-            if ($filter === null || $filter === '') {
-                continue;
-            }
+        foreach ($request->query() as $key => $value) {
 
-            if ($key === 'type') $query->where('type_id', $filter);
-            elseif ($key === 'tag') $query->where('tag_id', $filter);
-            elseif ($key === 'variant') $query->where('variant_id', $filter);
-            elseif ($key === 'brand') $query->whereIn('brand_id', array_filter(array_map('trim', explode(',', $filter))));
-            elseif ($key === 'price-max') $query->where('price', '<=', $filter);
-            elseif (Filter::where('name', $key)->exists()) {
-                $query->whereHas('characteristics', function ($q) use ($filter) {
-                    $q->whereIn('characteristics.id', array_filter(array_map('trim', explode(',', $filter))));
-                });
-            }
+            match (true) {
+                $key === 'type' => $query->where('type_id', $value),
+                $key === 'tag' => $query->where('tag_id', $value),
+                $key === 'variant' => $query->where('variant_id', $value),
+                $key === 'brand' => $query->whereIn('brand_id', static::stringToArray($value)),
+                $key === 'price-max' => $query->where('price', '<=', $value),
+                Filter::where('name', $key)->exists() => $query->whereHas('characteristics', function ($q) use ($value) {
+                    $q->whereIn('characteristics.id', static::stringToArray($value));
+                }),
+                default => null
+            };
         }
         return $query;
     }

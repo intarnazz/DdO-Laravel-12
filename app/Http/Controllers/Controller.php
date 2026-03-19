@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PaginationRequest;
 use App\Http\Resources\PaginResponse;
 use App\Http\Resources\SuccessResponse;
 use Illuminate\Database\Eloquent\Model;
@@ -32,11 +33,11 @@ abstract class Controller
     /**.
      * Получить все записи с пагинацией.
      *
-     * @param Request $request
+     * @param PaginationRequest $request
      * @return PaginResponse
      */
-    public function all(Request $request)
+    public function all(PaginationRequest $request)
     {
-        return new PaginResponse($this->model::basePagination($request, orderByDesc: 'updated_at'));
+        return new PaginResponse($this->model::basePagination($request));
     }
 }
