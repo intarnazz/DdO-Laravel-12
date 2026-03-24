@@ -14,24 +14,8 @@ class Type extends BaseModel
         'description',
     ];
 
-    protected array $with_one_only = ['filters', 'tags'];
+    protected array $with_one_only = ['filters.content', 'tags'];
     protected static bool $isTree = true;
-
-    /**
-     * Возвращает коллекцию данных ответа.
-     *
-     * @param Model | Collection $data Коллекция данных для обработки
-     * @return Model | Collection Исходная коллекция данных
-     */
-    #[\NoDiscard("The name must not be discarded")]
-    protected static function _response_data(Model|Collection $data): Model|Collection
-    {
-        if (!empty($data['filters'])) foreach ($data['filters'] as $filter) {
-            $filter->content();
-        }
-
-        return $data;
-    }
 
     public function tags(): HasMany
     {

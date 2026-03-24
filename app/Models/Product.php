@@ -86,9 +86,10 @@ class Product extends BaseModel
 
     public function color(): BelongsToMany
     {
-        return $this->BelongsToMany(Characteristic::class, 'product_characteristics', 'product_id', 'characteristic_id')->whereHas('filter', function (Builder $query) {
-            $query->where('type', 'color');
-        });
+        return $this->BelongsToMany(Characteristic::class, 'product_characteristics', 'product_id', 'characteristic_id')
+            ->whereHas('filter', function (Builder $query) {
+                $query->where('type', 'color');
+            });
     }
 
     protected function _after_get()
