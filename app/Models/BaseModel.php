@@ -254,7 +254,7 @@ abstract class BaseModel extends Model
 
         $totalCount = $query->count();
 
-        if ($names) $query->whereIn('trim', static::stringToArray($names));
+        if ($names) $query->whereIn('name', static::stringToArray($names));
         else $query->offset($offset)->limit($limit);
 
         $data = $query->get();
