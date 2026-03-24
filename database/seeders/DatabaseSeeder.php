@@ -109,17 +109,12 @@ class DatabaseSeeder extends Seeder
 
         $products = [];
 
+        $characteristic_colors = [];
         foreach (range(1, 10) as $i) {
-            Characteristic::create([
+            $characteristic_colors[] = Characteristic::create([
                 'image_id' => $i,
                 'filter_id' => $filter_color->id,
                 'name' => $colors[$i - 1],
-                'description' => $faker->text(255),
-            ]);
-            Characteristic::create([
-                'image_id' => $i,
-                'filter_id' => $filter_color->id,
-                'name' => $colors[9],
                 'description' => $faker->text(255),
             ]);
         }
@@ -299,7 +294,14 @@ class DatabaseSeeder extends Seeder
             $characteristic_sizes[] = $characteristic_size;
         }
 
+        $i = 0;
         foreach ($products as $product) {
+            ProductCharacteristic::create([
+                'product_id' => $product->id,
+                'characteristic_id' => $characteristic_colors[$i]->id,
+            ]);
+            $i++;
+            if ($i > 9) $i = 0;
             foreach ($characteristic_sizes as $characteristic_size) {
                 ProductCharacteristic::create([
                     'product_id' => $product->id,
