@@ -116,6 +116,12 @@ class DatabaseSeeder extends Seeder
                 'name' => $colors[$i - 1],
                 'description' => $faker->text(255),
             ]);
+            Characteristic::create([
+                'image_id' => $i,
+                'filter_id' => $filter_color->id,
+                'name' => $colors[9],
+                'description' => $faker->text(255),
+            ]);
         }
 
         $filter_brand = Filter::create([
