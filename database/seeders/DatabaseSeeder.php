@@ -37,11 +37,11 @@ class DatabaseSeeder extends Seeder
 
         $files = Storage::disk('public')->allFiles();
 
+        $images = [];
         foreach ($files as $file) {
-            Image::create([
+            $images[] = Image::create([
                 'name' => pathinfo($file, PATHINFO_FILENAME),
                 'path' => $file,
-                'second_path' => $file,
             ]);
         }
 
@@ -193,7 +193,8 @@ class DatabaseSeeder extends Seeder
             ]);
             foreach (range(1, 10) as $p) {
                 $product = Product::create([
-                    'image_id' => $i,
+                    'products.image_primary_id' => $i,
+                    'products.image_secondary_id' => $i,
                     'type_id' => $entrance_doors_type->id,
                     'tag_id' => $i,
                     'variant_id' => $i,
@@ -216,10 +217,12 @@ class DatabaseSeeder extends Seeder
                         'description' => $faker->text(255),
                     ]);
                 }
-                Gallery::create([
-                    'image_id' => $i,
-                    'product_id' => $product->id,
-                ]);
+                foreach ($images as $image) {
+                    Gallery::create([
+                        'image_id' => $image->id,
+                        'product_id' => $product->id,
+                    ]);
+                }
                 Option::create([
                     'image_id' => $i,
                     'product_id' => $product->id,

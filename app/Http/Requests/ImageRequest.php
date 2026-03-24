@@ -23,7 +23,6 @@ class ImageRequest extends FormRequest
     {
         return [
             'file' => 'required|image|mimes:jpeg,png,jpg,gif',
-            'second_file' => 'nullable|image|mimes:jpeg,png,jpg,gif',
             'name' => 'required|string|max:255',
         ];
     }

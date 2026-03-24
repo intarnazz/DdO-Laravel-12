@@ -51,7 +51,8 @@ class Product extends BaseModel
      * @var array<int, string>
      */
     protected $with = [
-        'image',
+        'image_primary',
+        'image_secondary',
         'variant',
     ];
 
@@ -215,8 +216,13 @@ class Product extends BaseModel
      *
      * @return BelongsTo
      */
-    public function image(): BelongsTo
+    public function image_primary(): BelongsTo
     {
-        return $this->belongsTo(Image::class);
+        return $this->belongsTo(Image::class, 'image_primary_id');
+    }
+
+    public function image_secondary(): BelongsTo
+    {
+        return $this->belongsTo(Image::class, 'image_secondary_id');
     }
 }

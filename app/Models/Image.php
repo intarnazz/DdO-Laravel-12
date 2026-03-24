@@ -19,7 +19,6 @@ class Image extends BaseModel
         $image = Image::create([
             'name' => $request['name'],
             'path' => $request['file']->store('images', 'public'),
-            'second_path' => !empty($request['second_file']) ? $request['second_file']->store('images', 'public') : null,
         ]);
 
         return $image;
