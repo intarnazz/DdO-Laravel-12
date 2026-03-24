@@ -110,6 +110,16 @@ abstract class BaseModel extends Model
     }
 
     /**
+     * Хук, вызываемый после получения модели из базы данных.
+     *
+     * @return static
+     */
+    protected function _after_get()
+    {
+        return $this;
+    }
+
+    /**
      * Получение одного объекта модели по его ID.
      * Подгружает связи, указанные в $with_one_only.
      * Если модель древовидная ($isTree = true), добавляет поле `tree`
@@ -121,6 +131,7 @@ abstract class BaseModel extends Model
     public static function getOne(int $item): Model
     {
         $data = static::with((new static)->with_one_only)->findOrFail($item);
+        $data->_after_get();
 
         if (static::$isTree) {
             $data->tree = static::where('self_id', $data->id)->get();
@@ -213,7 +224,7 @@ abstract class BaseModel extends Model
     protected static function _orderBy(Builder $query, string $order, bool $desc): Builder
     {
         if (in_array($order, static::$sortable)) return $query->orderBy($order, $desc ? 'desc' : 'asc');
-        else return $query->orderByDesc('updated_at');
+        else return $query->orderByDesc('created_at');
 
     }
 

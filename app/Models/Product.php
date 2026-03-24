@@ -82,6 +82,11 @@ class Product extends BaseModel
         'discount',
     ];
 
+    protected function _after_get()
+    {
+        return $this->increment('views');
+    }
+
     /**
      * Получает метаданные о минимальном и максимальном значениях цены.
      *
