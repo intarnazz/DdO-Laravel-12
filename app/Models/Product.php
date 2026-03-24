@@ -51,6 +51,7 @@ class Product extends BaseModel
      * @var array<int, string>
      */
     protected $with = [
+        'color',
         'image_primary',
         'image_secondary',
         'variant',
@@ -62,6 +63,7 @@ class Product extends BaseModel
      * @var array<int, string>
      */
     protected array $with_one_only = [
+        'variant.products',
         'type',
         'tag',
         'brand',
@@ -81,6 +83,13 @@ class Product extends BaseModel
         'views',
         'discount',
     ];
+
+    public function color(): BelongsToMany
+    {
+        return $this->BelongsToMany(Characteristic::class, 'product_characteristics', 'product_id', 'characteristic_id')->whereHas('filter', function (Builder $query) {
+            $query->where('type', 'color');
+        });
+    }
 
     protected function _after_get()
     {
