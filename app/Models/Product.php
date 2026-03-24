@@ -51,7 +51,6 @@ class Product extends BaseModel
      * @var array<int, string>
      */
     protected $with = [
-        'color',
         'image_primary',
         'image_secondary',
         'variant',
@@ -63,7 +62,8 @@ class Product extends BaseModel
      * @var array<int, string>
      */
     protected array $with_one_only = [
-        'variant.products',
+        'color',
+        'variant.products.color',
         'type',
         'tag',
         'brand',
