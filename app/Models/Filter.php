@@ -15,14 +15,25 @@ class Filter extends BaseModel
         'type',
     ];
 
-    public function content(): BelongsToMany|hasMany
+    public function __construct()
     {
-        return match ($this->type) {
-            'brand' => $this->belongsToMany(Brand::class, 'filter_brands', 'filter_id', 'brand_id'),
-            default => $this->hasMany(Characteristic::class),
-        };
+        parent::__construct();
+
+        $this->hidden = array_merge($this->hidden, [
+            'brands',
+            'characteristics',
+        ]);
     }
 
+//    protected array $with_one_only = ['types'];
+
+    public function content()
+    {
+        return $this->content = match ($this->type) {
+            'brand' => $this->brands()->get(),
+            default => $this->characteristics()->get(),
+        };
+    }
 
     public function brands(): BelongsToMany
     {
