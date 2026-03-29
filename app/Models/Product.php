@@ -115,21 +115,39 @@ class Product extends BaseModel
     #[\NoDiscard("The name must not be discarded")]
     protected static function _filter($query, $request)
     {
-        foreach ($request->query() as $key => $value) {
+        $charGroups = []; // filter_name => [char_ids]
 
+        foreach ($request->query() as $key => $value) {
             match (true) {
                 $key === 'type' => $query->where('type_id', $value),
                 $key === 'tag' => $query->where('tag_id', $value),
                 $key === 'variant' => $query->where('variant_id', $value),
                 $key === 'brand' => $query->whereIn('brand_id', static::stringToArray($value)),
                 $key === 'price-max' => $query->where('price', '<=', $value),
-                Filter::where('name', $key)->exists() => $query->whereHas('characteristics', function ($q) use ($value) {
-                    $q->whereIn('characteristics.id', static::stringToArray($value));
-                }),
+                Filter::where('name', $key)->exists() => $charGroups[$key] = static::stringToArray($value) ?: [],
                 default => null
             };
         }
-        return $query;
+
+        if (empty($charGroups)) {
+            return $query;
+        }
+
+        return $query->whereHas('characteristics', function (Builder $q) use ($charGroups) {
+            $q->join('filters', 'characteristics.filter_id', '=', 'filters.id')
+                ->select('product_characteristics.product_id')   // ←←← ЭТО ИСПРАВЛЯЕТ ОШИБКУ 1055
+                ->where(function (Builder $w) use ($charGroups) {
+                    foreach ($charGroups as $filterName => $ids) {
+                        if (empty($ids)) continue;
+                        $w->orWhere(function (Builder $g) use ($filterName, $ids) {
+                            $g->where('filters.name', $filterName)
+                                ->whereIn('characteristics.id', $ids);
+                        });
+                    }
+                })
+                ->groupBy('product_characteristics.product_id')
+                ->havingRaw('COUNT(DISTINCT filters.name) = ?', [count($charGroups)]);
+        });
     }
 
     /**
@@ -146,9 +164,19 @@ class Product extends BaseModel
     #[\NoDiscard("The name must not be discarded")]
     protected static function _search(Builder $query, string $search): Builder
     {
+        $search = trim($search);
+
+        // 1. Пустой поиск = не фильтруем по Scout вообще (это и было нужно)
+        if ($search === '') {
+            return $query;
+        }
+
         $ids = self::search($search)->keys();
 
-        if (empty($ids)) return $query;
+        // 2. Если поиск дал 0 результатов — возвращаем пустой результат
+        if (empty($ids)) {
+            return $query->whereRaw('1 = 0'); // безопасно и быстро
+        }
 
         return $query->whereIn('id', $ids);
     }

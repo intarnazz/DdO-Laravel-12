@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Базовая абстрактная модель, расширяющая Eloquent Model.
@@ -257,11 +259,26 @@ abstract class BaseModel extends Model
             'names' => $names
         ] = $request->validated();
 
+//        Log::channel('daily')->debug('=== START PRODUCT REQUEST ===', [
+//            'full_url' => $request->fullUrl(),
+//            'all_params' => $request->all(),           // все твои brand, qui, non и т.д.
+//            'ip' => $request->ip(),
+//            'user_agent' => $request->header('User-Agent'),
+//        ]);
+
         $query = static::query()
                 |> (fn($x) => static::_search($x, $search))
                 |> (fn($x) => static::_filter($x, $request))
                 |> (fn($x) => static::$isTree ? $x->where('self_id', null) : $x)
                 |> (fn($x) => static::_orderBy($x, $order, $desc));
+
+//        Log::channel('daily')->debug('Built SQL BEFORE execution', [
+//            'sql' => $query->toSql(),
+//            'bindings' => $query->getBindings(),
+//            'bindings_count' => count($query->getBindings()),
+//        ]);
+
+        DB::enableQueryLog();
 
         $totalCount = $query->count();
 
@@ -270,6 +287,16 @@ abstract class BaseModel extends Model
 
         $data = $query->get();
         $meta = static::_meta();
+
+//        Log::channel('daily')->debug('Query executed', [
+//            'query_log' => DB::getQueryLog(),
+//            'results_count' => $totalCount,
+//        ]);
+//
+//        Log::channel('daily')->debug('=== END PRODUCT REQUEST ===', [
+//            'memory' => memory_get_peak_usage(true) / 1024 / 1024 . ' MB',
+//            'time' => microtime(true) - LARAVEL_START, // если у тебя есть LARAVEL_START
+//        ]);
 
         return static::_response(
             data: $data,

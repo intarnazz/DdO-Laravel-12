@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->foreignIdFor(\App\Models\Product::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Characteristic::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
+
+            $table->index(['product_id', 'characteristic_id'], 'idx_product_char');
         });
     }
 
