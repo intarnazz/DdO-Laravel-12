@@ -6,7 +6,6 @@ use App\Http\Requests\ImageRequest;
 use App\Http\Resources\SuccessResponse;
 use App\Models\Image;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Laravel\Facades\Image as ImageFacade;
 
 class ImageController
@@ -18,8 +17,16 @@ class ImageController
 
         $originalPath = storage_path('app/public/' . $image->path);
 
-        // Оригинал — отдаём сразу, без обработки
         if (!$maxW && !$maxH) {
+            return response()->file($originalPath);
+        }
+
+        [$origW, $origH] = getimagesize($originalPath);
+
+        $maxW = $maxW ? min($maxW, $origW) : null;
+        $maxH = $maxH ? min($maxH, $origH) : null;
+
+        if ((!$maxW || $maxW === $origW) && (!$maxH || $maxH === $origH)) {
             return response()->file($originalPath);
         }
 
