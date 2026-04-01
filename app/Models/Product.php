@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
 
 /**
@@ -62,6 +63,7 @@ class Product extends BaseModel
      * @var array<int, string>
      */
     protected array $with_one_only = [
+        'options',
         'color',
         'variant.products.color',
         'type',
@@ -192,6 +194,11 @@ class Product extends BaseModel
             'name',
             'article',
         ]);
+    }
+
+    public function options(): HasMany
+    {
+        return $this->hasMany(Option::class);
     }
 
     /**

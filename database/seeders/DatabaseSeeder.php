@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
     {
         $faker = Factory::create();
 
-        $files = Storage::disk('public')->allFiles();
+        $files = Storage::disk('public')->files('/');
 
         $images = [];
         foreach ($files as $file) {
@@ -296,6 +296,15 @@ class DatabaseSeeder extends Seeder
 
         $i = 0;
         foreach ($products as $product) {
+            foreach (range(1, 3) as $_) {
+                Option::create([
+                    'image_id' => $product->image_id,
+                    'product_id' => $product->id,
+                    'price' => $faker->biasedNumberBetween(1000, 20000),
+                    'name' => $faker->word(),
+                    'description' => $faker->text(255),
+                ]);
+            }
             ProductCharacteristic::create([
                 'product_id' => $product->id,
                 'characteristic_id' => $characteristic_colors[$i]->id,
