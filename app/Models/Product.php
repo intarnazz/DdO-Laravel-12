@@ -64,8 +64,8 @@ class Product extends BaseModel
      */
     protected array $with_one_only = [
         'options',
-        'color',
-        'variant.products.color',
+        'colors',
+        'variant.products.colors',
         'type',
         'tag',
         'brand',
@@ -86,7 +86,7 @@ class Product extends BaseModel
         'discount',
     ];
 
-    public function color(): BelongsToMany
+    public function colors(): BelongsToMany
     {
         return $this->BelongsToMany(Characteristic::class, 'product_characteristics', 'product_id', 'characteristic_id')
             ->whereHas('filter', function (Builder $query) {
