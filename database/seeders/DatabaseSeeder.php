@@ -224,13 +224,6 @@ class DatabaseSeeder extends Seeder
                         'product_id' => $product->id,
                     ]);
                 }
-                Option::create([
-                    'image_id' => $i,
-                    'product_id' => $product->id,
-                    'price' => $faker->biasedNumberBetween(1000, 20000),
-                    'name' => $faker->word(),
-                    'description' => $faker->text(255),
-                ]);
             }
         }
         $productsCount = 170;
@@ -296,7 +289,24 @@ class DatabaseSeeder extends Seeder
 
         $i = 0;
         foreach ($products as $product) {
-            foreach (range(1, 3) as $_) {
+            Option::create([
+                'image_id' => $product->image_id,
+                'product_id' => $product->id,
+                'price' => $faker->biasedNumberBetween(1000, 20000),
+                'name' => 'коробка',
+                'description' => $faker->text(255),
+                'options.is_set' => true,
+                'options.default_count' => 1,
+            ]);
+            Option::create([
+                'image_id' => $product->image_id,
+                'product_id' => $product->id,
+                'price' => $faker->biasedNumberBetween(1000, 20000),
+                'name' => 'наличник',
+                'description' => $faker->text(255),
+                'options.default_count' => 5,
+            ]);
+            foreach (range(1, 2) as $_) {
                 Option::create([
                     'image_id' => $product->image_id,
                     'product_id' => $product->id,

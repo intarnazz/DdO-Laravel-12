@@ -10,6 +10,8 @@ class Option extends BaseModel
         'name',
         'description',
         'price',
+        'is_set',
+        'default_count',
     ];
 
     protected $with = ['image'];
