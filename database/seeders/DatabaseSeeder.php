@@ -2,24 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Brand;
-use App\Models\Characteristic;
-use App\Models\Contact;
-use App\Models\Documentation;
-use App\Models\Filter;
-use App\Models\FilterBrand;
-use App\Models\Gallery;
-use App\Models\Image;
-use App\Models\Option;
-use App\Models\Product;
-use App\Models\ProductCharacteristic;
-use App\Models\Tag;
-use App\Models\Text;
-use App\Models\Type;
-use App\Models\TypeFilter;
-use App\Models\Vacancy;
-use App\Models\Variant;
-use Faker\Factory;
+use Database\Seeders\Builders\CatalogBuilder;
+use Database\Seeders\Builders\ContactBuilder;
+use Database\Seeders\Builders\DocumentationBuilder;
+use Database\Seeders\Builders\ImageBuilder;
+use Database\Seeders\Builders\TextBuilder;
+use Database\Seeders\Builders\VacancyBuilder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
@@ -28,306 +16,127 @@ class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        $faker = Factory::create();
+        // ----------------------------------------------------------------
+        // 1. Контакты
+        // ----------------------------------------------------------------
 
-        $files = Storage::disk('public')->files('/');
+        ContactBuilder::make()
+            ->name('phone')
+            ->description('+79004807844')
+            ->link('+79004807844')
+            ->type('phone')
+            ->build();
 
-        $images = [];
-        foreach ($files as $file) {
-            $images[] = Image::create([
-                'name' => pathinfo($file, PATHINFO_FILENAME),
-                'path' => $file,
-            ]);
+        ContactBuilder::make()
+            ->name('address')
+            ->description('Ул. Терешковой, 12, Александров')
+            ->build();
+
+        ContactBuilder::make()->name('whatsapp')->build();
+        ContactBuilder::make()->name('whatsapp')->build();
+        ContactBuilder::make()->name('odnoklassniki')->build();
+        ContactBuilder::make()->name('vk')->build();
+
+        // ----------------------------------------------------------------
+        // 2. Вакансии, тексты, документации
+        // ----------------------------------------------------------------
+
+        foreach (range(1, 17) as $_) {
+            VacancyBuilder::make()->build();
+            ContactBuilder::make()->build();
+
+            $text = TextBuilder::make()->build();
+            $rootDoc = DocumentationBuilder::make()->textId($text->id)->build();
+            DocumentationBuilder::make()->textId($text->id)->selfId($rootDoc->id)->build();
         }
 
-        Contact::create([
-            'name' => 'phone',
-            'description' => '+79004807844',
-            'link' => '+79004807844',
-            'type' => 'phone',
-        ]);
+        // ----------------------------------------------------------------
+        // 3. Изображения каталогов
+        // ----------------------------------------------------------------
 
-        Contact::create([
-            'name' => 'address',
-            'description' => 'Ул. Терешковой, 12, Александров',
-            'link' => $faker->url,
-        ]);
+        $entranceDoorsImages = ImageBuilder::fromFiles(
+            Storage::disk('public')->files('/entrance-doors')
+        );
 
-        Contact::create([
-            'name' => 'whatsapp',
-            'description' => $faker->text(255),
-            'link' => $faker->url,
-        ]);
+        $interiorDoorsImages = ImageBuilder::fromFiles(
+            Storage::disk('public')->files('/interior-doors')
+        );
 
-        Contact::create([
-            'name' => 'whatsapp',
-            'description' => $faker->text(255),
-            'link' => $faker->url,
-        ]);
+        $kitchensImages = ImageBuilder::fromFiles(
+            Storage::disk('public')->files('/kitchens')
+        );
 
-        Contact::create([
-            'name' => 'odnoklassniki',
-            'description' => $faker->text(255),
-            'link' => $faker->url,
-        ]);
+        // ----------------------------------------------------------------
+        // 4. Каталог «Входные Двери» — здесь создаются общие бренды
+        // ----------------------------------------------------------------
 
-        Contact::create([
-            'name' => 'vk',
-            'description' => $faker->text(255),
-            'link' => $faker->url,
-        ]);
+        $entranceCatalog = CatalogBuilder::make()
+            ->name('entrance-doors')
+            ->visibleName('Входные Двери')
+            ->withImages($entranceDoorsImages)
+            ->withColorFilter([
+                'F5F5F5', 'FFFCD6', 'D59057', '94471E', '75300B',
+                '929492', '35170C', '000000', '000000', '000000',
+            ])
+            ->withColorsPerProduct(2)
+            ->withBrandFilter()                    // ← бренды создаются здесь
+            ->withSizeFilter(array_fill(0, 10, '960×2050'))
+            ->withGeneratedFilters(characteristicsPerFilter: 10)
+            ->withTags()
+            ->withVariants()
+            ->withProducts(perIteration: 10)
+            ->withDefaultOptions()
+            ->withSecondaryImage(true)
+            ->build();
 
-        $entrance_doors_type = Type::create([
-            'name' => 'entrance-doors',
-            'visible_name' => 'Входные Двери',
-            'description' => $faker->text(255),
-        ]);
+        // Бренды теперь общие
+        $commonBrands = $entranceCatalog['brands'];
 
-        $filter_color = Filter::create([
-            'name' => 'color',
-            'description' => $faker->text(255),
-            'type' => 'color'
-        ]);
+        // ----------------------------------------------------------------
+        // 5. Каталог «Межкомнатные Двери» — используем те же бренды
+        // ----------------------------------------------------------------
 
-        $colors = [
-            'F5F5F5',
-            'FFFCD6',
-            'D59057',
-            '94471E',
-            '75300B',
-            '929492',
-            '35170C',
-            '000000',
-            '000000',
-            '000000',
-        ];
+        CatalogBuilder::make()
+            ->name('interior-doors')
+            ->visibleName('Межкомнатные Двери')
+            ->withImages($interiorDoorsImages)
+            ->withColorFilter([
+                'F5F5F5', 'FFFCD6', 'D59057', '94471E', '75300B',
+                '929492', '35170C', '000000', '000000', '000000',
+            ])
+            ->withColorsPerProduct(1)
+            ->withBrandFilter()                    // создаём фильтр brand (нужен для каталога)
+            ->withBrands($commonBrands)            // ← используем общие бренды
+            ->withSizeFilter(array_fill(0, 10, '960×2050'))
+            ->withGeneratedFilters(characteristicsPerFilter: 10)
+            ->withTags()
+            ->withVariants()
+            ->withProducts(perIteration: 10)
+            ->withDefaultOptions()
+            ->build();
 
-        $products = [];
+        // ----------------------------------------------------------------
+        // 6. Каталог «кухни» — используем те же бренды
+        // ----------------------------------------------------------------
 
-        $characteristic_colors = [];
-        foreach (range(1, 10) as $i) {
-            $characteristic_colors[] = Characteristic::create([
-                'image_id' => $i,
-                'filter_id' => $filter_color->id,
-                'name' => $colors[$i - 1],
-                'description' => $faker->text(255),
-            ]);
-        }
-
-        $filter_brand = Filter::create([
-            'name' => 'brand',
-            'description' => $faker->text(255),
-            'type' => 'brand'
-        ]);
-
-        foreach (range(1, 17) as $i) {
-            Vacancy::create([
-                'name' => $faker->word(),
-                'description' => $faker->text(255),
-                'price' => $faker->biasedNumberBetween(10000, 50000),
-            ]);
-            Contact::create([
-                'name' => $faker->word(),
-                'description' => $faker->text(255),
-                'link' => $faker->text(20),
-            ]);
-            Text::create([
-                'text' => $faker->text(2000),
-            ]);
-            Brand::create([
-                'image_id' => $i,
-                'text_id' => $i,
-                'name' => $faker->word(),
-                'description' => $faker->text(255),
-                'type' => $faker->word(),
-            ]);
-            FilterBrand::create([
-                'filter_id' => $filter_brand->id,
-                'brand_id' => $i,
-            ]);
-
-            $name = $faker->unique()->word();
-
-            Filter::create([
-                'name' => $name,
-                'description' => $faker->text(255),
-                'type' => $name,
-            ]);
-            Documentation::create([
-                'text_id' => $i,
-                'name' => $faker->word(),
-                'description' => $faker->text(255),
-            ]);
-            Documentation::create([
-                'text_id' => $i,
-                'name' => $faker->word(),
-                'description' => $faker->text(255),
-                'self_id' => $i,
-            ]);
-            Type::create([
-                'name' => $faker->word(),
-                'description' => $faker->text(255),
-            ]);
-            Type::create([
-                'name' => $faker->word(),
-                'description' => $faker->text(255),
-                'self_id' => $i,
-            ]);
-            TypeFilter::create([
-                'type_id' => $entrance_doors_type->id,
-                'filter_id' => $i,
-            ]);
-            Tag::create([
-                'type_id' => $entrance_doors_type->id,
-                'name' => $faker->word(),
-                'description' => $faker->text(255),
-            ]);
-            Variant::create([
-                'type_id' => $entrance_doors_type->id,
-                'name' => $faker->word(),
-                'description' => $faker->text(255),
-            ]);
-            foreach (range(1, 10) as $p) {
-                $product = Product::create([
-                    'products.image_primary_id' => $i,
-                    'products.image_secondary_id' => $i,
-                    'type_id' => $entrance_doors_type->id,
-                    'tag_id' => $i,
-                    'variant_id' => $i,
-                    'brand_id' => $i,
-                    'name' => $faker->text(16) . ' / ' . $faker->text(16),
-                    'description' => $faker->text(255),
-                    'video_url' => $faker->url(),
-                    'price' => $faker->biasedNumberBetween(10000, 50000),
-                    'article' => $faker->word() . '-' . $faker->word(),
-                    'products.discount' => $faker->boolean(33) ? $faker->biasedNumberBetween(0, 100) : 0,
-                    'is_stock' => true,
-                    'is_in_store' => $faker->boolean(),
-                ]);
-                $products[] = $product;
-                if ($i > 1) {
-                    Characteristic::create([
-                        'image_id' => $i,
-                        'filter_id' => $i,
-                        'name' => $faker->word(),
-                        'description' => $faker->text(255),
-                    ]);
-                }
-                foreach ($images as $image) {
-                    Gallery::create([
-                        'image_id' => $image->id,
-                        'product_id' => $product->id,
-                    ]);
-                }
-            }
-        }
-        $productsCount = 170;
-        $filtersCount = 17;
-        $characteristicsPerFilter = 10;
-
-        for ($productId = 1; $productId <= $productsCount; $productId++) {
-
-            for ($filterIndex = 0; $filterIndex < $filtersCount; $filterIndex++) {
-
-                // начало диапазона characteristic_id для фильтра
-                $filterStartCharacteristicId =
-                    $filterIndex * $characteristicsPerFilter + 1;
-
-                // индекс характеристики (0–9), каждая на 17 продуктов
-                $characteristicOffset = intdiv($productId - 1, 17);
-
-                $characteristicId =
-                    $filterStartCharacteristicId + $characteristicOffset;
-
-                ProductCharacteristic::create([
-                    'product_id' => $productId,
-                    'characteristic_id' => $characteristicId,
-                ]);
-            }
-        }
-
-        $filter_size = Filter::create([
-            'name' => 'size',
-            'description' => $faker->text(255),
-            'type' => 'size'
-        ]);
-
-        TypeFilter::create([
-            'type_id' => $entrance_doors_type->id,
-            'filter_id' => $filter_size->id,
-        ]);
-
-        $sizes = [
-            '960×2050',
-            '960×2050',
-            '960×2050',
-            '960×2050',
-            '960×2050',
-            '960×2050',
-            '960×2050',
-            '960×2050',
-            '960×2050',
-            '960×2050',
-        ];
-
-        $characteristic_sizes = [];
-
-        foreach (range(1, 10) as $i) {
-            $characteristic_size = Characteristic::create([
-                'image_id' => $i,
-                'filter_id' => $filter_size->id,
-                'name' => $sizes[$i - 1],
-                'description' => $faker->text(255),
-            ]);
-            $characteristic_sizes[] = $characteristic_size;
-        }
-
-        $i = 0;
-        foreach ($products as $product) {
-            Option::create([
-                'image_id' => $product->image_id,
-                'product_id' => $product->id,
-                'price' => $faker->biasedNumberBetween(1000, 20000),
-                'name' => 'коробка',
-                'description' => $faker->text(255),
-                'options.is_set' => true,
-                'options.default_count' => 1,
-            ]);
-            Option::create([
-                'image_id' => $product->image_id,
-                'product_id' => $product->id,
-                'price' => $faker->biasedNumberBetween(1000, 20000),
-                'name' => 'наличник',
-                'description' => $faker->text(255),
-                'options.default_count' => 5,
-            ]);
-            foreach (range(1, 2) as $_) {
-                Option::create([
-                    'image_id' => $product->image_id,
-                    'product_id' => $product->id,
-                    'price' => $faker->biasedNumberBetween(1000, 20000),
-                    'name' => $faker->word(),
-                    'description' => $faker->text(255),
-                ]);
-            }
-            ProductCharacteristic::create([
-                'product_id' => $product->id,
-                'characteristic_id' => $characteristic_colors[$i]->id,
-            ]);
-            $i++;
-            if ($i > 9) $i = 0;
-            foreach ($characteristic_sizes as $characteristic_size) {
-                ProductCharacteristic::create([
-                    'product_id' => $product->id,
-                    'characteristic_id' => $characteristic_size->id,
-                ]);
-            }
-        }
-
+        CatalogBuilder::make()
+            ->name('kitchens')
+            ->visibleName('кухни')
+            ->withImages($kitchensImages)
+            ->withColorFilter([
+                'F5F5F5', 'FFFCD6', 'D59057', '94471E', '75300B',
+                '929492', '35170C', '000000', '000000', '000000',
+            ])
+            ->withColorsPerProduct(2)
+            ->withBrandFilter()                    // создаём фильтр brand (нужен для каталога)
+            ->withBrands($commonBrands)            // ← используем общие бренды
+            ->withGeneratedFilters(characteristicsPerFilter: 10)
+            ->withTags()
+            ->withVariants()
+            ->withProducts(perIteration: 10)
+            ->withDefaultOptions()
+            ->build();
     }
 }
