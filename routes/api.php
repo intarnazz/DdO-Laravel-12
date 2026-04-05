@@ -13,6 +13,7 @@ use App\Http\Controllers\VariantController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CharacteristicController;
 use App\Http\Controllers\OptionController;
+use App\Http\Controllers\ContextController;
 use App\Route\GetRoute;
 
 
@@ -32,3 +33,5 @@ Route::prefix('image')->group(function () {
     Route::get('/{image}', [ImageController::class, 'get']);
     Route::post('/', [ImageController::class, 'add']);
 });
+
+Route::get('/context', [ContextController::class, 'get']);
