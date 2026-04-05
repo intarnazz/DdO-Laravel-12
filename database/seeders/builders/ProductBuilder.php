@@ -51,7 +51,7 @@ class ProductBuilder
     protected ?string $videoUrl         = null;
     protected ?int    $price            = null;
     protected ?string $article          = null;
-    protected int     $discount         = 0;
+    protected ?int     $discount        = null;
     protected bool    $isStock          = true;
     protected ?bool   $isInStore        = null;
 
@@ -234,7 +234,7 @@ class ProductBuilder
             'video_url'          => $this->videoUrl         ?? $this->faker->url(),
             'price'              => $this->price            ?? $this->faker->biasedNumberBetween(10000, 50000),
             'article'            => $this->article          ?? $this->faker->word() . '-' . $this->faker->word(),
-            'discount'           => $this->discount,
+            'discount'           => $this->discount         ?? $this->faker->boolean(33) ? $this->faker->biasedNumberBetween(0, 100) : 0,
             'is_stock'           => $this->isStock,
             'is_in_store'        => $this->isInStore        ?? $this->faker->boolean(),
         ]);
