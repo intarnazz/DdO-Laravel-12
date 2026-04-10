@@ -16,7 +16,6 @@ use Faker\Generator;
  *       ->textId(1)
  *       ->name('Torex')
  *       ->description('Российский производитель...')
- *       ->type('manufacturer')
  *       ->linkToFilter(42)       // links FilterBrand to this filter_id
  *       ->build();
  *
@@ -31,7 +30,6 @@ class BrandBuilder
     protected ?int    $textId      = null;
     protected ?string $name        = null;
     protected ?string $description = null;
-    protected ?string $type        = null;
 
     /** @var int[] */
     protected array $filterIds = [];
@@ -70,11 +68,6 @@ class BrandBuilder
         return $this;
     }
 
-    public function type(string $type): static
-    {
-        $this->type = $type;
-        return $this;
-    }
 
     /**
      * Links the created Brand to the given filter via FilterBrand.
@@ -92,7 +85,6 @@ class BrandBuilder
             'text_id'     => $this->textId      ?? 1,
             'name'        => $this->name        ?? $this->faker->company(),
             'description' => $this->description ?? $this->faker->text(255),
-            'type'        => $this->type        ?? $this->faker->word(),
         ]);
 
         foreach ($this->filterIds as $filterId) {

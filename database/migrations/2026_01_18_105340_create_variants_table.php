@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('variants', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Type::class)->constrained()->cascadeOnDelete();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('description');
             $table->timestamps();
         });

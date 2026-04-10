@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(\App\Models\Product::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Image::class)->nullable()->constrained()->onDelete('set null');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('description');
             $table->integer('price');
             $table->boolean('is_set')->default(false);

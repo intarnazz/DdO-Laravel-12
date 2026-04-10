@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(\App\Models\Filter::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Image::class)->nullable()->constrained()->onDelete('set null');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('description');
             $table->boolean('is_visible')->default(false); // rand
             $table->timestamps();

@@ -14,9 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(\App\Models\Image::class)->nullable()->constrained()->onDelete('set null');
             $table->foreignIdFor(\App\Models\Text::class)->nullable()->constrained()->onDelete('set null');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('description');
-            $table->string('type');
             $table->timestamps();
         });
     }
