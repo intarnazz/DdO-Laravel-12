@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Builders;
+namespace Database\Seeders\builders;
 
 use App\Models\Brand;
 use App\Models\FilterBrand;
@@ -26,6 +26,8 @@ class BrandBuilder
 {
     protected Generator $faker;
 
+    private static ?Generator $sharedFaker = null;
+
     protected ?int    $imageId     = null;
     protected ?int    $textId      = null;
     protected ?string $name        = null;
@@ -42,6 +44,10 @@ class BrandBuilder
     public function __construct()
     {
         $this->faker = Factory::create();
+
+        if (static::$sharedFaker === null) {
+            static::$sharedFaker = Factory::create();
+        }
     }
 
     public function imageId(int $imageId): static
@@ -83,7 +89,7 @@ class BrandBuilder
         $brand = Brand::create([
             'image_id'    => $this->imageId     ?? 1,
             'text_id'     => $this->textId      ?? 1,
-            'name'        => $this->name        ?? $this->faker->company(),
+            'name'        => $this->name        ?? $this->faker->unique()->company(),
             'description' => $this->description ?? $this->faker->text(255),
         ]);
 

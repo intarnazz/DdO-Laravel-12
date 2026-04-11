@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Builders;
+namespace Database\Seeders\builders;
 
 use App\Models\Brand;
 use App\Models\Characteristic;
@@ -23,7 +23,7 @@ class CatalogBuilder
 {
     protected Generator $faker;
 
-    // --- Type ---
+    private static ?Generator $sharedFaker = null;
     protected string $name = '';
     protected ?string $visibleName = null;
     protected ?string $description = null;
@@ -74,6 +74,10 @@ class CatalogBuilder
     public function __construct()
     {
         $this->faker = Factory::create();
+
+        if (static::$sharedFaker === null) {
+            static::$sharedFaker = Factory::create();
+        }
     }
 
     // -----------------------------------------------------------------------
@@ -280,7 +284,7 @@ class CatalogBuilder
                 $iterationFilters[] = FilterBuilder::make()
                     ->linkToType($type->id)
                     ->withCharacteristics(array_map(
-                        fn(int $j) => ['image_id' => $image->id, 'name' => $this->faker->word()],
+                        fn(int $j) => ['name' => $this->faker->word(), 'image_id' => 1],
                         range(0, $this->generatedFilterCharacteristicsCount - 1)
                     ))
                     ->build();

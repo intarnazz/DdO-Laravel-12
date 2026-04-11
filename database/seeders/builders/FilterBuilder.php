@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Builders;
+namespace Database\Seeders\builders;
 
 use App\Models\Characteristic;
 use App\Models\Filter;
@@ -142,7 +142,7 @@ class FilterBuilder
      */
     public function build(): array
     {
-        $name = $this->name ?? static::$sharedFaker->unique()->word();
+        $name = $this->name ?? static::$sharedFaker->word();
 
         // Фильтры — общий справочник. Если фильтр с таким именем уже существует
         // (например, 'color' или 'brand' из другого каталога) — берём его,

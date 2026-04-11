@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Builders;
+namespace Database\Seeders\builders;
 
 use App\Models\Option;
 use Faker\Factory;
@@ -37,6 +37,8 @@ class OptionBuilder
 {
     protected Generator $faker;
 
+    private static ?Generator $sharedFaker = null;
+
     protected ?int    $productId    = null;
     protected ?int    $imageId      = null;
     protected ?string $name         = null;
@@ -53,6 +55,10 @@ class OptionBuilder
     public function __construct()
     {
         $this->faker = Factory::create();
+
+        if (static::$sharedFaker === null) {
+            static::$sharedFaker = Factory::create();
+        }
     }
 
     public function productId(int $productId): static
@@ -103,7 +109,7 @@ class OptionBuilder
             'image_id'      => $this->imageId      ?? 1,
             'product_id'    => $this->productId    ?? 1,
             'price'         => $this->price        ?? $this->faker->biasedNumberBetween(1000, 20000),
-            'name'          => $this->name         ?? $this->faker->word(),
+            'name'          => $this->name         ?? $this->faker->unique()->word(),
             'description'   => $this->description  ?? $this->faker->text(255),
             'is_set'        => $this->isSet,
             'default_count' => $this->defaultCount,

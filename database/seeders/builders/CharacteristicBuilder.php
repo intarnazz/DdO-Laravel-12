@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Builders;
+namespace Database\Seeders\builders;
 
 use App\Models\Characteristic;
 use Faker\Factory;
@@ -34,6 +34,8 @@ class CharacteristicBuilder
 {
     protected Generator $faker;
 
+    private static ?Generator $sharedFaker = null;
+
     protected ?int    $imageId     = null;
     protected ?int    $filterId    = null;
     protected ?string $name        = null;
@@ -47,6 +49,10 @@ class CharacteristicBuilder
     public function __construct()
     {
         $this->faker = Factory::create();
+
+        if (static::$sharedFaker === null) {
+            static::$sharedFaker = Factory::create();
+        }
     }
 
     public function imageId(int $imageId): static

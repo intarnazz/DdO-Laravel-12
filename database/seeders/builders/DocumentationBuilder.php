@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Builders;
+namespace Database\Seeders\builders;
 
 use App\Models\Documentation;
 use Faker\Factory;
@@ -32,6 +32,8 @@ class DocumentationBuilder
 {
     protected Generator $faker;
 
+    private static ?Generator $sharedFaker = null;
+
     protected ?int    $textId      = null;
     protected ?string $name        = null;
     protected ?string $description = null;
@@ -45,6 +47,10 @@ class DocumentationBuilder
     public function __construct()
     {
         $this->faker = Factory::create();
+
+        if (static::$sharedFaker === null) {
+            static::$sharedFaker = Factory::create();
+        }
     }
 
     public function textId(int $textId): static
@@ -78,7 +84,7 @@ class DocumentationBuilder
     {
         $data = [
             'text_id'     => $this->textId      ?? 1,
-            'name'        => $this->name        ?? $this->faker->words(3, true),
+            'name'        => $this->name        ?? $this->faker->unique()->numerify('Doc-##### ') . $this->faker->words(2, true),
             'description' => $this->description ?? $this->faker->text(255),
         ];
 

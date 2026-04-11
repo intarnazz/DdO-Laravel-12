@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Builders;
+namespace Database\Seeders\builders;
 
 use App\Models\Gallery;
 use App\Models\Image;
@@ -40,6 +40,8 @@ class ProductBuilder
 {
     protected Generator $faker;
 
+    private static ?Generator $sharedFaker = null;
+
     protected ?int    $imagePrimaryId   = null;
     protected ?int    $imageSecondaryId = null;
     protected ?int    $typeId           = null;
@@ -71,6 +73,10 @@ class ProductBuilder
     public function __construct()
     {
         $this->faker = Factory::create();
+
+        if (static::$sharedFaker === null) {
+            static::$sharedFaker = Factory::create();
+        }
     }
 
     // -----------------------------------------------------------------------
@@ -229,11 +235,11 @@ class ProductBuilder
             'tag_id'             => $this->tagId            ?? null,
             'variant_id'         => $this->variantId        ?? null,
             'brand_id'           => $this->brandId          ?? null,
-            'name'               => $this->name             ?? $this->faker->text(16) . ' / ' . $this->faker->text(16),
+            'name'               => $this->name             ?? $this->faker->word() . ' / ' . $this->faker->words(2, true),
             'description'        => $this->description      ?? $this->faker->text(255),
             'video_url'          => $this->videoUrl         ?? $this->faker->url(),
             'price'              => $this->price            ?? $this->faker->biasedNumberBetween(10000, 50000),
-            'article'            => $this->article          ?? $this->faker->word() . '-' . $this->faker->word(),
+            'article'            => $this->article          ?? $this->faker->unique()->bothify('??###-??###'),
             'discount'           => $this->discount         ?? $this->faker->boolean(33) ? $this->faker->biasedNumberBetween(0, 100) : 0,
             'is_stock'           => $this->isStock,
             'is_in_store'        => $this->isInStore        ?? $this->faker->boolean(),

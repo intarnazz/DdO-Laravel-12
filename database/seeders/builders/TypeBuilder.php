@@ -34,6 +34,8 @@ class TypeBuilder
 {
     protected Generator $faker;
 
+    private static ?Generator $sharedFaker = null;
+
     // Type fields
     protected string $name        = '';
     protected ?string $visibleName = null;
@@ -68,6 +70,10 @@ class TypeBuilder
     public function __construct()
     {
         $this->faker = Factory::create();
+
+        if (static::$sharedFaker === null) {
+            static::$sharedFaker = Factory::create();
+        }
     }
 
     // -----------------------------------------------------------------------
@@ -271,11 +277,11 @@ class TypeBuilder
      */
     public static function addTagTo(int $typeId, ?string $name = null, ?string $description = null): \App\Models\Tag
     {
-        $faker = Factory::create();
+        $faker = static::$sharedFaker ?? (static::$sharedFaker = Factory::create());
 
         return \App\Models\Tag::create([
             'type_id'     => $typeId,
-            'name'        => $name        ?? $faker->word(),
+            'name'        => $name        ?? $faker->unique()->word(),
             'description' => $description ?? $faker->text(255),
         ]);
     }
@@ -286,11 +292,11 @@ class TypeBuilder
      */
     public static function addVariantTo(int $typeId, ?string $name = null, ?string $description = null): \App\Models\Variant
     {
-        $faker = Factory::create();
+        $faker = static::$sharedFaker ?? (static::$sharedFaker = Factory::create());
 
         return \App\Models\Variant::create([
             'type_id'     => $typeId,
-            'name'        => $name        ?? $faker->word(),
+            'name'        => $name        ?? $faker->unique()->numerify('variant-#####'),
             'description' => $description ?? $faker->text(255),
         ]);
     }

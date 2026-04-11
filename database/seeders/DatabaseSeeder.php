@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\Builders\CatalogBuilder;
-use Database\Seeders\Builders\ContactBuilder;
-use Database\Seeders\Builders\DocumentationBuilder;
-use Database\Seeders\Builders\ImageBuilder;
-use Database\Seeders\Builders\TextBuilder;
-use Database\Seeders\Builders\VacancyBuilder;
+use Database\Seeders\builders\CatalogBuilder;
+use Database\Seeders\builders\ContactBuilder;
+use Database\Seeders\builders\DocumentationBuilder;
+use Database\Seeders\builders\ImageBuilder;
+use Database\Seeders\builders\TextBuilder;
+use Database\Seeders\builders\VacancyBuilder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
@@ -78,7 +78,7 @@ class DatabaseSeeder extends Seeder
             ->withImages($entranceDoorsImages)
             ->withColorFilter([
                 'F5F5F5', 'FFFCD6', 'D59057', '94471E', '75300B',
-                '929492', '35170C', '000000', '000000', '000000',
+                '929492', '35170C', '000000', '000001', '000002',
             ])
             ->withColorsPerProduct(2)
             ->withBrandFilter()                    // ← бренды создаются здесь

@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Builders;
+namespace Database\Seeders\builders;
 
 use App\Models\Vacancy;
 use Faker\Factory;
@@ -20,6 +20,8 @@ class VacancyBuilder
 {
     protected Generator $faker;
 
+    private static ?Generator $sharedFaker = null;
+
     protected ?string $name        = null;
     protected ?string $description = null;
     protected ?int    $price       = null;
@@ -32,6 +34,10 @@ class VacancyBuilder
     public function __construct()
     {
         $this->faker = Factory::create();
+
+        if (static::$sharedFaker === null) {
+            static::$sharedFaker = Factory::create();
+        }
     }
 
     public function name(string $name): static
@@ -55,7 +61,7 @@ class VacancyBuilder
     public function build(): Vacancy
     {
         return Vacancy::create([
-            'name'        => $this->name        ?? $this->faker->jobTitle(),
+            'name'        => $this->name        ?? $this->faker->word(),
             'description' => $this->description ?? $this->faker->text(255),
             'price'       => $this->price       ?? $this->faker->biasedNumberBetween(10000, 50000),
         ]);
