@@ -6,14 +6,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Option extends BaseModel
 {
-    protected $fillable = [
-        'name',
-        'description',
-        'price',
-        'is_set',
-        'default_count',
-    ];
-
     protected $with = ['image'];
     protected array $with_one_only = ['product'];
 

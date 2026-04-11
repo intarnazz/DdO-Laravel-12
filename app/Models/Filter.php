@@ -9,11 +9,6 @@ use Illuminate\Support\Collection;
 
 class Filter extends BaseModel
 {
-    protected $fillable = [
-        'name',
-        'description',
-        'type',
-    ];
 
     public function __construct()
     {

@@ -8,12 +8,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class Type extends BaseModel
 {
-    protected $fillable = [
-        'name',
-        'visible_name',
-        'description',
-    ];
-
     protected array $with_one_only = ['filters', 'tags'];
     protected static bool $isTree = true;
 

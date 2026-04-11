@@ -33,20 +33,6 @@ class Product extends BaseModel
     use Searchable;
 
     /**
-     * Атрибуты, которые могут быть массово присвоены.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'description',
-        'video_url',
-        'price',
-        'article',
-        'discount',
-    ];
-
-    /**
      * Отношения, которые загружаются жадно при каждом запросе.
      *
      * @var array<int, string>

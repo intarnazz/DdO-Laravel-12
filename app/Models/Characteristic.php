@@ -7,10 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Characteristic extends BaseModel
 {
-    protected $fillable = [
-        'name',
-        'description',
-    ];
 
     protected $with = ['image'];
     protected array $with_one_only = ['product'];

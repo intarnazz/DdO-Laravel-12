@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Variant extends BaseModel
 {
-    protected $fillable = [
-        'name',
-        'description',
-    ];
-
     protected array $with_one_only = ['type'];
 
 

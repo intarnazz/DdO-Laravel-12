@@ -6,11 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Brand extends BaseModel
 {
-    protected $fillable = [
-        'name',
-        'description',
-        'type'
-    ];
     protected $with = ['image'];
 
     protected array $with_one_only = ['text'];
