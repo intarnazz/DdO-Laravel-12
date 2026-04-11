@@ -10,10 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('filter_brands', function (Blueprint $table) {
+        Schema::create('brands', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\Image::class)->nullable()->constrained()->onDelete('set null');
+            $table->foreignIdFor(\App\Models\Text::class)->nullable()->constrained()->onDelete('set null');
             $table->foreignIdFor(\App\Models\Filter::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\Brand::class)->constrained()->cascadeOnDelete();
+            $table->string('name')->unique();
+            $table->string('description');
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('filter_brands');
+        Schema::dropIfExists('brands');
     }
 };

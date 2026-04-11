@@ -3,7 +3,6 @@
 namespace Database\Seeders\Builders;
 
 use App\Models\Filter;
-use App\Models\FilterBrand;
 use App\Models\Tag;
 use App\Models\Type;
 use App\Models\TypeFilter;
@@ -51,12 +50,6 @@ class TypeBuilder
 
     /** @var array<int, array{name: string, description: string}> */
     protected array $variants = [];
-
-    /**
-     * Brand IDs to associate with the first filter that has type === 'brand'.
-     * @var int[]
-     */
-    protected array $brandIds = [];
 
     // -----------------------------------------------------------------------
     // Factory
@@ -128,18 +121,6 @@ class TypeBuilder
             'type'        => $type ?? $name,
             'description' => $description ?? $this->faker->text(255),
         ];
-        return $this;
-    }
-
-    /**
-     * Associates the given brand IDs with the filter whose type === 'brand'.
-     * Call this after ->withFilter('brand', 'brand').
-     *
-     * @param int[] $brandIds
-     */
-    public function withBrandFilter(array $brandIds): static
-    {
-        $this->brandIds = $brandIds;
         return $this;
     }
 
@@ -227,16 +208,6 @@ class TypeBuilder
                 'type_id'   => $type->id,
                 'filter_id' => $filter->id,
             ]);
-
-            // If this is a brand filter and we have brand IDs — link them
-            if ($filterData['type'] === 'brand' && !empty($this->brandIds)) {
-                foreach ($this->brandIds as $brandId) {
-                    FilterBrand::create([
-                        'filter_id' => $filter->id,
-                        'brand_id'  => $brandId,
-                    ]);
-                }
-            }
 
             $createdFilters[] = $filter;
         }

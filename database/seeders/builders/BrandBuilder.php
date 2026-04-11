@@ -3,24 +3,20 @@
 namespace Database\Seeders\builders;
 
 use App\Models\Brand;
-use App\Models\FilterBrand;
 use Faker\Factory;
 use Faker\Generator;
 
 /**
- * Builder for Brand (+ optional FilterBrand links).
+ * Builder for Brand.
  *
  * Usage:
  *   $brand = BrandBuilder::make()
  *       ->imageId(1)
  *       ->textId(1)
+ *       ->filterId(42)
  *       ->name('Torex')
  *       ->description('Российский производитель...')
- *       ->linkToFilter(42)       // links FilterBrand to this filter_id
  *       ->build();
- *
- *   // Multiple filter links:
- *   BrandBuilder::make()->name('Bravo')->linkToFilter(1)->linkToFilter(2)->build();
  */
 class BrandBuilder
 {
@@ -30,11 +26,9 @@ class BrandBuilder
 
     protected ?int    $imageId     = null;
     protected ?int    $textId      = null;
+    protected ?int    $filterId    = null;
     protected ?string $name        = null;
     protected ?string $description = null;
-
-    /** @var int[] */
-    protected array $filterIds = [];
 
     public static function make(): static
     {
@@ -76,30 +70,22 @@ class BrandBuilder
 
 
     /**
-     * Links the created Brand to the given filter via FilterBrand.
+     * Sets the filter_id on the Brand (direct FK, replaces FilterBrand pivot).
      */
-    public function linkToFilter(int $filterId): static
+    public function filterId(int $filterId): static
     {
-        $this->filterIds[] = $filterId;
+        $this->filterId = $filterId;
         return $this;
     }
 
     public function build(): Brand
     {
-        $brand = Brand::create([
-            'image_id'    => $this->imageId     ?? 1,
-            'text_id'     => $this->textId      ?? 1,
+        return Brand::create([
+            'image_id'    => $this->imageId  ?? 1,
+            'text_id'     => $this->textId   ?? 1,
+            'filter_id'   => $this->filterId ?? 1,
             'name'        => $this->name        ?? $this->faker->unique()->company(),
             'description' => $this->description ?? $this->faker->text(255),
         ]);
-
-        foreach ($this->filterIds as $filterId) {
-            FilterBrand::create([
-                'filter_id' => $filterId,
-                'brand_id'  => $brand->id,
-            ]);
-        }
-
-        return $brand;
     }
 }

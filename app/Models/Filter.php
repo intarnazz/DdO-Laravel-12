@@ -30,9 +30,9 @@ class Filter extends BaseModel
         };
     }
 
-    public function brands(): BelongsToMany
+    public function brands(): HasMany
     {
-        return $this->belongsToMany(Brand::class, 'filter_brands', 'filter_id', 'brand_id');
+        return $this->hasMany(Brand::class);
     }
 
     public function characteristics(): HasMany

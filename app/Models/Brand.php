@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Brand extends BaseModel
 {
     protected $with = ['image'];
 
-    protected array $with_one_only = ['text'];
+    protected array $with_one_only = ['text', 'filter.types'];
 
     protected static function booted()
     {
@@ -16,6 +18,11 @@ class Brand extends BaseModel
             $brand->text()->delete();
             $brand->image()->delete();
         });
+    }
+
+    public function filter(): BelongsTo
+    {
+        return $this->belongsTo(Filter::class);
     }
 
     public function image()

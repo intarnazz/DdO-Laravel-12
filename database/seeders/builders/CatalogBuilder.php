@@ -274,7 +274,7 @@ class CatalogBuilder
                 $brand = BrandBuilder::make()
                     ->imageId($image->id)
                     ->textId($text->id)
-                    ->linkToFilter($brandFilter->id)
+                    ->filterId($brandFilter->id)
                     ->build();
                 $brands[] = $brand;
             }
