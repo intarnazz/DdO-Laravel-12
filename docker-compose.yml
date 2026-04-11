@@ -21,10 +21,10 @@ services:
             - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
             - app-storage:/var/www/storage
             - app-config:/var/www/config
-            - app-app:/var/www/app
+            - ./app:/var/www/app
             - app-resources:/var/www/resources
             - app-routes:/var/www/routes
-            - app-database:/var/www/database
+            - ./database:/var/www/database
             - app-lang:/var/www/lang
             - app-vendor:/var/www/vendor
         ports:
