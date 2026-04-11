@@ -6,13 +6,12 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libpng-dev \
     libzip-dev \
-    libicu-dev \
     unzip \
     git \
     && docker-php-ext-configure gd \
         --with-freetype \
         --with-jpeg \
-    && docker-php-ext-install gd pdo_mysql zip intl
+    && docker-php-ext-install gd pdo_mysql zip
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -23,5 +22,3 @@ COPY . /var/www
 RUN composer install \
     && mkdir -p /var/www/storage /var/www/bootstrap/cache \
     && chown -R www-data:www-data /var/www
-
-RUN php artisan storage:link --force
