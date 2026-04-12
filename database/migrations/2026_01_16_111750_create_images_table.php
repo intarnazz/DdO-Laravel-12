@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name')->unique();
             $table->string('path')->unique();
+            $table->string('type')->default('img');
             $table->timestamps();
         });
     }

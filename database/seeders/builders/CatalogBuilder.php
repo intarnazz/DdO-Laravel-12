@@ -46,6 +46,8 @@ class CatalogBuilder
     protected bool $hasBrandFilter = false;
     /** @var Brand[] */
     protected array $brands = [];               // ← новые бренды из сеедера
+    /** @var \App\Models\Image[] */
+    protected array $brandImages = [];          // ← отдельные картинки для брендов (напр. svg-логотипы)
 
     // --- Фильтр size ---
     protected bool $hasSizeFilter = false;
@@ -168,6 +170,19 @@ class CatalogBuilder
         return $this;
     }
 
+    /**
+     * Отдельные изображения для брендов (напр. svg-логотипы).
+     * Используются вместо product-изображений при автогенерации брендов.
+     * Берутся по индексу итерации (циклически).
+     *
+     * @param \App\Models\Image[] $images
+     */
+    public function withBrandImages(array $images): static
+    {
+        $this->brandImages = $images;
+        return $this;
+    }
+
     public function withSizeFilter(array $sizeValues): static
     {
         $this->hasSizeFilter = true;
@@ -271,8 +286,12 @@ class CatalogBuilder
                 $brand = $this->brands[$iterationIndex] ?? null;
             } elseif ($brandFilter !== null) {
                 $text = TextBuilder::make()->build();
+                // Логотип берём из brandImages (svg), иначе — текущее product-изображение
+                $brandImageId = !empty($this->brandImages)
+                    ? ($this->brandImages[$iterationIndex % count($this->brandImages)]->id)
+                    : $image->id;
                 $brand = BrandBuilder::make()
-                    ->imageId($image->id)
+                    ->imageId($brandImageId)
                     ->textId($text->id)
                     ->filterId($brandFilter->id)
                     ->build();
