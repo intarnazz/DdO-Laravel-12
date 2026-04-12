@@ -64,7 +64,6 @@ class DatabaseSeeder extends Seeder
 
         foreach (range(1, 17) as $i) {
             VacancyBuilder::make()->build();
-            ContactBuilder::make()->build();
 
             $text = TextBuilder::make()->build();
             $rootDoc = DocumentationBuilder::make()->textId($text->id)->build();
