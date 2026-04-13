@@ -10,6 +10,15 @@ class Brand extends BaseModel
 {
     protected $with = ['image'];
 
+    /**
+     * Сортируемые атрибуты модели.
+     *
+     * @var array<int, string>
+     */
+    protected static array $sortable = [
+        'id',
+    ];
+
     protected array $with_one_only = ['text', 'filter.types'];
 
     protected static function booted()
