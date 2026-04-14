@@ -261,7 +261,7 @@ abstract class BaseModel extends Model
 
 //        Log::channel('daily')->debug('=== START PRODUCT REQUEST ===', [
 //            'full_url' => $request->fullUrl(),
-//            'all_params' => $request->all(),           // все твои brand, qui, non и т.д.
+//            'all_params' => $request->all(),
 //            'ip' => $request->ip(),
 //            'user_agent' => $request->header('User-Agent'),
 //        ]);
@@ -295,7 +295,7 @@ abstract class BaseModel extends Model
 //
 //        Log::channel('daily')->debug('=== END PRODUCT REQUEST ===', [
 //            'memory' => memory_get_peak_usage(true) / 1024 / 1024 . ' MB',
-//            'time' => microtime(true) - LARAVEL_START, // если у тебя есть LARAVEL_START
+//            'time' => microtime(true) - LARAVEL_START,
 //        ]);
 
         return static::_response(
