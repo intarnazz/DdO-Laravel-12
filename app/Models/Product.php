@@ -38,6 +38,7 @@ class Product extends BaseModel
      * @var array<int, string>
      */
     protected $with = [
+        'type',
         'image_primary',
         'image_secondary',
         'variant',
@@ -52,7 +53,6 @@ class Product extends BaseModel
         'options',
         'colors',
         'variant.products.colors',
-        'type',
         'tag',
         'brand',
         'images',
