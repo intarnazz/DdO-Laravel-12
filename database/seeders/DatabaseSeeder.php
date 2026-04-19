@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Database\Seeders\builders\CatalogBuilder;
 use Database\Seeders\builders\ContactBuilder;
 use Database\Seeders\builders\DocumentationBuilder;
@@ -18,6 +19,13 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
+
+        User::create([
+            'name' => 'admin',
+            'email' => 'misha.vidiakin@gmail.com',
+            'password' => 'admin',
+        ]);
+
         // ----------------------------------------------------------------
         // 1. Контакты
         // ----------------------------------------------------------------
