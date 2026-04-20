@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->foreignIdFor(\App\Models\Text::class)->nullable()->constrained()->onDelete('set null');
             $table->foreignIdFor(\App\Models\Filter::class)->constrained()->cascadeOnDelete();
             $table->string('name')->unique();
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

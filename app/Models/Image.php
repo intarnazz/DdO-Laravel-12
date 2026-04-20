@@ -3,24 +3,26 @@
 namespace App\Models;
 
 use App\Http\Requests\ImageRequest;
+use Illuminate\Support\Facades\Storage;
 
 class Image extends BaseModel
 {
-    protected $guarded = ['id'];
-
     /**
      * Загружает новое фото и сохраняет в БД.
      * Ожидает файл в запросе, например, request()->file('file').
      *
      */
-    public static function add(ImageRequest $request)
+    public static function add(array $data)
     {
-        $request = $request->validated();
-        $image = Image::create([
-            'name' => $request['name'],
-            'path' => $request['file']->store('images', 'public'),
+        return Image::create([
+            'name' => $data['name'],
+            'path' => $data['file']->store('images', 'public'),
         ]);
+    }
 
-        return $image;
+    public static function remove(Image $image)
+    {
+        Storage::disk('public')->delete($image->path);
+        $image->delete();
     }
 }

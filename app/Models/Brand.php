@@ -34,12 +34,12 @@ class Brand extends BaseModel
         return $this->belongsTo(Filter::class);
     }
 
-    public function image()
+    public function image(): BelongsTo
     {
         return $this->belongsTo(Image::class);
     }
 
-    public function text()
+    public function text(): BelongsTo
     {
         return $this->belongsTo(Text::class);
     }
