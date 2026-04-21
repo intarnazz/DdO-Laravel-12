@@ -4,7 +4,9 @@ namespace App\Filament\Resources\Characteristics\Schemas;
 
 use App\Filament\Resources\Filters\FilterResource;
 use App\Filament\Schemas\Components\ImageSection;
+use App\Models\Filter;
 use Filament\Actions\Action;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -22,6 +24,7 @@ class CharacteristicForm
                 ImageSection::make('Фото характеристики')
                     ->columnSpanFull(),
                 Select::make('filter_id')
+                    ->live()
                     ->relationship('filter', 'name',
                         modifyQueryUsing: fn(Builder $query) => $query->where('name', '!=', 'brand')
                     )
@@ -37,8 +40,27 @@ class CharacteristicForm
                             )
                             ->openUrlInNewTab()
                     ),
+
+                ColorPicker::make('name')
+                    ->label('Выбор цвета:')
+                    ->visible(fn(Get $get) => Filter::query()
+                        ->where('id', $get('filter_id'))
+                        ->where('name', 'color')
+                        ->exists()
+                    )
+                    ->hex()
+                    ->unique(
+                        modifyRuleUsing: fn(Unique $rule, Get $get) => $rule->where('filter_id', $get('filter_id'))
+                    )
+                    ->required(),
+
                 TextInput::make('name')
                     ->label('Краткое описание')
+                    ->visible(fn(Get $get) => !Filter::query()
+                        ->where('id', $get('filter_id'))
+                        ->where('name', 'color')
+                        ->exists()
+                    )
                     ->unique(
                         modifyRuleUsing: fn(Unique $rule, Get $get) => $rule->where('filter_id', $get('filter_id'))
                     )
