@@ -14,10 +14,12 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(\App\Models\Filter::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Image::class)->nullable()->constrained()->onDelete('set null');
-            $table->string('name');
-            $table->string('description');
-            $table->boolean('is_visible')->default(false); // rand
+            $table->string('name', 255);
+            $table->string('description', 255)->nullable();
+//            $table->boolean('is_visible')->default(false);
             $table->timestamps();
+
+            $table->unique(['filter_id', 'name'], 'filter_name_unique');
         });
     }
 

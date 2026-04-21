@@ -33,7 +33,6 @@ class ImageFieldset extends Fieldset
                 }),
             TextInput::make('name')
                 ->label('Имя для фото')
-                ->unique()
                 ->required(),
             Hidden::make('type')
                 ->default('img'),

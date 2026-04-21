@@ -19,10 +19,12 @@ class BrandForm
                 TextInput::make('name')
                     ->label('Имя бренда')
                     ->unique()
+                    ->maxLength(255)
                     ->required(),
                 Textarea::make('description')
                     ->label('Описание')
                     ->autosize()
+                    ->maxLength(255)
                     ->columnSpanFull(),
                 TextSection::make('Текст бренда')
                     ->columnSpanFull(),

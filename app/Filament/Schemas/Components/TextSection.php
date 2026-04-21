@@ -17,7 +17,7 @@ class TextSection extends Section
         parent::setUp();
 
         $this->schema([
-            TextFieldset::make('Контент')
+            TextFieldset::make()
                 ->visible(fn(Get $get) => filled($get('text_id')))
                 ->columnSpanFull(),
             Actions::make([
@@ -26,8 +26,11 @@ class TextSection extends Section
                     ->icon('heroicon-o-plus')
                     ->visible(fn(Get $get) => blank($get('text_id')))
                     ->action(function ($record, $livewire) {
-                        $text = Text::create(['text' => '']);
+                        $text = Text::create(['text' => '///']);
                         $record->text_id = $text->id;
+                        $record->save();
+
+                        $record->load('text');
 
                         $livewire->refresh();
                         $livewire->refreshFormData(['text_id', 'text']);
@@ -42,6 +45,8 @@ class TextSection extends Section
                         $record->text?->delete();
                         $record->text_id = null;
                         $record->save();
+
+                        $record->load('text');
 
                         $livewire->refresh();
                         $livewire->refreshFormData(['text_id', 'text']);

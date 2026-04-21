@@ -3,9 +3,11 @@
 namespace App\Filament\Resources\Characteristics\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -15,30 +17,18 @@ class CharacteristicsTable
     {
         return $table
             ->columns([
-                TextColumn::make('filter.name')
-                    ->searchable(),
-                TextColumn::make('image.name')
-                    ->searchable(),
                 TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('description')
+                TextColumn::make('filter.name')
                     ->searchable(),
-                IconColumn::make('is_visible')
-                    ->boolean(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('updated_at', 'desc')
             ->filters([
                 //
             ])
             ->recordActions([
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
