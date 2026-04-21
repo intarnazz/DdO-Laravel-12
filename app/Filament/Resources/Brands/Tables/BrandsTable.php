@@ -21,6 +21,7 @@ class BrandsTable
                 TextColumn::make('name')
                     ->searchable(),
             ])
+            ->defaultSort('updated_at', 'desc')
             ->filters([
                 //
             ])
