@@ -12,9 +12,9 @@ return new class extends Migration {
     {
         Schema::create('filters', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('description');
-            $table->string('type')->unique();
+            $table->string('name', 255)->unique();
+            $table->string('description', 255);
+            $table->string('type', 255)->unique();
             $table->timestamps();
         });
     }
