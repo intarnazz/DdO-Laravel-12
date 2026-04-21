@@ -12,10 +12,10 @@ return new class extends Migration {
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description');
-            $table->enum('type', ['email', 'phone', 'url'])->default('url');
-            $table->string('link');
+            $table->string('name', 255);
+            $table->string('description', 255);
+//            $table->enum('type', ['email', 'phone', 'url'])->default('url');
+            $table->string('link', 255);
             $table->timestamps();
         });
     }

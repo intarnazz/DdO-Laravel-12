@@ -14,7 +14,6 @@ use Faker\Generator;
  *       ->name('phone')
  *       ->description('+79004807844')
  *       ->link('+79004807844')
- *       ->type('phone')
  *       ->build();
  *
  *   ContactBuilder::make()
@@ -34,7 +33,6 @@ class ContactBuilder
     protected string  $name        = '';
     protected ?string $description = null;
     protected ?string $link        = null;
-    protected ?string $type        = null;
 
     public static function make(): static
     {
@@ -64,16 +62,6 @@ class ContactBuilder
         return $this;
     }
 
-    /**
-     * Optional explicit type (e.g. 'phone').
-     * If not set — omitted from the payload (stays null in DB).
-     */
-    public function type(string $type): static
-    {
-        $this->type = $type;
-        return $this;
-    }
-
     public function build(): Contact
     {
         $data = [
@@ -81,10 +69,6 @@ class ContactBuilder
             'description' => $this->description ?? $this->faker->text(255),
             'link'        => $this->link        ?? $this->faker->url(),
         ];
-
-        if ($this->type !== null) {
-            $data['type'] = $this->type;
-        }
 
         return Contact::create($data);
     }
