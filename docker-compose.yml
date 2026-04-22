@@ -15,16 +15,16 @@ services:
 #            - type: bind
 #              source: ./composer.lock
 #              target: /var/www/composer.lock
-            - type: bind
-              source: ./.env
-              target: /var/www/.env
+#            - type: bind
+#              source: ./.env
+#              target: /var/www/.env
             - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
-            - ./storage:/var/www/storage
+            - app-storage:/var/www/storage
             - app-config:/var/www/config
-            - ./app:/var/www/app
+            - app-app:/var/www/app
             - app-resources:/var/www/resources
             - app-routes:/var/www/routes
-            - ./database:/var/www/database
+            - app-database:/var/www/database
             - app-lang:/var/www/lang
             - app-vendor:/var/www/vendor
         ports:
@@ -38,7 +38,7 @@ services:
         working_dir: /var/www
         volumes:
             - app-data:/var/www
-            - ./storage:/var/www/storage
+            - app-storage:/var/www/storage
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf
         ports:
             - "8000:80"
