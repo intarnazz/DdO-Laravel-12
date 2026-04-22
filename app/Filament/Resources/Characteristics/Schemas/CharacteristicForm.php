@@ -23,24 +23,6 @@ class CharacteristicForm
             ->components([
                 ImageSection::make('Фото характеристики')
                     ->columnSpanFull(),
-                Select::make('filter_id')
-                    ->live()
-                    ->relationship('filter', 'name',
-                        modifyQueryUsing: fn(Builder $query) => $query->where('name', '!=', 'brand')
-                    )
-                    ->label('Относиться к фильтру:')
-                    ->required()
-                    ->suffixAction(
-                        Action::make('edit_filter')
-                            ->icon('heroicon-o-pencil-square')
-                            ->tooltip('Редактировать фильтр')
-                            ->url(fn($get) => $get('filter_id')
-                                ? FilterResource::getUrl('edit', ['record' => $get('filter_id')])
-                                : null
-                            )
-                            ->openUrlInNewTab()
-                    ),
-
                 ColorPicker::make('name')
                     ->label('Выбор цвета:')
                     ->visible(fn(Get $get) => Filter::query()
@@ -53,7 +35,6 @@ class CharacteristicForm
                         modifyRuleUsing: fn(Unique $rule, Get $get) => $rule->where('filter_id', $get('filter_id'))
                     )
                     ->required(),
-
                 TextInput::make('name')
                     ->label('Краткое описание')
                     ->visible(fn(Get $get) => !Filter::query()

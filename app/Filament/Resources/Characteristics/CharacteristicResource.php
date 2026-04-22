@@ -36,13 +36,4 @@ class CharacteristicResource extends Resource
             //
         ];
     }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => ListCharacteristics::route('/'),
-            'create' => CreateCharacteristic::route('/create'),
-            'edit' => EditCharacteristic::route('/{record}/edit'),
-        ];
-    }
 }
