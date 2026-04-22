@@ -16,6 +16,8 @@ class ProductsTable
     {
         return $table
             ->columns([
+                ImageColumn::make('image_primary.path')
+                    ->disk('public'),
                 TextColumn::make('type.name')
                     ->searchable(),
                 TextColumn::make('tag.name')
@@ -23,8 +25,6 @@ class ProductsTable
                 TextColumn::make('variant.name')
                     ->searchable(),
                 TextColumn::make('brand.name')
-                    ->searchable(),
-                ImageColumn::make('image_primary.name')
                     ->searchable(),
                 ImageColumn::make('image_secondary.name')
                     ->searchable(),

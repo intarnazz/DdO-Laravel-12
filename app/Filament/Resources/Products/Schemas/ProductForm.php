@@ -2,9 +2,13 @@
 
 namespace App\Filament\Resources\Products\Schemas;
 
+use App\Filament\Forms\Components\ImageFieldset;
+use App\Filament\Resources\Tags\TagResource;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 class ProductForm
@@ -13,12 +17,20 @@ class ProductForm
     {
         return $schema
             ->components([
+                ImageFieldset::make('Фото')
+                    ->relationship('image_primary')
+                    ->columnSpanFull(),
                 Select::make('type_id')
                     ->relationship('type', 'name')
-                    ->required(),
+                    ->required(), // TODO: sub
                 Select::make('tag_id')
                     ->relationship('tag', 'name')
-                    ->required(),
+                    ->suffixAction(
+                        Action::make('tag')
+                            ->visible(fn(Get $get) => filled($get('tag_id')))
+                            ->icon('heroicon-m-eye')
+                            ->url(fn(Get $get) => TagResource::getUrl('edit', ['record' => $get('tag_id')], $get('tag_id')))
+                            ->openUrlInNewTab()),
                 Select::make('variant_id')
                     ->relationship('variant', 'name')
                     ->required(),

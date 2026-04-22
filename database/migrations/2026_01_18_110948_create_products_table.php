@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Type::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\Tag::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Tag::class)->nullable()->constrained()->onDelete('set null');
             $table->foreignIdFor(\App\Models\Variant::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Brand::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Image::class, 'image_primary_id')->nullable()->constrained()->onDelete('set null');
