@@ -8,6 +8,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class FilterForm
 {
@@ -20,7 +21,7 @@ class FilterForm
                     ->maxLength(255)
                     ->unique()
                     ->required()
-                    ->afterStateUpdated(fn(Get $get, Set $set) => $set('type', $get('name'))),
+                    ->afterStateUpdated(fn(Get $get, Set $set) => $set('type', Str::slug($get('name')))),
                 Hidden::make('type'),
                 Textarea::make('description')
                     ->label('Описание')
