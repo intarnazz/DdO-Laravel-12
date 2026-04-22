@@ -14,12 +14,14 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(\App\Models\Product::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Image::class)->nullable()->constrained()->onDelete('set null');
-            $table->string('name');
-            $table->string('description');
+            $table->string('name', 255);
+            $table->string('description', 255)->nullable();
             $table->integer('price');
             $table->boolean('is_set')->default(false);
             $table->integer('default_count')->default(0);
             $table->timestamps();
+
+            $table->unique(['product_id', 'name'], 'unique_options');
         });
     }
 

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Options\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
@@ -15,36 +16,24 @@ class OptionsTable
     {
         return $table
             ->columns([
-                TextColumn::make('product.name')
-                    ->searchable(),
-                TextColumn::make('image.name')
-                    ->searchable(),
                 TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('description')
+                    ->label('Название')
                     ->searchable(),
                 TextColumn::make('price')
-                    ->money()
+                    ->label('Цена')
+                    ->money('RUB', locale: 'ru')
                     ->sortable(),
                 IconColumn::make('is_set')
+                    ->label('Комплект')
                     ->boolean(),
-                TextColumn::make('default_count')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('updated_at', 'desc')
             ->filters([
                 //
             ])
             ->recordActions([
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

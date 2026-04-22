@@ -19,8 +19,6 @@ class CharacteristicsTable
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('filter.name')
-                    ->searchable(),
             ])
             ->defaultSort('updated_at', 'desc')
             ->filters([
