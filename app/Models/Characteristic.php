@@ -9,7 +9,7 @@ class Characteristic extends BaseModel
 {
 
     protected $with = ['image'];
-    protected array $with_one_only = ['product'];
+    protected array $with_one_only = ['products'];
 
     public function filter(): BelongsTo
     {
