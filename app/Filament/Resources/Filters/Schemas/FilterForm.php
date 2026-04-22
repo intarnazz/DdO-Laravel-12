@@ -2,8 +2,11 @@
 
 namespace App\Filament\Resources\Filters\Schemas;
 
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 
 class FilterForm
@@ -16,13 +19,9 @@ class FilterForm
                     ->label('Название')
                     ->maxLength(255)
                     ->unique()
-                    ->required(),
-                TextInput::make('type')
-                    ->label('латинское название ( только латинские буквы, без цифр и пробелов)')
-                    ->maxLength(255)
-                    ->rule('regex:/^[a-zA-Z]+$/')
-                    ->unique()
-                    ->required(),
+                    ->required()
+                    ->afterStateUpdated(fn(Get $get, Set $set) => $set('type', $get('name'))),
+                Hidden::make('type'),
                 Textarea::make('description')
                     ->label('Описание')
                     ->autosize()
