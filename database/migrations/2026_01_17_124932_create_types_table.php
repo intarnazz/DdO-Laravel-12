@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('types', function (Blueprint $table) {
             $table->id();
             $table->foreignId('self_id')->nullable()->constrained('types')->cascadeOnDelete();
-            $table->string('name')->unique();
-            $table->string('visible_name')->nullable();
+            $table->string('name', 255)->unique();
+//            $table->string('visible_name')->nullable();
             $table->string('description');
             $table->timestamps();
         });

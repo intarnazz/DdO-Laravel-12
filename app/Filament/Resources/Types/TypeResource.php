@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Types;
 use App\Filament\Resources\Types\Pages\CreateType;
 use App\Filament\Resources\Types\Pages\EditType;
 use App\Filament\Resources\Types\Pages\ListTypes;
+use App\Filament\Resources\Types\RelationManagers\TypesRelationManager;
 use App\Filament\Resources\Types\Schemas\TypeForm;
 use App\Filament\Resources\Types\Tables\TypesTable;
 use App\Models\Type;
@@ -33,7 +34,7 @@ class TypeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TypesRelationManager::make()
         ];
     }
 

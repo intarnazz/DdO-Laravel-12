@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -25,6 +26,16 @@ class Type extends BaseModel
         }
 
         return $data;
+    }
+
+    public function type(): belongsTo
+    {
+        return $this->belongsTo(Type::class, 'self_id');
+    }
+
+    public function types(): hasMany
+    {
+        return $this->hasMany(Type::class, 'self_id');
     }
 
     public function tags(): HasMany

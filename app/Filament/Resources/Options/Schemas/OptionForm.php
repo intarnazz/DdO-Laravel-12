@@ -31,6 +31,8 @@ class OptionForm
                     )
                     ->required(),
                 TextInput::make('price')
+                    ->minValue(0)
+                    ->maxValue(1_000_000_000)
                     ->label('Цена')
                     ->required()
                     ->numeric()
@@ -41,7 +43,10 @@ class OptionForm
                 TextInput::make('default_count')
                     ->label('Базовое число комплектации / Установите 0 если не входит в комплект')
                     ->numeric()
-                    ->default(0),
+                    ->minValue(0)
+                    ->maxValue(100)
+                    ->default(0)
+                    ->required(),
                 Textarea::make('description')
                     ->label('Описание')
                     ->autosize()
