@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Types\RelationManagers;
 
 use App\Filament\Resources\Types\TypeResource;
 use App\Filament\Resources\Types\TypeResourceSub;
+use App\Filament\Resources\Types\TypeResourceSubDelete;
 use Filament\Actions\CreateAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Table;
@@ -12,7 +13,7 @@ class TypesRelationManager extends RelationManager
 {
     protected static string $relationship = 'types';
 
-    protected static ?string $relatedResource = TypeResourceSub::class;
+    protected static ?string $relatedResource = TypeResourceSubDelete::class;
 
     public function table(Table $table): Table
     {
