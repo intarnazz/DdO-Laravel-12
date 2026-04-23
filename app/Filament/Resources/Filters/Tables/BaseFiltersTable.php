@@ -18,8 +18,6 @@ class BaseFiltersTable
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('type')
-                    ->searchable(),
             ])
             ->defaultSort('filters.updated_at', 'desc')
             ->modifyQueryUsing(fn($query) => $query->where('name', '!=', 'brand'))

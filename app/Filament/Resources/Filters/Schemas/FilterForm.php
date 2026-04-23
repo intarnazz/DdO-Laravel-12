@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Filters\Schemas;
 
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Utilities\Get;

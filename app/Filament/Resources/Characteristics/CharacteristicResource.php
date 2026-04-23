@@ -7,6 +7,7 @@ use App\Filament\Resources\Characteristics\Pages\EditCharacteristic;
 use App\Filament\Resources\Characteristics\Pages\ListCharacteristics;
 use App\Filament\Resources\Characteristics\Schemas\CharacteristicForm;
 use App\Filament\Resources\Characteristics\Tables\CharacteristicsTable;
+use App\Filament\Resources\Characteristics\Tables\CharacteristicsTableColor;
 use App\Models\Characteristic;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -27,6 +28,9 @@ class CharacteristicResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $record = $table->getLivewire()->getOwnerRecord();
+
+        if ($record->name === 'color') return CharacteristicsTableColor::configure($table);
         return CharacteristicsTable::configure($table);
     }
 
