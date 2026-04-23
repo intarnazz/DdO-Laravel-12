@@ -6,6 +6,7 @@ use App\Filament\Resources\Types\Pages\CreateType;
 use App\Filament\Resources\Types\Pages\EditType;
 use App\Filament\Resources\Types\Pages\ListTypes;
 use App\Filament\Resources\Types\RelationManagers\FiltersRelationManager;
+use App\Filament\Resources\Types\RelationManagers\TagsRelationManager;
 use App\Filament\Resources\Types\RelationManagers\TypesRelationManager;
 use App\Filament\Resources\Types\Schemas\TypeForm;
 use App\Filament\Resources\Types\Tables\TypesTable;
@@ -39,6 +40,7 @@ class TypeResource extends Resource
         return [
             TypesRelationManager::make(),
             FiltersRelationManager::make(),
+            TagsRelationManager::make(),
         ];
     }
 

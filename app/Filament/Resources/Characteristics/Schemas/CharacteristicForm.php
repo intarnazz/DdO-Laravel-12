@@ -10,6 +10,7 @@ use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,7 +33,7 @@ class CharacteristicForm
                     )
                     ->hex()
                     ->unique(
-                        modifyRuleUsing: fn(Unique $rule, Get $get) => $rule->where('filter_id', $get('filter_id'))
+                        modifyRuleUsing: fn(Unique $rule, Get $get, RelationManager $livewire) => $rule->where('filter_id', $livewire->getOwnerRecord()->getKey())
                     )
                     ->required(),
                 TextInput::make('name')
@@ -43,7 +44,7 @@ class CharacteristicForm
                         ->exists()
                     )
                     ->unique(
-                        modifyRuleUsing: fn(Unique $rule, Get $get) => $rule->where('filter_id', $get('filter_id'))
+                        modifyRuleUsing: fn(Unique $rule, Get $get, RelationManager $livewire) => $rule->where('filter_id', $livewire->getOwnerRecord()->getKey())
                     )
                     ->maxLength(255)
                     ->required(),
