@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Filters;
 
+use App\Filament\Resources\BaseResource;
 use App\Filament\Resources\Filters\Pages\CreateFilter;
 use App\Filament\Resources\Filters\Pages\EditFilter;
 use App\Filament\Resources\Filters\Pages\ListFilters;
@@ -10,12 +11,11 @@ use App\Filament\Resources\Filters\Schemas\FilterForm;
 use App\Filament\Resources\Filters\Tables\FiltersTable;
 use App\Models\Filter;
 use BackedEnum;
-use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class FilterResource extends Resource
+class FilterResource extends BaseResource
 {
     protected static ?string $model = Filter::class;
 

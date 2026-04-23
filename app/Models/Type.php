@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -43,7 +44,7 @@ class Type extends BaseModel
         return $this->hasMany(Tag::class);
     }
 
-    public function filters()
+    public function filters(): BelongsToMany
     {
         return $this->belongsToMany(Filter::class, 'type_filters', 'type_id', 'filter_id');
     }
