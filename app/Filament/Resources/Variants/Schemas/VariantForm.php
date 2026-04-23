@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Variants\Schemas;
 
-use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
+use Illuminate\Validation\Rules\Unique;
 
 class VariantForm
 {
@@ -12,13 +14,20 @@ class VariantForm
     {
         return $schema
             ->components([
-                Select::make('type_id')
-                    ->relationship('type', 'name')
-                    ->required(),
                 TextInput::make('name')
+                    ->label('Название')
+                    ->maxLength(255)
+                    ->unique(
+                        modifyRuleUsing: fn(Unique $rule, RelationManager $livewire) => $rule->where('type_id', $livewire->getOwnerRecord()->getKey())
+                    )
                     ->required(),
-                TextInput::make('description')
-                    ->required(),
+                Textarea::make('description')
+                    ->label('Описание')
+                    ->maxLength(255)
+                    ->columnSpanFull()
+                    ->autosize()
+
+                ,
             ]);
     }
 }

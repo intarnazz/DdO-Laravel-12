@@ -20,7 +20,7 @@ class TagForm
                     ->label('Название')
                     ->maxLength(255)
                     ->unique(
-                        modifyRuleUsing: fn(Unique $rule, Get $get, RelationManager $livewire) => $rule->where('type_id', $livewire->getOwnerRecord()->getKey())
+                        modifyRuleUsing: fn(Unique $rule, RelationManager $livewire) => $rule->where('type_id', $livewire->getOwnerRecord()->getKey())
                     )
                     ->required(),
                 Textarea::make('description')

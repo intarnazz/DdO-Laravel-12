@@ -40,9 +40,9 @@ class VariantResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListVariants::route('/'),
-            'create' => CreateVariant::route('/create'),
-            'edit' => EditVariant::route('/{record}/edit'),
+//            'index' => ListVariants::route('/'),
+//            'create' => CreateVariant::route('/create'),
+//            'edit' => EditVariant::route('/{record}/edit'),
         ];
     }
 }

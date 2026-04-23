@@ -25,8 +25,12 @@ class Type extends BaseModel
         if (!empty($data['filters'])) foreach ($data['filters'] as $filter) {
             $filter->content();
         }
-
         return $data;
+    }
+
+    public function variants(): HasMany
+    {
+        return $this->hasMany(Variant::class);
     }
 
     public function type(): belongsTo
