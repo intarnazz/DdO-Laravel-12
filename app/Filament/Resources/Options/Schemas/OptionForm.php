@@ -19,8 +19,8 @@ class OptionForm
             ->components([
                 ImageSection::make('Фото опции')
                     ->columnSpanFull(),
-                Select::make('product_id') // TODO: дочерний
-                ->label('Отношение к продукту:')
+                Select::make('product_id')
+                    ->label('Отношение к продукту:')
                     ->relationship('product', 'name')
                     ->required(),
                 TextInput::make('name')
