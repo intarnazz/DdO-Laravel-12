@@ -18,9 +18,9 @@ return new class extends Migration {
             $table->foreignIdFor(\App\Models\Brand::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Image::class, 'image_primary_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignIdFor(\App\Models\Image::class, 'image_secondary_id')->nullable()->constrained()->onDelete('set null');
-            $table->string('name');
-            $table->string('description');
-            $table->string('video_url')->nullable();
+            $table->string('name', 255);
+            $table->string('description', 255)->nullable();
+            $table->string('video_url', 255)->nullable();
             $table->integer('views')->default(0);
             $table->integer('price');
             $table->tinyInteger('discount')->unsigned()->default(0);
@@ -28,6 +28,8 @@ return new class extends Migration {
             $table->boolean('is_stock')->default(false);
             $table->boolean('is_in_store')->default(false);
             $table->timestamps();
+
+            $table->unique(['name', 'variant_id'], 'products_variants_unique');
         });
     }
 

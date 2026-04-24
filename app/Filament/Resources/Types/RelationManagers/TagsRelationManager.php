@@ -4,7 +4,6 @@ namespace App\Filament\Resources\Types\RelationManagers;
 
 use App\Filament\Resources\Tags\TagResource;
 use Filament\Actions\CreateAction;
-use Filament\Forms\Components\Hidden;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Table;
 
@@ -19,6 +18,7 @@ class TagsRelationManager extends RelationManager
         return $table
             ->headerActions([
                 CreateAction::make()
+                    ->modal()
             ]);
     }
 }

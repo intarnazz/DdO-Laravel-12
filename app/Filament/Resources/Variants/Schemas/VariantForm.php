@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Variants\Schemas;
 
+use App\Filament\Resources\Types\RelationManagers\VariantsRelationManager;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -14,6 +16,15 @@ class VariantForm
     {
         return $schema
             ->components([
+                Select::make('type_id')
+                    ->relationship('type', 'name')
+                    ->disabled(fn($livewire) => $livewire instanceof VariantsRelationManager)
+                    ->default(function ($livewire) {
+                        if ($livewire instanceof VariantsRelationManager) return $livewire->getOwnerRecord()->getKey();
+                        return null;
+                    })
+                    ->dehydrated()
+                    ->required(),
                 TextInput::make('name')
                     ->label('Название')
                     ->maxLength(255)

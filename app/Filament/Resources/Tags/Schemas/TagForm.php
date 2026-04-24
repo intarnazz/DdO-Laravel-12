@@ -2,10 +2,10 @@
 
 namespace App\Filament\Resources\Tags\Schemas;
 
-use Filament\Forms\Components\Hidden;
+use App\Filament\Resources\Types\RelationManagers\TagsRelationManager;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Validation\Rules\Unique;
@@ -16,11 +16,20 @@ class TagForm
     {
         return $schema
             ->components([
+                Select::make('type_id')
+                    ->relationship('type', 'name')
+                    ->disabled(fn($livewire) => $livewire instanceof TagsRelationManager)
+                    ->dehydrated()
+                    ->default(function ($livewire) {
+                        if ($livewire instanceof TagsRelationManager) return $livewire->getOwnerRecord()->getKey();
+                        return null;
+                    })
+                    ->required(),
                 TextInput::make('name')
                     ->label('Название')
                     ->maxLength(255)
                     ->unique(
-                        modifyRuleUsing: fn(Unique $rule, RelationManager $livewire) => $rule->where('type_id', $livewire->getOwnerRecord()->getKey())
+                        modifyRuleUsing: fn(Unique $rule, Get $get) => $rule->where('type_id', $get('type_id'))
                     )
                     ->required(),
                 Textarea::make('description')

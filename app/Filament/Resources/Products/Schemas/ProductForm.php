@@ -3,13 +3,21 @@
 namespace App\Filament\Resources\Products\Schemas;
 
 use App\Filament\Forms\Components\ImageFieldset;
-use App\Filament\Resources\Tags\TagResource;
-use Filament\Actions\Action;
+use App\Filament\Resources\Brands\RelationManagers\ProductsRelationManager as BrandProductsRelationManager;
+use App\Filament\Resources\Tags\RelationManagers\ProductsRelationManager as TagProductsRelationManager;
+use App\Filament\Resources\Types\RelationManagers\ProductsRelationManager as TypeProductsRelationManager;
+use App\Filament\Resources\Variants\RelationManagers\ProductsRelationManager as VariantProductsRelationManager;
+use App\Models\Tag;
+use App\Models\Variant;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Illuminate\Validation\Rules\Unique;
 
 class ProductForm
 {
@@ -20,51 +28,101 @@ class ProductForm
                 ImageFieldset::make('Фото')
                     ->relationship('image_primary')
                     ->columnSpanFull(),
-                Select::make('type_id')
-                    ->relationship('type', 'name')
-                    ->required(), // TODO: sub
-                Select::make('tag_id')
-                    ->relationship('tag', 'name')
-                    ->suffixAction(
-                        Action::make('tag')
-                            ->visible(fn(Get $get) => filled($get('tag_id')))
-                            ->icon('heroicon-m-eye')
-                            ->url(fn(Get $get) => TagResource::getUrl('edit', ['record' => $get('tag_id')], $get('tag_id')))
-                            ->openUrlInNewTab()),
-                Select::make('variant_id')
-                    ->relationship('variant', 'name')
-                    ->required(),
+                Section::make()
+                    ->schema([
+                        Select::make('type_id')
+                            ->relationship('type', 'name')
+                            ->live()
+                            ->disabled(fn($livewire) => $livewire instanceof TypeProductsRelationManager
+                                || $livewire instanceof TagProductsRelationManager
+                                || $livewire instanceof VariantProductsRelationManager
+                            )
+                            ->dehydrated()
+                            ->default(function ($livewire) {
+                                if ($livewire instanceof TypeProductsRelationManager) return $livewire->getOwnerRecord()->getKey();
+                                if ($livewire instanceof RelationManager) return $livewire->getOwnerRecord()->type_id;
+                                return null;
+                            })
+                            ->required(),
+                        Select::make('tag_id')
+                            ->relationship('tag', 'name')
+                            ->disabled(fn($livewire, Get $get) => $livewire instanceof TagProductsRelationManager || blank($get('type_id')))
+                            ->dehydrated()
+                            ->options(
+                                fn(Get $get) => Tag::where(
+                                    'type_id',
+                                    $get('type_id'))->pluck('name', 'id')
+                            )
+                            ->default(function ($livewire) {
+                                if ($livewire instanceof TagProductsRelationManager) return $livewire->getOwnerRecord()->getKey();
+                                return null;
+                            }),
+                        Select::make('variant_id')
+                            ->relationship('variant', 'name')
+                            ->disabled(fn($livewire, Get $get) => $livewire instanceof VariantProductsRelationManager || blank($get('type_id')))
+                            ->dehydrated()
+                            ->options(
+                                fn(Get $get) => Variant::where(
+                                    'type_id',
+                                    $get('type_id'))->pluck('name', 'id')
+                            )
+                            ->default(function ($livewire) {
+                                if ($livewire instanceof VariantProductsRelationManager) return $livewire->getOwnerRecord()->getKey();
+                                return null;
+                            })
+                            ->required(),
+                    ])
+                    ->columnSpanFull(),
                 Select::make('brand_id')
                     ->relationship('brand', 'name')
+                    ->disabled(fn($livewire) => $livewire instanceof BrandProductsRelationManager)
+                    ->dehydrated()
+                    ->default(function ($livewire) {
+                        if ($livewire instanceof BrandProductsRelationManager) return $livewire->getOwnerRecord()->getKey();
+                        return null;
+                    })
                     ->required(),
-                Select::make('image_primary_id')
-                    ->relationship('image_primary', 'name'),
-                Select::make('image_secondary_id')
-                    ->relationship('image_secondary', 'name'),
                 TextInput::make('name')
-                    ->required(),
-                TextInput::make('description')
+                    ->label('Название')
+                    ->maxLength(255)
+                    ->unique(
+                        modifyRuleUsing: fn(Unique $rule, Get $get) => $rule->where('variant_id', $get('variant_id'))
+                    )
                     ->required(),
                 TextInput::make('video_url')
+                    ->label('Ссылка на видео')
+                    ->maxLength(255)
                     ->url(),
-                TextInput::make('views')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
                 TextInput::make('price')
+                    ->minValue(0)
+                    ->maxValue(1_000_000_000)
+                    ->label('Цена')
                     ->required()
                     ->numeric()
-                    ->prefix('$'),
+                    ->prefix('₽'),
                 TextInput::make('discount')
-                    ->required()
                     ->numeric()
+                    ->minValue(0)
+                    ->maxValue(100)
+                    ->label('Скидка')
+                    ->numeric()
+                    ->prefix('%')
                     ->default(0),
                 TextInput::make('article')
+                    ->label('Артикль')
+                    ->maxLength(255)
                     ->required(),
                 Toggle::make('is_stock')
-                    ->required(),
+                    ->label('В наличии к покупке')
+                ,
                 Toggle::make('is_in_store')
-                    ->required(),
+                    ->label('Присутствует в магазине')
+                ,
+                Textarea::make('description')
+                    ->label('Описание')
+                    ->maxLength(255)
+                    ->autosize()
+                    ->columnSpanFull(),
             ]);
     }
 }

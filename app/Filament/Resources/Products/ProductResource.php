@@ -40,9 +40,9 @@ class ProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListProducts::route('/'),
-            'create' => CreateProduct::route('/create'),
-            'edit' => EditProduct::route('/{record}/edit'),
+//            'index' => ListProducts::route('/'),
+//            'create' => CreateProduct::route('/create'),
+//            'edit' => EditProduct::route('/{record}/edit'),
         ];
     }
 }

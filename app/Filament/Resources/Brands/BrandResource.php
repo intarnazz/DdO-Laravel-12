@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Brands;
 use App\Filament\Resources\Brands\Pages\CreateBrand;
 use App\Filament\Resources\Brands\Pages\EditBrand;
 use App\Filament\Resources\Brands\Pages\ListBrands;
+use App\Filament\Resources\Brands\RelationManagers\ProductsRelationManager;
 use App\Filament\Resources\Brands\Schemas\BrandForm;
 use App\Filament\Resources\Brands\Tables\BrandsTable;
 use App\Models\Brand;
@@ -33,7 +34,7 @@ class BrandResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ProductsRelationManager::make(),
         ];
     }
 

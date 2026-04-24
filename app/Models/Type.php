@@ -28,6 +28,11 @@ class Type extends BaseModel
         return $data;
     }
 
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
     public function variants(): HasMany
     {
         return $this->hasMany(Variant::class);

@@ -6,6 +6,7 @@ use App\Filament\Resources\Types\Pages\CreateType;
 use App\Filament\Resources\Types\Pages\EditType;
 use App\Filament\Resources\Types\Pages\ListTypes;
 use App\Filament\Resources\Types\RelationManagers\FiltersRelationManager;
+use App\Filament\Resources\Types\RelationManagers\ProductsRelationManager;
 use App\Filament\Resources\Types\RelationManagers\TagsRelationManager;
 use App\Filament\Resources\Types\RelationManagers\TypesRelationManager;
 use App\Filament\Resources\Types\RelationManagers\VariantsRelationManager;
@@ -43,6 +44,7 @@ class TypeResource extends Resource
             FiltersRelationManager::make(),
             TagsRelationManager::make(),
             VariantsRelationManager::make(),
+            ProductsRelationManager::make(),
         ];
     }
 
