@@ -40,11 +40,11 @@ class TypeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            TypesRelationManager::make(),
-            FiltersRelationManager::make(),
-            TagsRelationManager::make(),
-            VariantsRelationManager::make(),
             ProductsRelationManager::make(),
+            VariantsRelationManager::make(),
+            TagsRelationManager::make(),
+            FiltersRelationManager::make(),
+            TypesRelationManager::make(),
         ];
     }
 

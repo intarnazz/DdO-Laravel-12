@@ -22,16 +22,12 @@ class ProductsTable
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('variant.name')
-                    ->limit()
                     ->searchable(),
                 TextColumn::make('type.name')
-                    ->limit()
                     ->searchable(),
                 TextColumn::make('tag.name')
-                    ->limit()
                     ->searchable(),
                 TextColumn::make('brand.name')
-                    ->limit()
                     ->searchable(),
             ])
             ->defaultSort('products.updated_at', 'desc')
