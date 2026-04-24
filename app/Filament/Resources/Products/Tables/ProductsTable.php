@@ -18,45 +18,20 @@ class ProductsTable
             ->columns([
                 ImageColumn::make('image_primary.path')
                     ->disk('public'),
-                TextColumn::make('type.name')
-                    ->searchable(),
-                TextColumn::make('tag.name')
-                    ->searchable(),
-                TextColumn::make('variant.name')
-                    ->searchable(),
-                TextColumn::make('brand.name')
-                    ->searchable(),
-                ImageColumn::make('image_secondary.name')
-                    ->searchable(),
                 TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('description')
+                TextColumn::make('variant.name')
+                    ->limit()
                     ->searchable(),
-                TextColumn::make('video_url')
+                TextColumn::make('type.name')
+                    ->limit()
                     ->searchable(),
-                TextColumn::make('views')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('price')
-                    ->money()
-                    ->sortable(),
-                TextColumn::make('discount')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('article')
+                TextColumn::make('tag.name')
+                    ->limit()
                     ->searchable(),
-                IconColumn::make('is_stock')
-                    ->boolean(),
-                IconColumn::make('is_in_store')
-                    ->boolean(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('brand.name')
+                    ->limit()
+                    ->searchable(),
             ])
             ->filters([
                 //
