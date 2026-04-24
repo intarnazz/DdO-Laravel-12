@@ -8,6 +8,7 @@ use App\Filament\Resources\Tags\RelationManagers\ProductsRelationManager as TagP
 use App\Filament\Resources\Types\RelationManagers\ProductsRelationManager as TypeProductsRelationManager;
 use App\Filament\Resources\Variants\RelationManagers\ProductsRelationManager as VariantProductsRelationManager;
 use App\Models\Tag;
+use App\Models\Type;
 use App\Models\Variant;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -25,9 +26,24 @@ class ProductForm
     {
         return $schema
             ->components([
-                ImageFieldset::make('Фото')
+                ImageFieldset::make('Основное фото')
                     ->relationship('image_primary')
-                    ->columnSpanFull(),
+                    ->columnSpan(
+                        function (Get $get) {
+                            $type = Type::find($get('type_id'));
+                            if ($type && $type->slug === 'entrance-doors') return null;
+                            return 'full';
+                        }
+                    ),
+                ImageFieldset::make('Фото внутреннего полотна двери')
+                    ->visible(
+                        function (Get $get) {
+                            $type = Type::find($get('type_id'));
+                            if ($type) return $type->slug === 'entrance-doors';
+                            return false;
+                        }
+                    )
+                    ->relationship('image_secondary'),
                 Section::make()
                     ->schema([
                         Select::make('type_id')
@@ -73,6 +89,7 @@ class ProductForm
                             ->required(),
                     ])
                     ->columnSpanFull(),
+
                 Select::make('brand_id')
                     ->relationship('brand', 'name')
                     ->disabled(fn($livewire) => $livewire instanceof BrandProductsRelationManager)
@@ -113,11 +130,9 @@ class ProductForm
                     ->maxLength(255)
                     ->required(),
                 Toggle::make('is_stock')
-                    ->label('В наличии к покупке')
-                ,
+                    ->label('В наличии к покупке'),
                 Toggle::make('is_in_store')
-                    ->label('Присутствует в магазине')
-                ,
+                    ->label('Присутствует в магазине'),
                 Textarea::make('description')
                     ->label('Описание')
                     ->maxLength(255)
