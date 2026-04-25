@@ -6,6 +6,8 @@ use App\Filament\Clusters\Type\TypeCluster;
 use App\Filament\Resources\Products\Pages\CreateProduct;
 use App\Filament\Resources\Products\Pages\EditProduct;
 use App\Filament\Resources\Products\Pages\ListProducts;
+use App\Filament\Resources\Products\RelationManagers\CharacteristicsRelationManager;
+use App\Filament\Resources\Products\RelationManagers\ColorsRelationManager;
 use App\Filament\Resources\Products\RelationManagers\GalleriesRelationManager;
 use App\Filament\Resources\Products\RelationManagers\OptionsRelationManager;
 use App\Filament\Resources\Products\Schemas\ProductForm;
@@ -35,6 +37,8 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
+            ColorsRelationManager::make(),
+            CharacteristicsRelationManager::make(),
             OptionsRelationManager::make(),
             GalleriesRelationManager::make(),
         ];

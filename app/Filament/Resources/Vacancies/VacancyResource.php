@@ -40,9 +40,9 @@ class VacancyResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListVacancies::route('/'),
-            'create' => CreateVacancy::route('/create'),
-            'edit' => EditVacancy::route('/{record}/edit'),
+//            'index' => ListVacancies::route('/'),
+//            'create' => CreateVacancy::route('/create'),
+//            'edit' => EditVacancy::route('/{record}/edit'),
         ];
     }
 }

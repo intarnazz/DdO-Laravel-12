@@ -2,15 +2,14 @@
 
 namespace App\Filament\Resources\Characteristics\Schemas;
 
-use App\Filament\Resources\Filters\FilterResource;
+use App\Filament\Resources\Filters\RelationManagers\CharacteristicsRelationManager as FilterCharacteristicsRelationManager;
+use App\Filament\Resources\Products\RelationManagers\ColorsRelationManager;
 use App\Filament\Schemas\Components\ImageSection;
 use App\Models\Filter;
-use Filament\Actions\Action;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,7 +22,25 @@ class CharacteristicForm
         return $schema
             ->components([
                 ImageSection::make('Фото характеристики')
+                    ->hidden(
+                        fn($livewire) => $livewire instanceof ColorsRelationManager
+                    )
                     ->columnSpanFull(),
+                Select::make('filter_id')
+                    ->relationship('filter', 'name', function (Builder $query, $livewire) {
+                        $query->where('name', '!=', 'brand');
+                        if (!($livewire instanceof ColorsRelationManager)) $query->where('name', '!=', 'color');
+                    }
+                    )
+                    ->live()
+                    ->disabled(fn($record, $livewire) => filled($record) || $livewire instanceof ColorsRelationManager)
+                    ->dehydrated()
+                    ->default(function ($livewire) {
+                        if ($livewire instanceof FilterCharacteristicsRelationManager) return $livewire->getOwnerRecord()->getKey();
+                        if ($livewire instanceof ColorsRelationManager) return Filter::where('name', 'color')->first()->id;;
+                        return null;
+                    })
+                    ->required(),
                 ColorPicker::make('name')
                     ->label('Выбор цвета:')
                     ->visible(fn(Get $get) => Filter::query()
@@ -33,7 +50,9 @@ class CharacteristicForm
                     )
                     ->hex()
                     ->unique(
-                        modifyRuleUsing: fn(Unique $rule, Get $get, RelationManager $livewire) => $rule->where('filter_id', $livewire->getOwnerRecord()->getKey())
+                        modifyRuleUsing: function (Unique $rule, Get $get) {
+                            return $rule->where('filter_id', $get('filter_id'));
+                        }
                     )
                     ->required(),
                 TextInput::make('name')
@@ -44,7 +63,9 @@ class CharacteristicForm
                         ->exists()
                     )
                     ->unique(
-                        modifyRuleUsing: fn(Unique $rule, Get $get, RelationManager $livewire) => $rule->where('filter_id', $livewire->getOwnerRecord()->getKey())
+                        modifyRuleUsing: function (Unique $rule, Get $get) {
+                            return $rule->where('filter_id', $get('filter_id'));
+                        }
                     )
                     ->maxLength(255)
                     ->required(),

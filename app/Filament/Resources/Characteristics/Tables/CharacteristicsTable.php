@@ -21,7 +21,7 @@ class CharacteristicsTable
                     ->limit()
                     ->searchable(),
             ])
-            ->defaultSort('updated_at', 'desc')
+            ->defaultSort('characteristics.updated_at', 'desc')
             ->filters([
                 //
             ])
