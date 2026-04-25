@@ -21,14 +21,14 @@ class ProductsTable
                     ->disk('public'),
                 TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('variant.name')
-                    ->searchable(),
-                TextColumn::make('type.name')
-                    ->searchable(),
-                TextColumn::make('tag.name')
-                    ->searchable(),
-                TextColumn::make('brand.name')
-                    ->searchable(),
+//                TextColumn::make('variant.name')
+//                    ->searchable(),
+//                TextColumn::make('type.name')
+//                    ->searchable(),
+//                TextColumn::make('tag.name')
+//                    ->searchable(),
+//                TextColumn::make('brand.name')
+//                    ->searchable(),
             ])
             ->defaultSort('products.updated_at', 'desc')
             ->filters([

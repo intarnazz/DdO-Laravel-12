@@ -206,6 +206,11 @@ class Product extends BaseModel
         return $this->belongsToMany(Image::class, 'galleries', 'product_id', 'image_id');
     }
 
+    public function galleries(): BelongsToMany
+    {
+        return $this->belongsToMany(Image::class, 'galleries', 'product_id', 'image_id');
+    }
+
     /**
      * Определяет отношение принадлежит-к с типом.
      *
