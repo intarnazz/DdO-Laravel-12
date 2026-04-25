@@ -40,9 +40,9 @@ class OptionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListOptions::route('/'),
-            'create' => CreateOption::route('/create'),
-            'edit' => EditOption::route('/{record}/edit'),
+//            'index' => ListOptions::route('/'),
+//            'create' => CreateOption::route('/create'),
+//            'edit' => EditOption::route('/{record}/edit'),
         ];
     }
 }

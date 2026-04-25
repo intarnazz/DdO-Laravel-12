@@ -21,7 +21,7 @@ class OptionsTable
                     ->searchable(),
                 TextColumn::make('price')
                     ->label('Цена')
-                    ->money('RUB', locale: 'ru')
+                    ->money('RUB', locale: 'ru', decimalPlaces: 0)
                     ->sortable(),
                 IconColumn::make('is_set')
                     ->label('Комплект')

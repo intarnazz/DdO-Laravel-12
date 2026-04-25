@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Options\Schemas;
 
+use App\Filament\Resources\Products\RelationManagers\OptionsRelationManager as ProductOptionsRelationManager;
 use App\Filament\Schemas\Components\ImageSection;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -22,6 +23,19 @@ class OptionForm
                 Select::make('product_id')
                     ->label('Отношение к продукту:')
                     ->relationship('product', 'name')
+                    ->default(
+                        function ($livewire) {
+                            if ($livewire instanceof ProductOptionsRelationManager) return $livewire->getOwnerRecord()->getKey();
+                            return null;
+                        }
+                    )
+                    ->disabled(
+                        function ($livewire) {
+                            if ($livewire instanceof ProductOptionsRelationManager) return $livewire->getOwnerRecord()->getKey();
+                            return null;
+                        }
+                    )
+                    ->dehydrated()
                     ->required(),
                 TextInput::make('name')
                     ->label('Название')
