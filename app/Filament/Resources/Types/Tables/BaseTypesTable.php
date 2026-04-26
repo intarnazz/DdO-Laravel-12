@@ -16,6 +16,7 @@ class BaseTypesTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Название')
                     ->searchable(),
             ])
             ->defaultSort('types.updated_at', 'desc')

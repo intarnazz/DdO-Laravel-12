@@ -36,8 +36,8 @@ class TypeBuilder
     private static ?Generator $sharedFaker = null;
 
     // Type fields
-    protected string $name        = '';
-    protected ?string $visibleName = null;
+    protected string  $name        = '';
+    protected ?string $slug        = null;
     protected ?string $description = null;
     protected ?int    $selfId      = null;
 
@@ -79,9 +79,9 @@ class TypeBuilder
         return $this;
     }
 
-    public function visibleName(string $visibleName): static
+    public function slug(string $slug): static
     {
-        $this->visibleName = $visibleName;
+        $this->slug = $slug;
         return $this;
     }
 
@@ -184,8 +184,8 @@ class TypeBuilder
             'description' => $this->description ?? $this->faker->text(255),
         ];
 
-        if ($this->visibleName !== null) {
-            $typeData['visible_name'] = $this->visibleName;
+        if ($this->slug !== null) {
+            $typeData['slug'] = $this->slug;
         }
 
         if ($this->selfId !== null) {
@@ -252,7 +252,7 @@ class TypeBuilder
 
         return \App\Models\Tag::create([
             'type_id'     => $typeId,
-            'name'        => $name        ?? $faker->unique()->word(),
+            'name'        => $name        ?? $faker->unique()->numerify('tag-#####'),
             'description' => $description ?? $faker->text(255),
         ]);
     }

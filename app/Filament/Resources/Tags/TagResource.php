@@ -18,6 +18,9 @@ class TagResource extends Resource
 {
     protected static ?string $model = Tag::class;
 
+    protected static ?string $modelLabel = 'Тег';
+    protected static ?string $pluralModelLabel = 'Теги';
+
     protected static ?string $cluster = TypeCluster::class;
 
     public static function form(Schema $schema): Schema

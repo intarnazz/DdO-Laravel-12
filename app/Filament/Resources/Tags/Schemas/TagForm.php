@@ -17,6 +17,7 @@ class TagForm
         return $schema
             ->components([
                 Select::make('type_id')
+                    ->label('Каталог')
                     ->relationship('type', 'name')
                     ->disabled(fn($livewire) => $livewire instanceof TagsRelationManager)
                     ->dehydrated()

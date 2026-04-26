@@ -17,6 +17,7 @@ class BaseFiltersTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Название')
                     ->searchable(),
             ])
             ->defaultSort('filters.updated_at', 'desc')

@@ -23,6 +23,9 @@ class TypeResource extends Resource
 {
     protected static ?string $model = Type::class;
 
+    protected static ?string $modelLabel = 'Каталог';
+    protected static ?string $pluralModelLabel = 'Каталоги';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'name';

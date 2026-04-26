@@ -21,6 +21,8 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
+    protected static ?string $modelLabel = 'Продукт';
+    protected static ?string $pluralModelLabel = 'Продукты';
 
     protected static ?string $cluster = TypeCluster::class;
 

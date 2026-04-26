@@ -84,7 +84,7 @@ class BrandBuilder
             'image_id'    => $this->imageId  ?? 1,
             'text_id'     => $this->textId   ?? 1,
             'filter_id'   => $this->filterId ?? 1,
-            'name'        => $this->name        ?? $this->faker->unique()->company(),
+            'name'        => $this->name        ?? static::$sharedFaker->unique()->company(),
             'description' => $this->description ?? $this->faker->text(255),
         ]);
     }

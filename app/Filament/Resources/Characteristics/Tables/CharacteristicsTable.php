@@ -16,8 +16,10 @@ class CharacteristicsTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('название')
                     ->searchable(),
                 textColumn::make('description')
+                    ->label('Описание')
                     ->limit()
                     ->searchable(),
             ])

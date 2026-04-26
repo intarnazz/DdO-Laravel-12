@@ -16,8 +16,10 @@ class ContactsTable
         return $table
             ->columns([
                 TextColumn::make('link')
+                    ->label('Ссылка')
                     ->searchable(),
                 TextColumn::make('name')
+                    ->label('Название')
                     ->searchable(),
             ])
             ->defaultSort('updated_at', 'desc')

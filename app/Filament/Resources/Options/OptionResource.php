@@ -18,6 +18,9 @@ class OptionResource extends Resource
 {
     protected static ?string $model = Option::class;
 
+    protected static ?string $modelLabel = 'Опция';
+    protected static ?string $pluralModelLabel = 'Опции';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function form(Schema $schema): Schema

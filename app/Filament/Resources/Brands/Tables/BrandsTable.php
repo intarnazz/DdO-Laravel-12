@@ -17,8 +17,10 @@ class BrandsTable
         return $table
             ->columns([
                 ImageColumn::make('image.path')
+                    ->label('Лого')
                     ->disk('public'),
                 TextColumn::make('name')
+                    ->label("Название")
                     ->searchable(),
             ])
             ->defaultSort('updated_at', 'desc')

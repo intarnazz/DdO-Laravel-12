@@ -16,6 +16,7 @@ class VariantsTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Название')
                     ->searchable(),
             ])
             ->defaultSort('variants.updated_at', 'desc')

@@ -17,7 +17,7 @@ use Faker\Generator;
  * Usage:
  *   OptionBuilder::make()
  *       ->productId($product->id)
- *       ->imageId($product->image_id)
+ *       ->imageId($product->image_primary_id)
  *       ->name('коробка')
  *       ->price(5000)
  *       ->isSet(true)
@@ -109,7 +109,7 @@ class OptionBuilder
             'image_id'      => $this->imageId      ?? 1,
             'product_id'    => $this->productId    ?? 1,
             'price'         => $this->price        ?? $this->faker->biasedNumberBetween(1000, 20000),
-            'name'          => $this->name         ?? $this->faker->unique()->word(),
+            'name'          => $this->name         ?? static::$sharedFaker->unique()->numerify('opt-#####'),
             'description'   => $this->description  ?? $this->faker->text(255),
             'is_set'        => $this->isSet,
             'default_count' => $this->defaultCount,
@@ -125,12 +125,12 @@ class OptionBuilder
      */
     public static function attachDefaults(\App\Models\Product $product): array
     {
-        $faker   = Factory::create();
+        $faker = static::$sharedFaker ?? (static::$sharedFaker = Factory::create());
         $options = [];
 
         $options[] = static::make()
             ->productId($product->id)
-            ->imageId($product->image_id ?? 1)
+            ->imageId($product->image_primary_id ?? 1)
             ->name('коробка')
             ->price($faker->biasedNumberBetween(1000, 20000))
             ->isSet(true)
@@ -139,7 +139,7 @@ class OptionBuilder
 
         $options[] = static::make()
             ->productId($product->id)
-            ->imageId($product->image_id ?? 1)
+            ->imageId($product->image_primary_id ?? 1)
             ->name('наличник')
             ->price($faker->biasedNumberBetween(1000, 20000))
             ->defaultCount(5)
@@ -148,7 +148,7 @@ class OptionBuilder
         foreach (range(1, 2) as $_) {
             $options[] = static::make()
                 ->productId($product->id)
-                ->imageId($product->image_id ?? 1)
+                ->imageId($product->image_primary_id ?? 1)
                 ->price($faker->biasedNumberBetween(1000, 20000))
                 ->build();
         }

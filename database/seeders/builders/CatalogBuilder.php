@@ -24,8 +24,8 @@ class CatalogBuilder
     protected Generator $faker;
 
     private static ?Generator $sharedFaker = null;
-    protected string $name = '';
-    protected ?string $visibleName = null;
+    protected string  $name        = '';
+    protected ?string $slug        = null;
     protected ?string $description = null;
     protected ?int $selfId = null;
 
@@ -92,9 +92,9 @@ class CatalogBuilder
         return $this;
     }
 
-    public function visibleName(string $visibleName): static
+    public function slug(string $slug): static
     {
-        $this->visibleName = $visibleName;
+        $this->slug = $slug;
         return $this;
     }
 
@@ -229,9 +229,9 @@ class CatalogBuilder
     {
         // ---- 1. Type -------------------------------------------------------
         $typeBuilder = TypeBuilder::make()->name($this->name);
-        if ($this->visibleName !== null) $typeBuilder->visibleName($this->visibleName);
+        if ($this->slug        !== null) $typeBuilder->slug($this->slug);
         if ($this->description !== null) $typeBuilder->description($this->description);
-        if ($this->selfId !== null) $typeBuilder->selfId($this->selfId);
+        if ($this->selfId      !== null) $typeBuilder->selfId($this->selfId);
         $type = $typeBuilder->build()['type'];
 
         // ---- 2. Color filter -----------------------------------------------
@@ -303,7 +303,7 @@ class CatalogBuilder
                 $iterationFilters[] = FilterBuilder::make()
                     ->linkToType($type->id)
                     ->withCharacteristics(array_map(
-                        fn(int $j) => ['name' => $this->faker->word(), 'image_id' => 1],
+                        fn(int $j) => ['name' => static::$sharedFaker->unique()->numerify('char-#####'), 'image_id' => 1],
                         range(0, $this->generatedFilterCharacteristicsCount - 1)
                     ))
                     ->build();

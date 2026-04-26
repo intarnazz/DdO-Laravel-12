@@ -18,6 +18,9 @@ class VariantResource extends Resource
 {
     protected static ?string $model = Variant::class;
 
+    protected static ?string $modelLabel = 'Модель';
+    protected static ?string $pluralModelLabel = 'Модели';
+
     protected static ?string $cluster = TypeCluster::class;
 
     public static function form(Schema $schema): Schema

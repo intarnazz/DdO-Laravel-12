@@ -17,6 +17,7 @@ class TypeForm
         return $schema
             ->components([
                 Select::make('self_id')
+                    ->label('Родительский каталог')
                     ->relationship('type', 'name')
                     ->suffixAction(
                         Action::make('type')

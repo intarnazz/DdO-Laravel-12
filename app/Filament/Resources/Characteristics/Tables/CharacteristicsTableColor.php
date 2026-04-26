@@ -12,8 +12,10 @@ class CharacteristicsTableColor extends CharacteristicsTable
     {
         return parent::configure($table)
             ->columns([
-                ColorColumn::make('name'),
+                ColorColumn::make('name')
+                    ->label('Цвет'),
                 textColumn::make('description')
+                    ->label('Описание')
                     ->limit()
                     ->searchable(),
             ]);

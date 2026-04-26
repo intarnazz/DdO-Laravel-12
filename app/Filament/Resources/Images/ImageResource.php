@@ -18,6 +18,9 @@ class ImageResource extends Resource
 {
     protected static ?string $model = Image::class;
 
+    protected static ?string $modelLabel = 'Фото';
+    protected static ?string $pluralModelLabel = 'Галерея';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function form(Schema $schema): Schema

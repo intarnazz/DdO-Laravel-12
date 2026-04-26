@@ -19,6 +19,9 @@ class CharacteristicResource extends Resource
 {
     protected static ?string $model = Characteristic::class;
 
+    protected static ?string $modelLabel = 'Характеристика';
+    protected static ?string $pluralModelLabel = 'Характеристики';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'name';

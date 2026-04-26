@@ -17,8 +17,10 @@ class ImagesTable
         return $table
             ->columns([
                 ImageColumn::make('path')
+                    ->label('Фото')
                     ->disk('public'),
                 TextColumn::make('name')
+                    ->label('Название')
                     ->searchable(),
             ])
             ->defaultSort('images.updated_at', 'desc')

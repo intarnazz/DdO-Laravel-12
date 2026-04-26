@@ -47,6 +47,7 @@ class ProductForm
                 Section::make()
                     ->schema([
                         Select::make('type_id')
+                            ->label('Каталог')
                             ->relationship('type', 'name')
                             ->live()
                             ->disabled(fn($livewire) => $livewire instanceof TypeProductsRelationManager
@@ -61,6 +62,7 @@ class ProductForm
                             })
                             ->required(),
                         Select::make('tag_id')
+                            ->label('Тег')
                             ->relationship('tag', 'name')
                             ->disabled(fn($livewire, Get $get) => $livewire instanceof TagProductsRelationManager || blank($get('type_id')))
                             ->dehydrated()
@@ -74,6 +76,7 @@ class ProductForm
                                 return null;
                             }),
                         Select::make('variant_id')
+                            ->label('Модель')
                             ->relationship('variant', 'name')
                             ->disabled(fn($livewire, Get $get) => $livewire instanceof VariantProductsRelationManager || blank($get('type_id')))
                             ->dehydrated()
@@ -91,6 +94,7 @@ class ProductForm
                     ->columnSpanFull(),
 
                 Select::make('brand_id')
+                    ->label('Бренд')
                     ->relationship('brand', 'name')
                     ->disabled(fn($livewire) => $livewire instanceof BrandProductsRelationManager)
                     ->dehydrated()

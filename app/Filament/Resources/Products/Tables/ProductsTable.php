@@ -18,8 +18,10 @@ class ProductsTable
         return $table
             ->columns([
                 ImageColumn::make('image_primary.path')
+                    ->label('Основная картинка')
                     ->disk('public'),
                 TextColumn::make('name')
+                    ->label('Название')
                     ->searchable(),
 //                TextColumn::make('variant.name')
 //                    ->searchable(),

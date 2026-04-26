@@ -20,6 +20,9 @@ class FilterResource extends Resource
 {
     protected static ?string $model = Filter::class;
 
+    protected static ?string $modelLabel = 'Фильтр';
+    protected static ?string $pluralModelLabel = 'Фильтры';
+
     protected static ?string $recordTitleAttribute = 'name';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;

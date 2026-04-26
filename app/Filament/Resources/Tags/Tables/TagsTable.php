@@ -16,6 +16,7 @@ class TagsTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Название')
                     ->searchable(),
             ])
             ->defaultSort('tags.updated_at', 'desc')

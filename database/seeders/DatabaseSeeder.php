@@ -42,7 +42,6 @@ class DatabaseSeeder extends Seeder
             ->name('phone')
             ->description('+79004807844')
             ->link('+79004807844')
-            ->type('phone')
             ->build();
         $this->command->line('    ✔ phone: +79004807844');
 
@@ -125,7 +124,7 @@ class DatabaseSeeder extends Seeder
 
         $entranceCatalog = CatalogBuilder::make()
             ->name('entrance-doors')
-            ->visibleName('Входные Двери')
+            ->slug('entrance-doors')
             ->withImages($entranceDoorsImages)
             ->withColorFilter([
                 'F5F5F5', 'FFFCD6', 'D59057', '94471E', '75300B',
@@ -134,7 +133,18 @@ class DatabaseSeeder extends Seeder
             ->withColorsPerProduct(2)
             ->withBrandFilter()                    // ← бренды создаются здесь
             ->withBrandImages($logoImages)         // ← svg-логотипы для брендов
-            ->withSizeFilter(array_fill(0, 10, '960×2050'))
+            ->withSizeFilter([
+                '960×2050',
+                '860×2050',
+                '960×2100',
+                '860×2100',
+                '960×2000',
+                '860×2000',
+                '900×2050',
+                '800×2050',
+                '900×2100',
+                '800×2100',
+            ])
             ->withGeneratedFilters(characteristicsPerFilter: 10)
             ->withTags()
             ->withVariants()
@@ -159,7 +169,7 @@ class DatabaseSeeder extends Seeder
 
         $interiorCatalog = CatalogBuilder::make()
             ->name('interior-doors')
-            ->visibleName('Межкомнатные Двери')
+            ->slug('interior-doors')
             ->withImages($interiorDoorsImages)
             ->withColorFilter([
                 'F5F5F5', 'FFFCD6', 'D59057', '94471E', '75300B',
@@ -168,7 +178,18 @@ class DatabaseSeeder extends Seeder
             ->withColorsPerProduct(1)
             ->withBrandFilter()                    // создаём фильтр brand (нужен для каталога)
             ->withBrands($commonBrands)            // ← используем общие бренды
-            ->withSizeFilter(array_fill(0, 10, '960×2050'))
+            ->withSizeFilter([
+                '960×2050',
+                '860×2050',
+                '960×2100',
+                '860×2100',
+                '960×2000',
+                '860×2000',
+                '900×2050',
+                '800×2050',
+                '900×2100',
+                '800×2100',
+            ])
             ->withGeneratedFilters(characteristicsPerFilter: 10)
             ->withTags()
             ->withVariants()
@@ -190,7 +211,6 @@ class DatabaseSeeder extends Seeder
 
         $kitchensCatalog = CatalogBuilder::make()
             ->name('kitchens')
-            ->visibleName('кухни')
             ->withImages($kitchensImages)
             ->withColorFilter([
                 'F5F5F5', 'FFFCD6', 'D59057', '94471E', '75300B',

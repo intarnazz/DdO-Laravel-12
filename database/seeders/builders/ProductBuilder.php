@@ -235,7 +235,7 @@ class ProductBuilder
             'tag_id'             => $this->tagId            ?? null,
             'variant_id'         => $this->variantId        ?? null,
             'brand_id'           => $this->brandId          ?? null,
-            'name'               => $this->name             ?? $this->faker->word() . ' / ' . $this->faker->words(2, true),
+            'name'               => $this->name             ?? static::$sharedFaker->unique()->numerify('P-#####') . ' ' . $this->faker->words(2, true),
             'description'        => $this->description      ?? $this->faker->text(255),
             'video_url'          => $this->videoUrl         ?? $this->faker->url(),
             'price'              => $this->price            ?? $this->faker->biasedNumberBetween(10000, 50000),

@@ -27,6 +27,7 @@ class CharacteristicForm
                     )
                     ->columnSpanFull(),
                 Select::make('filter_id')
+                    ->label('Фильтр')
                     ->relationship('filter', 'name', function (Builder $query, $livewire) {
                         $query->where('name', '!=', 'brand');
                         if (!($livewire instanceof ColorsRelationManager)) $query->where('name', '!=', 'color');

@@ -142,7 +142,7 @@ class FilterBuilder
      */
     public function build(): array
     {
-        $name = $this->name ?? static::$sharedFaker->word();
+        $name = $this->name ?? static::$sharedFaker->unique()->numerify('filter-#####');
 
         // Фильтры — общий справочник. Если фильтр с таким именем уже существует
         // (например, 'color' или 'brand' из другого каталога) — берём его,
