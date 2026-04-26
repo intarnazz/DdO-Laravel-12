@@ -127,8 +127,8 @@ class DatabaseSeeder extends Seeder
             ->slug('entrance-doors')
             ->withImages($entranceDoorsImages)
             ->withColorFilter([
-                'F5F5F5', 'FFFCD6', 'D59057', '94471E', '75300B',
-                '929492', '35170C', '000000', '000001', '000002',
+                '#F5F5F5', '#FFFCD6', '#D59057', '#94471E', '#75300B',
+                '#929492', '#35170C', '#000000', '#000001', '#000002',
             ])
             ->withColorsPerProduct(2)
             ->withBrandFilter()                    // ← бренды создаются здесь
@@ -172,8 +172,8 @@ class DatabaseSeeder extends Seeder
             ->slug('interior-doors')
             ->withImages($interiorDoorsImages)
             ->withColorFilter([
-                'F5F5F5', 'FFFCD6', 'D59057', '94471E', '75300B',
-                '929492', '35170C', '000000', '000000', '000000',
+                '#F5F5F5', '#FFFCD6', '#D59057', '#94471E', '#75300B',
+                '#929492', '#35170C', '#000000', '#000001', '#000002',
             ])
             ->withColorsPerProduct(1)
             ->withBrandFilter()                    // создаём фильтр brand (нужен для каталога)
@@ -213,8 +213,8 @@ class DatabaseSeeder extends Seeder
             ->name('kitchens')
             ->withImages($kitchensImages)
             ->withColorFilter([
-                'F5F5F5', 'FFFCD6', 'D59057', '94471E', '75300B',
-                '929492', '35170C', '000000', '000000', '000000',
+                '#F5F5F5', '#FFFCD6', '#D59057', '#94471E', '#75300B',
+                '#929492', '#35170C', '#000000', '#000001', '#000002',
             ])
             ->withColorsPerProduct(2)
             ->withBrandFilter()                    // создаём фильтр brand (нужен для каталога)

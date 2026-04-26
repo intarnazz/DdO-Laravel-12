@@ -2,9 +2,6 @@
 
 namespace App\Filament\Resources\Characteristics;
 
-use App\Filament\Resources\Characteristics\Pages\CreateCharacteristic;
-use App\Filament\Resources\Characteristics\Pages\EditCharacteristic;
-use App\Filament\Resources\Characteristics\Pages\ListCharacteristics;
 use App\Filament\Resources\Characteristics\Schemas\CharacteristicForm;
 use App\Filament\Resources\Characteristics\Tables\CharacteristicsTable;
 use App\Filament\Resources\Characteristics\Tables\CharacteristicsTableColor;
