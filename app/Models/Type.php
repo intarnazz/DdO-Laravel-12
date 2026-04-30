@@ -14,6 +14,15 @@ class Type extends BaseModel
     protected static bool $isTree = true;
 
     /**
+     * Сортируемые атрибуты модели.
+     *
+     * @var array<int, string>
+     */
+    protected static array $sortable = [
+        'id',
+    ];
+
+    /**
      * Возвращает коллекцию данных ответа.
      *
      * @param Model | Collection $data Коллекция данных для обработки
