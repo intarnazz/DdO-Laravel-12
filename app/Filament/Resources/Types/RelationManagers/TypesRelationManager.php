@@ -19,7 +19,8 @@ class TypesRelationManager extends RelationManager
     {
         return $table
             ->headerActions([
-                CreateAction::make(),
+                CreateAction::make()
+                    ->modal(),
             ]);
     }
 }

@@ -2,12 +2,10 @@
 
 namespace App\Filament\Resources\Types\Schemas;
 
-use App\Filament\Resources\Types\TypeResource;
-use Filament\Actions\Action;
+use App\Filament\Resources\Types\RelationManagers\TypesRelationManager as TypeTypesRelationManager;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 class TypeForm
@@ -19,13 +17,14 @@ class TypeForm
                 Select::make('self_id')
                     ->label('Родительский каталог')
                     ->relationship('type', 'name')
-                    ->suffixAction(
-                        Action::make('type')
-                            ->icon('heroicon-m-eye')
-                            ->visible(fn(Get $get) => filled($get('self_id')))
-                            ->url(fn(Get $get) => TypeResource::getUrl('edit', ['record' => $get('self_id')], $get('self_id')))
-                            ->openUrlInNewTab())
-                ,
+                    ->live()
+                    ->disabled(fn($livewire) => $livewire instanceof TypeTypesRelationManager)
+                    ->dehydrated()
+                    ->default(function ($livewire) {
+                        if ($livewire instanceof TypeTypesRelationManager) return $livewire->getOwnerRecord()->getKey();
+                        return null;
+                    })
+                    ->required(),
                 TextInput::make('name')
                     ->label('Название')
                     ->maxLength(255)
