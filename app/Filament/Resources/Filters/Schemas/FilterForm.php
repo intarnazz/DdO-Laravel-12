@@ -19,6 +19,10 @@ class FilterForm
             ->components([
                 TextInput::make('name')
                     ->label('Название')
+                    ->disabled(function ($record) {
+                        if ($record && $record->name === 'color') return true;
+                        return false;
+                    })
                     ->maxLength(255)
                     ->unique()
                     ->required()
