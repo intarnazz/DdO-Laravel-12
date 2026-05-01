@@ -103,7 +103,6 @@ class Product extends BaseModel
     protected static function _filter($query, $request)
     {
         $charGroups = []; // filter_name => [char_ids]
-
         foreach ($request->query() as $key => $value) {
             match (true) {
                 $key === 'type' => $query->where('type_id', $value),
@@ -111,6 +110,9 @@ class Product extends BaseModel
                 $key === 'variant' => $query->where('variant_id', $value),
                 $key === 'brand' => $query->whereIn('brand_id', static::stringToArray($value)),
                 $key === 'price-max' => $query->where('price', '<=', $value),
+                $key === 'favorite' => $request->query('favorite')
+                        |> (fn($favorite) => $favorite ? static::stringToArray($favorite) : null)
+                        |> (fn($ids) => $query->whereIn('id', $ids)),
                 Filter::where('name', $key)->exists() => $charGroups[$key] = static::stringToArray($value) ?: [],
                 default => null
             };
