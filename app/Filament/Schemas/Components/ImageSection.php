@@ -3,8 +3,8 @@
 namespace App\Filament\Schemas\Components;
 
 use App\Filament\Forms\Components\ImageFieldset;
-use App\Models\Image;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Hidden;
 use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
@@ -17,53 +17,32 @@ class ImageSection extends Section
         parent::setUp();
 
         $this->schema([
+            Hidden::make('is_image')
+                ->disabled()
+                ->afterStateHydrated(
+                    fn($record, Set $set) => $set('is_image', $record && filled($record->image_id)),
+                ),
             ImageFieldset::make()
-                ->visible(fn(Get $get) => filled($get('image_id')))
+                ->live()
+                ->visible(fn(Get $get) => $get('is_image'))
                 ->columnSpanFull(),
             Actions::make([
                 Action::make('createImage')
                     ->label('Добавить картинку')
                     ->icon('heroicon-o-plus')
-                    ->visible(fn(Get $get) => blank($get('image_id')))
-                    ->action(function ($record, $livewire, Set $set) {
-                        $image = Image::create([
-                            'name' => 'фото по умолчанию',
-                            'path' => 'фото-по-умолчанию.jpg',
-                        ]);
-                        $record->image_id = $image->id;
-                        $record->save();
-
-                        $record->load('image');
-
-                        if (method_exists($livewire, 'resetTable')) $livewire->resetTable();
-                        if (method_exists($livewire, 'refresh')) $livewire->refresh();
-
-                        $set('image_id', $image->id);
-                        $set('image.name', $image->name);
-                        $set('image.path', $image->path);
-
-                    }),
+                    ->visible(fn(Get $get) => !$get('is_image'))
+                    ->action(fn($livewire, Set $set) => $set('is_image', true)),
                 Action::make('deleteImage')
                     ->label('Удалить картинку')
                     ->color('danger')
                     ->icon('heroicon-o-trash')
+                    ->visible(fn(Get $get) => $get('is_image'))
                     ->requiresConfirmation()
-                    ->visible(fn(Get $get) => filled($get('image_id')))
-                    ->action(function ($record, $livewire, Set $set) {
-                        $record->image?->delete();
-                        $record->image_id = null;
-                        $record->save();
-
-                        $record->load('image');
-
-                        if (method_exists($livewire, 'resetTable')) $livewire->resetTable();
-                        if (method_exists($livewire, 'refresh')) $livewire->refresh();
-
-                        $set('image_id', null);
-                        $set('image', null);
+                    ->action(function ($record, Set $set) {
+                        $set('is_image', false);
+                        if ($record && $record->image) $record->image->delete();
                     })
-            ]),
+            ])
         ]);
-
     }
 }
