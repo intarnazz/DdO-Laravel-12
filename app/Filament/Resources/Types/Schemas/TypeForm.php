@@ -23,8 +23,7 @@ class TypeForm
                     ->default(function ($livewire) {
                         if ($livewire instanceof TypeTypesRelationManager) return $livewire->getOwnerRecord()->getKey();
                         return null;
-                    })
-                    ->required(),
+                    }),
                 TextInput::make('name')
                     ->label('Название')
                     ->maxLength(255)
