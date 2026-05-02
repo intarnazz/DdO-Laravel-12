@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('path');
+            $table->string('name')->default('фото по умолчанию');
+            $table->string('path')->default('фото-по-умолчанию.jpg');
             $table->string('type')->default('img');
             $table->timestamps();
         });

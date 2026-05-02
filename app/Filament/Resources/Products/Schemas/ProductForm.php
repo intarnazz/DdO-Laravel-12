@@ -131,9 +131,11 @@ class ProductForm
                     ->default(0),
                 TextInput::make('article')
                     ->label('Артикль')
+                    ->unique()
                     ->maxLength(255)
                     ->required(),
                 Toggle::make('is_stock')
+                    ->default(true)
                     ->label('В наличии к покупке'),
                 Toggle::make('is_in_store')
                     ->label('Присутствует в магазине'),

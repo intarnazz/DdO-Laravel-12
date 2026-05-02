@@ -7,6 +7,7 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ImageForm
 {
@@ -21,11 +22,16 @@ class ImageForm
                 ->disk('public')
                 ->imagePreviewHeight('500')
                 ->columnSpanFull()
+                ->live()
                 ->afterStateUpdated(function (Set $set, $state) {
-                    if ($state) {
-                        $extension = pathinfo($state, PATHINFO_EXTENSION);
-                        $set('type', $extension);
-                    }
+                    if (!$state) return;
+                    $file = is_array($state) ? collect($state)->first() : $state;
+
+                    if (!($file instanceof TemporaryUploadedFile)) return;
+                    $extension = $file->getClientOriginalExtension();
+                    $set('type', $extension);
+
+
                 }),
             TextInput::make('name')
                 ->label('Имя для фото')
