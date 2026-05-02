@@ -22,6 +22,8 @@ services:
             - app-storage:/var/www/storage
             - app-config:/var/www/config
             - app-app:/var/www/app
+            - app-app-Filament:/var/www/app/Filament
+            - app-app-Models:/var/www/app/Models
             - app-resources:/var/www/resources
             - app-routes:/var/www/routes
             - app-database:/var/www/database
@@ -97,3 +99,7 @@ volumes:
         driver: local
     app-vendor:
         driver: local
+    app-app-Filament:
+      driver: local
+    app-app-Models:
+      driver: local
