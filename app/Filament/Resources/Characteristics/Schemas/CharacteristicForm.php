@@ -34,7 +34,10 @@ class CharacteristicForm
                     }
                     )
                     ->live()
-                    ->disabled(fn($record, $livewire) => filled($record) || $livewire instanceof ColorsRelationManager)
+                    ->disabled(fn($record, $livewire) => filled($record)
+                        || $livewire instanceof ColorsRelationManager
+                        || $livewire instanceof FilterCharacteristicsRelationManager
+                    )
                     ->dehydrated()
                     ->default(function ($livewire) {
                         if ($livewire instanceof FilterCharacteristicsRelationManager) return $livewire->getOwnerRecord()->getKey();

@@ -113,7 +113,7 @@ class Product extends BaseModel
                 $key === 'favorite' => $request->query('favorite')
                         |> (fn($favorite) => $favorite ? static::stringToArray($favorite) : null)
                         |> (fn($ids) => $query->whereIn('id', $ids)),
-                Filter::where('name', $key)->exists() => $charGroups[$key] = static::stringToArray($value) ?: [],
+                Filter::where('type', $key)->exists() => $charGroups[$key] = static::stringToArray($value) ?: [],
                 default => null
             };
         }
@@ -129,13 +129,13 @@ class Product extends BaseModel
                     foreach ($charGroups as $filterName => $ids) {
                         if (empty($ids)) continue;
                         $w->orWhere(function (Builder $g) use ($filterName, $ids) {
-                            $g->where('filters.name', $filterName)
+                            $g->where('filters.type', $filterName)
                                 ->whereIn('characteristics.id', $ids);
                         });
                     }
                 })
                 ->groupBy('product_characteristics.product_id')
-                ->havingRaw('COUNT(DISTINCT filters.name) = ?', [count($charGroups)]);
+                ->havingRaw('COUNT(DISTINCT filters.type) = ?', [count($charGroups)]);
         });
     }
 

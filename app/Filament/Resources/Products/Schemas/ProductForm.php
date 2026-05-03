@@ -128,7 +128,8 @@ class ProductForm
                     ->label('Скидка')
                     ->numeric()
                     ->prefix('%')
-                    ->default(0),
+                    ->default(0)
+                    ->required(),
                 TextInput::make('article')
                     ->label('Артикль')
                     ->unique()

@@ -21,7 +21,7 @@ class BaseFiltersTable
                     ->searchable(),
             ])
             ->defaultSort('filters.updated_at', 'desc')
-            ->modifyQueryUsing(fn($query) => $query->where('name', '!=', 'brand'))
+//            ->modifyQueryUsing(fn($query) => $query->where('name', '!=', 'brand'))
             ->filters([
                 //
             ])
