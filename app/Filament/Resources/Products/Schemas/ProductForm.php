@@ -50,7 +50,8 @@ class ProductForm
                             ->label('Каталог')
                             ->relationship('type', 'name')
                             ->live()
-                            ->disabled(fn($livewire) => $livewire instanceof TypeProductsRelationManager
+                            ->disabled(fn($livewire, $record) => filled($record)
+                                || $livewire instanceof TypeProductsRelationManager
                                 || $livewire instanceof TagProductsRelationManager
                                 || $livewire instanceof VariantProductsRelationManager
                             )

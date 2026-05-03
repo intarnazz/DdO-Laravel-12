@@ -6,7 +6,7 @@ use App\Filament\Resources\Types\RelationManagers\VariantsRelationManager;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Validation\Rules\Unique;
 
@@ -30,7 +30,7 @@ class VariantForm
                     ->label('Название')
                     ->maxLength(255)
                     ->unique(
-                        modifyRuleUsing: fn(Unique $rule, RelationManager $livewire) => $rule->where('type_id', $livewire->getOwnerRecord()->getKey())
+                        modifyRuleUsing: fn(Unique $rule, Get $get) => $rule->where('type_id', $get('type_id'))
                     )
                     ->required(),
                 Textarea::make('description')
