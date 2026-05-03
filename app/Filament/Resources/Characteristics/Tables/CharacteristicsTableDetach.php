@@ -17,7 +17,7 @@ class CharacteristicsTableDetach extends CharacteristicsTable
     public static function configure(Table $table): Table
     {
         return parent::configure($table)
-            ->modifyQueryUsing(fn(Builder $query) => $query->whereHas('filter', fn(Builder $query) => $query->where('name', '!=', 'color')))
+            ->modifyQueryUsing(fn(Builder $query) => $query->whereHas('filter', fn(Builder $query) => $query->where('type', '!=', 'color')))
             ->recordActions([
                 EditAction::make(),
                 DetachAction::make(),

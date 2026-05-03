@@ -32,7 +32,7 @@ class Type extends BaseModel
     protected static function _response_data(Model|Collection $data): Model|Collection
     {
         if (!empty($data['filters'])) foreach ($data['filters'] as $filter) {
-            $filter->content();
+            $filter->content($data['id']);
         }
         return $data;
     }

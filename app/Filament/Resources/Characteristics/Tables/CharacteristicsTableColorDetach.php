@@ -17,9 +17,6 @@ class CharacteristicsTableColorDetach extends CharacteristicsTableColor
     public static function configure(Table $table): Table
     {
         return parent::configure($table)
-            ->modifyQueryUsing(fn(Builder $query) => $query->whereHas(
-                'filter',
-                fn(Builder $query) => $query->where('name', 'color')))
             ->recordActions([
                 EditAction::make(),
                 DetachAction::make(),

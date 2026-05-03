@@ -28,7 +28,7 @@ class ColorsRelationManager extends RelationManager
                         ->whereHas('filter.types', function (Builder $query) {
                             $query->where('types.id', $this->getOwnerRecord()->type_id);
                         })
-                        ->whereHas('filter', fn(Builder $query) => $query->where('name', 'color'))
+                        ->whereHas('filter', fn(Builder $query) => $query->where('type', 'color'))
                     )
             ]);
     }

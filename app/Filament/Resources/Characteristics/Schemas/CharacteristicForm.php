@@ -30,7 +30,7 @@ class CharacteristicForm
                     ->label('Фильтр')
                     ->relationship('filter', 'name', function (Builder $query, $livewire) {
                         $query->where('name', '!=', 'brand');
-                        if (!($livewire instanceof ColorsRelationManager)) $query->where('name', '!=', 'color');
+                        if (!($livewire instanceof ColorsRelationManager)) $query->where('type', '!=', 'color');
                     }
                     )
                     ->live()
@@ -41,7 +41,7 @@ class CharacteristicForm
                     ->dehydrated()
                     ->default(function ($livewire) {
                         if ($livewire instanceof FilterCharacteristicsRelationManager) return $livewire->getOwnerRecord()->getKey();
-                        if ($livewire instanceof ColorsRelationManager) return Filter::where('name', 'color')->first()->id;;
+                        if ($livewire instanceof ColorsRelationManager) return Filter::where('type', 'color')->first()->id;
                         return null;
                     })
                     ->required(),
@@ -49,7 +49,7 @@ class CharacteristicForm
                     ->label('Выбор цвета:')
                     ->visible(fn(Get $get) => Filter::query()
                         ->where('id', $get('filter_id'))
-                        ->where('name', 'color')
+                        ->where('type', 'color')
                         ->exists()
                     )
                     ->hex()
@@ -63,7 +63,7 @@ class CharacteristicForm
                     ->label('Краткое описание')
                     ->visible(fn(Get $get) => !Filter::query()
                         ->where('id', $get('filter_id'))
-                        ->where('name', 'color')
+                        ->where('type', 'color')
                         ->exists()
                     )
                     ->unique(
