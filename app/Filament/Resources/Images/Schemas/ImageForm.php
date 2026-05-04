@@ -29,9 +29,9 @@ class ImageForm
 
                     if (!($file instanceof TemporaryUploadedFile)) return;
                     $extension = $file->getClientOriginalExtension();
+                    $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);;
                     $set('type', $extension);
-
-
+                    $set('name', $name);
                 }),
             TextInput::make('name')
                 ->label('Имя для фото')

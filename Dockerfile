@@ -7,12 +7,15 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libzip-dev \
     libicu-dev \
+    libmagickwand-dev \
     unzip \
     git \
     && docker-php-ext-configure gd \
         --with-freetype \
         --with-jpeg \
-    && docker-php-ext-install gd pdo_mysql zip intl
+    && docker-php-ext-install gd pdo_mysql zip intl \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
