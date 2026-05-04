@@ -17,6 +17,7 @@ class ContactsTable
             ->columns([
                 TextColumn::make('link')
                     ->label('Ссылка')
+                    ->limit(80)
                     ->searchable(),
                 TextColumn::make('name')
                     ->label('Название')
