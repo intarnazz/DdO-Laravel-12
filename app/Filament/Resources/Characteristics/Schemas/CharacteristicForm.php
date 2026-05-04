@@ -3,7 +3,8 @@
 namespace App\Filament\Resources\Characteristics\Schemas;
 
 use App\Filament\Resources\Filters\RelationManagers\CharacteristicsRelationManager as FilterCharacteristicsRelationManager;
-use App\Filament\Resources\Products\RelationManagers\ColorsRelationManager;
+use App\Filament\Resources\Products\RelationManagers\CharacteristicsRelationManager as ProductsCharacteristicsRelationManager;
+use App\Filament\Resources\Products\RelationManagers\ColorsRelationManager as ProductsColorsRelationManager;
 use App\Filament\Schemas\Components\ImageSection;
 use App\Models\Filter;
 use Filament\Forms\Components\ColorPicker;
@@ -23,25 +24,25 @@ class CharacteristicForm
             ->components([
                 ImageSection::make('Фото характеристики')
                     ->hidden(
-                        fn($livewire) => $livewire instanceof ColorsRelationManager
+                        fn($livewire) => $livewire instanceof ProductsColorsRelationManager
                     )
                     ->columnSpanFull(),
                 Select::make('filter_id')
                     ->label('Фильтр')
                     ->relationship('filter', 'name', function (Builder $query, $livewire) {
                         $query->where('name', '!=', 'brand');
-                        if (!($livewire instanceof ColorsRelationManager)) $query->where('type', '!=', 'color');
+                        if ($livewire instanceof ProductsCharacteristicsRelationManager) $query->where('type', '!=', 'color');
                     }
                     )
                     ->live()
                     ->disabled(fn($record, $livewire) => filled($record)
-                        || $livewire instanceof ColorsRelationManager
+                        || $livewire instanceof ProductsColorsRelationManager
                         || $livewire instanceof FilterCharacteristicsRelationManager
                     )
                     ->dehydrated()
                     ->default(function ($livewire) {
                         if ($livewire instanceof FilterCharacteristicsRelationManager) return $livewire->getOwnerRecord()->getKey();
-                        if ($livewire instanceof ColorsRelationManager) return Filter::where('type', 'color')->first()->id;
+                        if ($livewire instanceof ProductsColorsRelationManager) return Filter::where('type', 'color')->first()->id;
                         return null;
                     })
                     ->required(),
