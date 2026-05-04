@@ -26,6 +26,7 @@ class CharacteristicsTableDetach extends CharacteristicsTable
                     ->limit(80)
                     ->searchable(),
                 TextColumn::make('filter.name')
+                    ->label('Родительский фильтр')
 //                    ->badge()
 //                    ->color('primary')
                     ->icon('heroicon-m-arrow-top-right-on-square')
