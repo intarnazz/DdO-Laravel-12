@@ -24,6 +24,7 @@ class CharacteristicsRelationManager extends RelationManager
                 CreateAction::make(),
                 AttachAction::make()
                     ->preloadRecordSelect()
+                    ->recordSelectSearchColumns(['name', 'description'])
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->whereHas('filter.types', function (Builder $query) {
                             $query->where('types.id', $this->getOwnerRecord()->type_id);
