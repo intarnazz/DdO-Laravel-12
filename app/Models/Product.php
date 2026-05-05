@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Requests\PaginationRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -84,17 +85,14 @@ class Product extends BaseModel
         return $this->increment('views');
     }
 
-    /**
-     * Получает метаданные о минимальном и максимальном значениях цены.
-     *
-     * @return array<string, array<string, float|null>>
-     */
-    protected static function _meta()
+    protected static function _meta(PaginationRequest $request)
     {
         return [
             'price' => [
-                'min' => self::min('price'),
-                'max' => self::max('price'),
+                'min' => self::where('type_id', $request->type)
+                    ->min('price'),
+                'max' => self::where('type_id', $request->type)
+                    ->max('price'),
             ]
         ];
     }

@@ -157,12 +157,13 @@ abstract class BaseModel extends Model
     }
 
     /**
-     * Внутренний метод для получения метаданных.
-     * Может быть переопределен в дочерних классах для возврата дополнительных мета-данных.
+     * Внутренний метод для получения метаданных на основе переданного запроса.
+     * Может быть переопределён в дочерних классах для возврата дополнительных мета-данных.
      *
-     * @return mixed|null Метаданные или null, если не определены.
+     * @param Builder $query Построитель запросов с применёнными фильтрами.
+     * @return array<string, mixed>|null Метаданные или null, если не определены.
      */
-    protected static function _meta()
+    protected static function _meta(PaginationRequest $request)
     {
         return null;
     }
@@ -285,8 +286,8 @@ abstract class BaseModel extends Model
         if ($names) $query->whereIn('name', static::stringToArray($names));
         else $query->offset($offset)->limit($limit);
 
+        $meta = static::_meta($request);
         $data = $query->get();
-        $meta = static::_meta();
 
 //        Log::channel('daily')->debug('Query executed', [
 //            'query_log' => DB::getQueryLog(),
