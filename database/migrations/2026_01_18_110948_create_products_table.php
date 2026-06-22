@@ -24,7 +24,7 @@ return new class extends Migration {
             $table->integer('views')->default(0);
             $table->integer('price');
             $table->unsignedTinyInteger('discount')->default(0);
-            $table->string('article')->unique();
+            $table->string('article')->unique(); //TODO: products_article_unique delete
             $table->boolean('is_stock')->default(true);
             $table->boolean('is_in_store')->default(false);
             $table->timestamps();
