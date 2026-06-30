@@ -53,6 +53,7 @@ class Product extends BaseModel
     protected array $with_one_only = [
         'options',
         'colors',
+        'inserts',
         'variant.products.colors',
         'variant.products.inserts',
         'tag',
