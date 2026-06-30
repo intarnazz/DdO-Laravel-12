@@ -54,6 +54,7 @@ class Product extends BaseModel
         'options',
         'colors',
         'variant.products.colors',
+        'variant.products.inserts',
         'tag',
         'brand',
         'images',
@@ -77,6 +78,13 @@ class Product extends BaseModel
         return $this->BelongsToMany(Characteristic::class, 'product_characteristics', 'product_id', 'characteristic_id')
             ->whereHas('filter', function (Builder $query) {
                 $query->where('type', 'color');
+            });
+    }
+    public function inserts(): BelongsToMany
+    {
+        return $this->BelongsToMany(Characteristic::class, 'product_characteristics', 'product_id', 'characteristic_id')
+            ->whereHas('filter', function (Builder $query) {
+                $query->where('type', 'insert');
             });
     }
 
