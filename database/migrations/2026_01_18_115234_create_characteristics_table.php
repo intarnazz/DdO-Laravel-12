@@ -16,7 +16,8 @@ return new class extends Migration {
             $table->foreignIdFor(\App\Models\Image::class)->nullable()->constrained()->onDelete('set null');
             $table->string('name', 255);
             $table->string('description', 1000)->nullable(); // TODO: description=1000
-//            $table->boolean('is_visible')->default(false);
+//TODO: ADD $table->string('slug', 255)->nullable();
+//          $table->boolean('is_visible')->default(false);
             $table->timestamps();
 
             $table->unique(['filter_id', 'name'], 'filter_name_unique');
