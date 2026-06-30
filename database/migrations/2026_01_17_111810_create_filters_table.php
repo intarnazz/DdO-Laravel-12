@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name', 255)->unique();
             $table->string('description', 255);
             $table->string('type', 255)->unique();
+//ADD disable_edit $table->bulean('disable_edit')->defaut(false);          
             $table->timestamps();
         });
     }

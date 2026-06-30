@@ -20,7 +20,7 @@ class FilterForm
                 TextInput::make('name')
                     ->label('Название')
                     ->disabled(function ($record) {
-                        if ($record && ($record->name === 'color' || $record->name === 'brand')) return true;
+                        if ($record && ($record->disable_edit == true)) return true;
                         return false;
                     })
                     ->maxLength(255)
