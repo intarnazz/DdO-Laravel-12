@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name')->default('фото по умолчанию');
             $table->string('path')->default('фото-по-умолчанию.jpg');
             $table->string('type')->default('img');
+            // TODO: ALTER TABLE `images` ADD COLUMN `group_code` VARCHAR(255) NULL AFTER `type`
             $table->timestamps();
         });
     }
