@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->foreignIdFor(\App\Models\Image::class, 'image_primary_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignIdFor(\App\Models\Image::class, 'image_secondary_id')->nullable()->constrained()->onDelete('set null');
             $table->string('name', 255);
-            $table->string('description', 1000)->nullable(); //TODO: description len = 1000
+            $table->string('description', 1000)->nullable(); //TODO: TEXT
             $table->string('video_url', 255)->nullable();
             $table->integer('views')->default(0);
             $table->integer('price');
