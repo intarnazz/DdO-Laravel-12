@@ -143,7 +143,7 @@ class ProductForm
                     ->label('Присутствует в магазине'),
                 Textarea::make('description')
                     ->label('Описание')
-                    ->maxLength(255)
+                    ->maxLength(1000)
                     ->autosize()
                     ->columnSpanFull(),
             ]);
