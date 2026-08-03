@@ -20,7 +20,7 @@ class Filter extends BaseModel
 
 //    protected array $with_one_only = ['types'];
 
-    public function content(string $type_id)
+    public function content(string $type_id) //TODO: A-Z order
     {
         return $this->content = match ($this->type) {
             'brand' => Brand::whereIn(
