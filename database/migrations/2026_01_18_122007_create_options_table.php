@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->timestamps();
 
             $table->unique(['product_id', 'name'], 'unique_options'); //TODO: DELETE unique_options
+            //TODO: ADD INDEX `product_options` (`product_id`)
         });
     }
 
