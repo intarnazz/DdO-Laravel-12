@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->integer('default_count')->default(0);
             $table->timestamps();
 
-            $table->unique(['product_id', 'name'], 'unique_options');
+            $table->unique(['product_id', 'name'], 'unique_options'); //TODO: DELETE unique_options
         });
     }
 
