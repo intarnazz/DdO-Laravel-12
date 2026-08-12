@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->timestamps();
 
             $table->unique(['filter_id', 'name'], 'filter_name_unique');
+            //TODO: ADD INDEX filter_description_unique
         });
     }
 
