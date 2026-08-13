@@ -30,6 +30,7 @@ return new class extends Migration {
             $table->timestamps();
 
             $table->unique(['name', 'variant_id'], 'products_variants_unique');
+            //TODO: CREATE INDEX `products_brand_id_type_id_index`
         });
     }
 
