@@ -141,6 +141,8 @@ class ProductForm
                     ->label('В наличии к покупке'),
                 Toggle::make('is_in_store')
                     ->label('Присутствует в магазине'),
+                Toggle::make('hidden_in_catalog')
+                    ->label('Скрыть в каталоге'),
                 Textarea::make('description')
                     ->label('Описание')
                     ->maxLength(1000)

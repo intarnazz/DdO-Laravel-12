@@ -232,6 +232,15 @@ abstract class BaseModel extends Model
     }
 
     /**
+     * @param Builder $query Экземпляр построителя запросов Eloquent.
+     * @return Builder Модифицированный конструктор запроса.
+     */
+    protected static function _after_basePagination(Builder $query)
+    {
+        return $query;
+    }
+
+    /**
      * Базовая пагинация по заданному условию.
      *
      * Метод обрабатывает пагинацию, фильтрацию, поиск и сортировку на основе параметров HTTP-запроса.
@@ -271,7 +280,8 @@ abstract class BaseModel extends Model
                 |> (fn($x) => static::_search($x, $search))
                 |> (fn($x) => static::_filter($x, $request))
                 |> (fn($x) => static::$isTree ? $x->where('self_id', null) : $x)
-                |> (fn($x) => static::_orderBy($x, $order, $desc));
+                |> (fn($x) => static::_orderBy($x, $order, $desc))
+                |> (fn($x) => static::_after_basePagination($x));
 
 //        Log::channel('daily')->debug('Built SQL BEFORE execution', [
 //            'sql' => $query->toSql(),

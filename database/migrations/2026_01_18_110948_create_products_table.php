@@ -27,7 +27,7 @@ return new class extends Migration {
             $table->string('article')->unique(); //TODO: products_article_unique delete
             $table->boolean('is_stock')->default(true);
             $table->boolean('is_in_store')->default(false);
-            // ALTER TABLE `products` ADD COLUMN `hidden_in_catalog` BOOL DEFAULT 0 AFTER `is_in_store`;
+            $table->boolean('hidden_in_catalog')->default(false); //TODO: ALTER TABLE `products` ADD COLUMN `hidden_in_catalog` BOOL DEFAULT 0 AFTER `is_in_store`;
             $table->timestamps();
 
             $table->unique(['name', 'variant_id'], 'products_variants_unique');

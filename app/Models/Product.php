@@ -74,6 +74,16 @@ class Product extends BaseModel
         'discount',
     ];
 
+    /**
+     * @param Builder $query Экземпляр построителя запросов Eloquent.
+     * @return Builder Модифицированный конструктор запроса.
+     */
+    protected static function _after_basePagination(Builder $query)
+    {
+        $query->where('hidden_in_catalog', 0);
+        return $query;
+    }
+
     public function colors(): BelongsToMany
     {
         return $this->BelongsToMany(Characteristic::class, 'product_characteristics', 'product_id', 'characteristic_id')
