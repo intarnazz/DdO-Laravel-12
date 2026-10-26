@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Tags\Tables;
 
+use App\Filament\Resources\Tags\TagResource;
+use App\Models\Tag;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -20,6 +22,10 @@ class TagsTable
                     ->searchable(),
             ])
             ->defaultSort('tags.updated_at', 'desc')
+            ->recordUrl(
+                fn (Tag $record): string => TagResource::getUrl('edit', ['record' => $record]),
+                shouldOpenInNewTab: true,
+            )
             ->filters([
                 //
             ])

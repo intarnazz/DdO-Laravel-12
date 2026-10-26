@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Filters\Tables;
 
+use App\Filament\Resources\Filters\FilterResource;
 use App\Models\Filter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -22,6 +23,10 @@ class BaseFiltersTable
             ])
             ->defaultSort('filters.updated_at', 'desc')
 //            ->modifyQueryUsing(fn($query) => $query->where('name', '!=', 'brand'))
+            ->recordUrl(
+                fn (Filter $record): string => FilterResource::getUrl('edit', ['record' => $record]),
+                shouldOpenInNewTab: true,
+            )
             ->filters([
                 //
             ])

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Brands\Tables;
 
+use App\Filament\Resources\Brands\BrandResource;
+use App\Models\Brand;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -24,6 +26,10 @@ class BrandsTable
                     ->searchable(),
             ])
             ->defaultSort('updated_at', 'desc')
+            ->recordUrl(
+                fn (Brand $record): string => BrandResource::getUrl('edit', ['record' => $record]),
+                shouldOpenInNewTab: true,
+            )
             ->filters([
                 //
             ])

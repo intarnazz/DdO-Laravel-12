@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Contacts\Tables;
 
+use App\Filament\Resources\Contacts\ContactResource;
+use App\Models\Contact;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -24,6 +26,10 @@ class ContactsTable
                     ->searchable(),
             ])
             ->defaultSort('updated_at', 'desc')
+            ->recordUrl(
+                fn (Contact $record): string => ContactResource::getUrl('edit', ['record' => $record]),
+                shouldOpenInNewTab: true,
+            )
             ->filters([
                 //
             ])
